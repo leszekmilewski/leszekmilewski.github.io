@@ -2,10 +2,9 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <title>Leszek Milewski</title>
   <style>
-    /* Podstawowe style */
     body {
       font-family: Georgia, serif;
       font-size: 18px;
@@ -18,7 +17,7 @@
 
     header {
       text-align: center;
-      padding: 2rem 1rem 1rem 1rem;
+      padding: 2rem 1rem 1rem;
     }
 
     header h1 {
@@ -38,6 +37,7 @@
     nav a {
       text-decoration: none;
       color: #333;
+      padding: 0.3rem 0.5rem;
     }
 
     nav a:hover {
@@ -47,7 +47,7 @@
     main {
       max-width: 720px;
       margin: 0 auto;
-      padding: 0 1rem;
+      padding: 0 5vw;
     }
 
     article {
@@ -65,12 +65,10 @@
       margin-bottom: 1rem;
     }
 
-    /* Styl responsywny */
     @media (max-width: 600px) {
       body {
         font-size: 16px;
         line-height: 1.8;
-        padding: 0;
       }
 
       header h1 {
@@ -80,15 +78,15 @@
       nav {
         flex-direction: column;
         align-items: center;
-        font-size: 1rem;
+        gap: 0.5rem;
       }
 
       nav a {
-        margin: 0.25rem 0;
+        padding: 0.5rem 0;
       }
 
       main {
-        padding: 0 1.25rem;
+        padding: 0 6vw;
       }
     }
   </style>
