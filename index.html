@@ -1,94 +1,119 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Leszek Milewski</title>
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
   <style>
+    /* Podstawowe style */
     body {
-      font-family: 'Merriweather', serif;
-      max-width: 700px;
-      margin: 3em auto;
-      padding: 0 1em;
+      font-family: Georgia, serif;
+      font-size: 18px;
       line-height: 1.7;
+      margin: 0;
+      padding: 0;
+      background-color: #fff;
       color: #111;
-      background: #fff;
     }
+
     header {
       text-align: center;
-      margin-bottom: 2em;
+      padding: 2rem 1rem 1rem 1rem;
     }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
     nav {
       display: flex;
-      flex-wrap: wrap;
       justify-content: center;
-      gap: 0.7em;
-      margin-bottom: 1em;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 1rem;
+      margin-bottom: 2rem;
     }
+
     nav a {
       text-decoration: none;
-      color: #222;
-      font-weight: bold;
+      color: #333;
     }
+
     nav a:hover {
       text-decoration: underline;
     }
-    h1 {
-      font-size: 2em;
-      margin-bottom: 0.5em;
+
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 1rem;
     }
+
+    article {
+      margin-bottom: 3rem;
+    }
+
     h2 {
-      font-size: 1.7em;
-      margin-bottom: 0.2em;
+      font-size: 1.5rem;
+      margin-bottom: 0.25rem;
     }
+
     time {
       display: block;
-      font-size: 0.9em;
-      color: #666;
-      margin-bottom: 1.5em;
+      color: #888;
+      margin-bottom: 1rem;
     }
+
+    /* Styl responsywny */
     @media (max-width: 600px) {
       body {
-        margin: 1em auto;
-        padding: 0 0.5em;
-        font-size: 1.05em;
-        width: 100%;
+        font-size: 16px;
+        line-height: 1.8;
+        padding: 0;
       }
-      h1 {
-        font-size: 1.5em;
+
+      header h1 {
+        font-size: 1.75rem;
       }
-      h2 {
-        font-size: 1.2em;
-      }
+
       nav {
         flex-direction: column;
         align-items: center;
-        gap: 0.5em;
+        font-size: 1rem;
       }
+
       nav a {
-        font-size: 1em;
+        margin: 0.25rem 0;
+      }
+
+      main {
+        padding: 0 1.25rem;
       }
     }
   </style>
 </head>
 <body>
-
   <header>
     <h1>Leszek Milewski</h1>
     <nav>
-      <a href="index.html">strona</a>
-      <a href="dziewczyna.html">Dziewczyna o wyjątkowych dłoniach</a>
-      <a href="za-darmo.html">za darmo</a>
-      <a href="kontakt.html">kontakt</a>
+      <a href="/">strona</a>
+      <a href="/dziewczyna">Dziewczyna o wyjątkowych dłoniach</a>
+      <a href="/za-darmo">za darmo</a>
+      <a href="/kontakt">kontakt</a>
     </nav>
   </header>
 
-  <article>
-    <h2>Testowy cytat</h2>
-    <time>1 czerwca 2025</time>
-    <p>Sądzę, że porządek świata, zrozumiały dla człowieka, byłby dla niego nieznośniejszym niż niezrozumiały. Tajemnica jest właściwym jego żywiołem, chce on coś widzieć, lecz nie wszystko; a gdy widzi wszystko, mniema, że nie widzi nic.</p>
-  </article>
-
+  <main>
+    <article>
+      <h2>Testowy cytat</h2>
+      <time datetime="2025-06-01">1 czerwca 2025</time>
+      <p>
+        Sądzę, że porządek świata, zrozumiały dla człowieka, byłby dla niego nieznośniejszym niż niezrozumiały.
+        Tajemnica jest właściwym jego żywiołem, chce on coś widzieć, lecz nie wszystko; a gdy widzi wszystko, 
+        mniema, że nie widzi nic.
+      </p>
+    </article>
+  </main>
 </body>
 </html>
