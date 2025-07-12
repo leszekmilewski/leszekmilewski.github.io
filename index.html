@@ -25,6 +25,15 @@
       font-size: 2rem;
     }
 
+    .hamburger {
+      display: none;
+      font-size: 2rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin: 1rem 0 0;
+    }
+
     nav {
       display: flex;
       justify-content: center;
@@ -64,16 +73,6 @@
       margin-bottom: 1rem;
     }
 
-    /* Hamburger menu */
-    .hamburger {
-      display: none;
-      font-size: 1.75rem;
-      background: none;
-      border: none;
-      cursor: pointer;
-      margin: 1rem 0 0.5rem 0;
-    }
-
     .mobile-nav {
       display: none;
       flex-direction: column;
@@ -99,7 +98,6 @@
       max-height: 300px;
     }
 
-    /* Styl responsywny */
     @media (max-width: 600px) {
       nav {
         display: none;
@@ -107,6 +105,7 @@
 
       .hamburger {
         display: block;
+        margin: 1rem auto 0;
       }
 
       header h1 {
@@ -124,7 +123,7 @@
     <h1>Leszek Milewski</h1>
 
     <!-- Przycisk hamburgera -->
-    <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Otwórz/zamknij menu">☰ Menu</button>
+    <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Menu">☰</button>
 
     <!-- Menu desktop -->
     <nav>
@@ -164,25 +163,25 @@
 
       // Zmień ikonę przycisku
       if (menu.classList.contains('show')) {
-        button.textContent = '× Zamknij';
+        button.textContent = '×';
       } else {
-        button.textContent = '☰ Menu';
+        button.textContent = '☰';
       }
     }
 
-    // Automatyczne zamykanie menu po kliknięciu w link
+    // Zamykanie menu po kliknięciu linku
     document.querySelectorAll('.mobile-nav a').forEach(link => {
       link.addEventListener('click', () => {
         document.getElementById('mobileMenu').classList.remove('show');
-        document.getElementById('hamburgerBtn').textContent = '☰ Menu';
+        document.getElementById('hamburgerBtn').textContent = '☰';
       });
     });
 
-    // Reset menu po zmianie rozmiaru okna (na desktop)
+    // Reset na desktop
     window.addEventListener('resize', () => {
       if (window.innerWidth > 600) {
         document.getElementById('mobileMenu').classList.remove('show');
-        document.getElementById('hamburgerBtn').textContent = '☰ Menu';
+        document.getElementById('hamburgerBtn').textContent = '☰';
       }
     });
   </script>
