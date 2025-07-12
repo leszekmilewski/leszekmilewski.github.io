@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Leszek Milewski</title>
   <style>
     body {
@@ -17,7 +17,7 @@
 
     header {
       text-align: center;
-      padding: 2rem 1rem 1rem;
+      padding: 2rem 1rem 1rem 1rem;
     }
 
     header h1 {
@@ -28,8 +28,8 @@
     nav {
       display: flex;
       justify-content: center;
+      gap: 1.5rem;
       flex-wrap: wrap;
-      gap: 1rem;
       font-size: 1rem;
       margin-bottom: 2rem;
     }
@@ -37,7 +37,6 @@
     nav a {
       text-decoration: none;
       color: #333;
-      padding: 0.3rem 0.5rem;
     }
 
     nav a:hover {
@@ -47,7 +46,7 @@
     main {
       max-width: 720px;
       margin: 0 auto;
-      padding: 0 5vw;
+      padding: 0 1rem;
     }
 
     article {
@@ -65,53 +64,15 @@
       margin-bottom: 1rem;
     }
 
-    @media (max-width: 600px) {
-      body {
-        font-size: 16px;
-        line-height: 1.8;
-      }
-
-      header h1 {
-        font-size: 1.75rem;
-      }
-
-      nav {
-        flex-direction: column;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      nav a {
-        padding: 0.5rem 0;
-      }
-
-      main {
-        padding: 0 6vw;
-      }
+    /* Hamburger menu (mobile only) */
+    .hamburger {
+      display: none;
+      font-size: 1.75rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-top: 1rem;
     }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>Leszek Milewski</h1>
-    <nav>
-      <a href="/">strona</a>
-      <a href="/dziewczyna">Dziewczyna o wyjątkowych dłoniach</a>
-      <a href="/za-darmo">za darmo</a>
-      <a href="/kontakt">kontakt</a>
-    </nav>
-  </header>
 
-  <main>
-    <article>
-      <h2>Testowy cytat</h2>
-      <time datetime="2025-06-01">1 czerwca 2025</time>
-      <p>
-        Sądzę, że porządek świata, zrozumiały dla człowieka, byłby dla niego nieznośniejszym niż niezrozumiały.
-        Tajemnica jest właściwym jego żywiołem, chce on coś widzieć, lecz nie wszystko; a gdy widzi wszystko, 
-        mniema, że nie widzi nic.
-      </p>
-    </article>
-  </main>
-</body>
-</html>
+    .mobile-nav {
+      display
