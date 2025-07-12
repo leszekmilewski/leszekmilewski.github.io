@@ -71,7 +71,7 @@
       background: none;
       border: none;
       cursor: pointer;
-      margin-top: 1rem;
+      margin: 1rem 0 0.5rem 0;
     }
 
     .mobile-nav {
@@ -79,6 +79,9 @@
       flex-direction: column;
       gap: 0.75rem;
       margin-top: 1rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
     }
 
     .mobile-nav a {
@@ -93,12 +96,13 @@
 
     .mobile-nav.show {
       display: flex;
+      max-height: 300px;
     }
 
     /* Styl responsywny */
     @media (max-width: 600px) {
       nav {
-        display: none; /* Ukryj poziome menu na telefonie */
+        display: none;
       }
 
       .hamburger {
@@ -120,7 +124,7 @@
     <h1>Leszek Milewski</h1>
 
     <!-- Przycisk hamburgera -->
-    <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()">☰ Menu</button>
+    <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Otwórz/zamknij menu">☰ Menu</button>
 
     <!-- Menu desktop -->
     <nav>
@@ -172,6 +176,14 @@
         document.getElementById('mobileMenu').classList.remove('show');
         document.getElementById('hamburgerBtn').textContent = '☰ Menu';
       });
+    });
+
+    // Reset menu po zmianie rozmiaru okna (na desktop)
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 600) {
+        document.getElementById('mobileMenu').classList.remove('show');
+        document.getElementById('hamburgerBtn').textContent = '☰ Menu';
+      }
     });
   </script>
 </body>
