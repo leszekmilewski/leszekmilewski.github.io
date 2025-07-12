@@ -25,22 +25,13 @@
       font-size: 2rem;
     }
 
-    .hamburger {
-      display: none;
-      font-size: 2rem;
-      background: none;
-      border: none;
-      cursor: pointer;
-      margin: 1rem auto 0;
-    }
-
     nav {
       display: flex;
       justify-content: center;
-      gap: 1.5rem;
-      flex-wrap: wrap;
+      gap: 1rem;
       font-size: 1rem;
       margin-bottom: 2rem;
+      flex-wrap: wrap;
     }
 
     nav a {
@@ -73,47 +64,43 @@
       margin-bottom: 1rem;
     }
 
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      font-size: 1.5rem;
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+
     .mobile-nav {
       display: none;
       flex-direction: column;
-      gap: 0.75rem;
-      margin-top: 1rem;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
+      gap: 0.5rem;
+      margin: 1rem 0;
     }
 
-    .mobile-nav a {
-      font-size: 1.1rem;
-      color: #333;
-      text-decoration: none;
-    }
-
-    .mobile-nav a:hover {
-      text-decoration: underline;
-    }
-
-    .mobile-nav.show {
-      display: flex;
-      max-height: 300px;
-    }
-
+    /* Responsive */
     @media (max-width: 600px) {
-      nav {
+      body {
+        font-size: 16px;
+        line-height: 1.8;
+      }
+
+      nav.desktop-nav {
         display: none;
       }
 
       .hamburger {
         display: block;
-        margin: 1rem auto 0;
+      }
+
+      .mobile-nav.show {
+        display: flex;
       }
 
       header h1 {
         font-size: 1.75rem;
-      }
-
-      main {
-        padding: 0 1.25rem;
+        margin-bottom: 0.5rem;
       }
     }
   </style>
@@ -121,25 +108,19 @@
 <body>
   <header>
     <h1>Leszek Milewski</h1>
-
-    <!-- Przycisk hamburgera -->
-    <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Menu">☰</button>
-
-    <!-- Menu desktop -->
-    <nav>
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
+    <nav class="desktop-nav">
       <a href="/">strona</a>
       <a href="/dziewczyna">Dziewczyna o wyjątkowych dłoniach</a>
       <a href="/za-darmo">za darmo</a>
       <a href="/kontakt">kontakt</a>
     </nav>
-
-    <!-- Menu mobilne -->
-    <div class="mobile-nav" id="mobileMenu">
+    <nav class="mobile-nav" id="mobileNav">
       <a href="/">strona</a>
       <a href="/dziewczyna">Dziewczyna o wyjątkowych dłoniach</a>
       <a href="/za-darmo">za darmo</a>
       <a href="/kontakt">kontakt</a>
-    </div>
+    </nav>
   </header>
 
   <main>
@@ -155,31 +136,9 @@
   </main>
 
   <script>
-    function toggleMobileMenu() {
-      const menu = document.getElementById('mobileMenu');
-      const button = document.getElementById('hamburgerBtn');
-
-      menu.classList.toggle('show');
-
-      // Zmień ikonę ☰ ↔ ×
-      button.textContent = menu.classList.contains('show') ? '×' : '☰';
+    function toggleMenu() {
+      document.getElementById("mobileNav").classList.toggle("show");
     }
-
-    // Zamykanie menu po kliknięciu
-    document.querySelectorAll('.mobile-nav a').forEach(link => {
-      link.addEventListener('click', () => {
-        document.getElementById('mobileMenu').classList.remove('show');
-        document.getElementById('hamburgerBtn').textContent = '☰';
-      });
-    });
-
-    // Reset na desktop
-    window.addEventListener('resize', () => {
-      if (window.innerWidth > 600) {
-        document.getElementById('mobileMenu').classList.remove('show');
-        document.getElementById('hamburgerBtn').textContent = '☰';
-      }
-    });
   </script>
 </body>
 </html>
