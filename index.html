@@ -31,7 +31,7 @@
       background: none;
       border: none;
       cursor: pointer;
-      margin: 1rem 0 0;
+      margin: 1rem auto 0;
     }
 
     nav {
@@ -161,15 +161,11 @@
 
       menu.classList.toggle('show');
 
-      // Zmień ikonę przycisku
-      if (menu.classList.contains('show')) {
-        button.textContent = '×';
-      } else {
-        button.textContent = '☰';
-      }
+      // Zmień ikonę ☰ ↔ ×
+      button.textContent = menu.classList.contains('show') ? '×' : '☰';
     }
 
-    // Zamykanie menu po kliknięciu linku
+    // Zamykanie menu po kliknięciu
     document.querySelectorAll('.mobile-nav a').forEach(link => {
       link.addEventListener('click', () => {
         document.getElementById('mobileMenu').classList.remove('show');
