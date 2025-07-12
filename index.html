@@ -28,10 +28,10 @@
     nav {
       display: flex;
       justify-content: center;
+      flex-wrap: wrap;
       gap: 1rem;
       font-size: 1rem;
       margin-bottom: 2rem;
-      flex-wrap: wrap;
     }
 
     nav a {
@@ -64,43 +64,53 @@
       margin-bottom: 1rem;
     }
 
-    /* Hamburger */
-    .hamburger {
-      display: none;
-      font-size: 1.5rem;
+    p {
       margin-top: 1rem;
-      cursor: pointer;
+      margin-bottom: 1rem;
     }
 
-    .mobile-nav {
-      display: none;
-      flex-direction: column;
-      gap: 0.5rem;
-      margin: 1rem 0;
-    }
-
-    /* Responsive */
+    /* Styl responsywny */
     @media (max-width: 600px) {
       body {
-        font-size: 16px;
-        line-height: 1.8;
-      }
-
-      nav.desktop-nav {
-        display: none;
-      }
-
-      .hamburger {
-        display: block;
-      }
-
-      .mobile-nav.show {
-        display: flex;
+        font-size: 15px;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
       }
 
       header h1 {
-        font-size: 1.75rem;
+        font-size: 1.5rem;
         margin-bottom: 0.5rem;
+      }
+
+      nav {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+        margin-bottom: 1rem;
+      }
+
+      main {
+        max-width: 100%;
+        padding: 0 0.75rem;
+      }
+
+      article {
+        margin-bottom: 2rem;
+      }
+
+      h2 {
+        font-size: 1.3rem;
+        margin-bottom: 0.25rem;
+      }
+
+      time {
+        font-size: 0.9rem;
+      }
+
+      p {
+        margin-top: 0.75rem;
+        margin-bottom: 1rem;
       }
     }
   </style>
@@ -108,14 +118,7 @@
 <body>
   <header>
     <h1>Leszek Milewski</h1>
-    <div class="hamburger" onclick="toggleMenu()">☰</div>
-    <nav class="desktop-nav">
-      <a href="/">strona</a>
-      <a href="/dziewczyna">Dziewczyna o wyjątkowych dłoniach</a>
-      <a href="/za-darmo">za darmo</a>
-      <a href="/kontakt">kontakt</a>
-    </nav>
-    <nav class="mobile-nav" id="mobileNav">
+    <nav>
       <a href="/">strona</a>
       <a href="/dziewczyna">Dziewczyna o wyjątkowych dłoniach</a>
       <a href="/za-darmo">za darmo</a>
@@ -128,17 +131,9 @@
       <h2>Testowy cytat</h2>
       <time datetime="2025-06-01">1 czerwca 2025</time>
       <p>
-        Sądzę, że porządek świata, zrozumiały dla człowieka, byłby dla niego nieznośniejszym niż niezrozumiały.
-        Tajemnica jest właściwym jego żywiołem, chce on coś widzieć, lecz nie wszystko; a gdy widzi wszystko, 
-        mniema, że nie widzi nic.
+        Sądzę, że porządek świata, zrozumiały dla człowieka, byłby dla niego nieznośniejszym niż niezrozumiały. Tajemnica jest właściwym jego żywiołem, chce on coś widzieć, lecz nie wszystko; a gdy widzi wszystko, mniema, że nie widzi nic.
       </p>
     </article>
   </main>
-
-  <script>
-    function toggleMenu() {
-      document.getElementById("mobileNav").classList.toggle("show");
-    }
-  </script>
 </body>
 </html>
