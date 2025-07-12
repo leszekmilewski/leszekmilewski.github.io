@@ -76,3 +76,89 @@
 
     .mobile-nav {
       display
+          .mobile-nav {
+      display: none;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .mobile-nav a {
+      font-size: 1.1rem;
+      color: #333;
+      text-decoration: none;
+    }
+
+    .mobile-nav a:hover {
+      text-decoration: underline;
+    }
+
+    .mobile-nav.show {
+      display: flex;
+    }
+
+    /* Styl responsywny */
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.75rem;
+      }
+
+      nav {
+        display: none; /* Ukryj poziome menu na telefonie */
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      main {
+        padding: 0 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Leszek Milewski</h1>
+
+    <!-- Przycisk hamburgera -->
+    <button class="hamburger" onclick="toggleMobileMenu()">☰ Menu</button>
+
+    <!-- Menu desktop -->
+    <nav>
+      <a href="/">strona</a>
+      <a href="/dziewczyna">Dziewczyna o wyjątkowych dłoniach</a>
+      <a href="/za-darmo">za darmo</a>
+      <a href="/kontakt">kontakt</a>
+    </nav>
+
+    <!-- Menu mobilne -->
+    <div class="mobile-nav" id="mobileMenu">
+      <a href="/">strona</a>
+      <a href="/dziewczyna">Dziewczyna o wyjątkowych dłoniach</a>
+      <a href="/za-darmo">za darmo</a>
+      <a href="/kontakt">kontakt</a>
+    </div>
+  </header>
+
+  <main>
+    <article>
+      <h2>Testowy cytat</h2>
+      <time datetime="2025-06-01">1 czerwca 2025</time>
+      <p>
+        Sądzę, że porządek świata, zrozumiały dla człowieka, byłby dla niego nieznośniejszym niż niezrozumiały.
+        Tajemnica jest właściwym jego żywiołem, chce on coś widzieć, lecz nie wszystko; a gdy widzi wszystko, 
+        mniema, że nie widzi nic.
+      </p>
+    </article>
+  </main>
+
+  <script>
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('show');
+    }
+  </script>
+</body>
+</html>
+
