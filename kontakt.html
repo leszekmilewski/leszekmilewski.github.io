@@ -9,7 +9,7 @@
     body {
       font-family: 'Merriweather', serif;
       font-size: 18px;
-      line-height: 1.8;
+      line-height: 1.7;
       margin: 0;
       padding: 0;
       background-color: #fff;
@@ -18,37 +18,45 @@
 
     header {
       text-align: center;
-      padding: 2rem 1rem 0.5rem;
+      padding: 2rem 1rem 1rem 1rem;
     }
 
     header h1 {
+      margin: 0;
       font-size: 2rem;
-      margin-bottom: 0.5rem;
     }
 
     nav {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 0.75rem;
+      gap: 1rem;
       font-size: 1rem;
       margin-bottom: 2rem;
     }
 
     nav a {
       text-decoration: none;
-      color: #111;
+      color: #333;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
     }
 
     main {
       max-width: 720px;
       margin: 0 auto;
-      padding: 0 2rem;
+      padding: 0 1.5rem;
     }
 
     h2 {
       font-size: 1.5rem;
       margin-bottom: 1rem;
+    }
+
+    p {
+      margin-bottom: 1.5rem;
     }
 
     a {
@@ -64,11 +72,11 @@
     @media (max-width: 600px) {
       body {
         font-size: 16px;
-        line-height: 1.75;
+        line-height: 1.8;
       }
 
       header h1 {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
       }
 
       nav {
@@ -100,12 +108,15 @@
       <a href="kontakt.html"><strong>kontakt</strong></a>
     </nav>
   </header>
+
   <main>
     <h2>Kontakt</h2>
-    <p>W sprawach wszelkich, można mnie złapać na skrzynce<br />
+    <p>W sprawach wszelkich, można mnie złapać na skrzynce: <br>
       <a href="mailto:leszekmilewski@poczta.fm">leszekmilewski@poczta.fm</a>
     </p>
-    <p>Lub też pisać na Twitterze, otwarta skrzynka PW: <a href="https://x.com/leszekmilewski" target="_blank">x.com/leszekmilewski</a></p>
+    <p>Lub też pisać na Twitterze, otwarta skrzynka PW: <br>
+      <a href="https://x.com/leszekmilewski" target="_blank">x.com/leszekmilewski</a>
+    </p>
   </main>
 </body>
 </html>
