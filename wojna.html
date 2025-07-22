@@ -2,196 +2,212 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Gra w Wojnę</title>
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet" />
   <style>
     body {
-      font-family: 'Libre Baskerville', serif;
-      background-color: #fff;
-      color: #111;
-      max-width: 700px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 800px;
       margin: 0 auto;
-      padding: 2rem;
-      font-size: 17px;
-      line-height: 1.7;
+      padding: 1rem;
+      background: #f4f4f4;
+      color: #111;
     }
 
     h1 {
       text-align: center;
       font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    #controls {
+      text-align: center;
       margin-bottom: 1.5rem;
     }
 
-    #game {
+    select, button {
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      margin: 0.5rem;
+    }
+
+    #roundInfo, #cardCount, #tieCount {
       text-align: center;
+      margin-top: 1rem;
+      font-weight: bold;
     }
 
     .cards {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 1rem;
       flex-wrap: wrap;
-      margin-bottom: 1rem;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .player {
+      text-align: center;
+      flex: 1 1 120px;
     }
 
     .card {
-      border: 1px solid #ccc;
-      border-radius: 8px;
+      background: white;
+      border: 1px solid #aaa;
       padding: 1rem;
-      width: 80px;
-      text-align: center;
+      border-radius: 8px;
       font-size: 1.2rem;
-      background-color: #f8f8f8;
+      min-width: 60px;
+      margin-bottom: 0.5rem;
     }
 
-    button {
-      font-size: 1rem;
-      padding: 0.5rem 1rem;
-      margin-top: 1rem;
-      cursor: pointer;
-    }
-
-    .status, .counts, .round {
-      margin: 1rem 0;
-    }
-
-    .bold {
-      font-weight: bold;
+    @media (max-width: 600px) {
+      .card {
+        font-size: 1rem;
+        padding: 0.5rem;
+      }
     }
   </style>
 </head>
 <body>
   <h1>Gra w Wojnę</h1>
-  <div id="game">
-    <div class="counts">
-      🂠 Karty gracza: <span id="playerCount">26</span> &nbsp;&nbsp;&nbsp; 🂠 Karty komputera: <span id="computerCount">26</span>
-    </div>
-    <div class="round">
-      🔁 Rozegrane rundy: <span id="roundCount">0</span>
-    </div>
-    <div class="cards" id="cardsArea"></div>
-    <div class="status" id="statusText">Kliknij, by rozpocząć grę</div>
-    <button onclick="playRound()">Zagraj turę</button>
+  <div id="controls">
+    <label for="playerCount">Liczba przeciwników:</label>
+    <select id="playerCount">
+      <option value="1">1 komputer</option>
+      <option value="2">2 komputery</option>
+      <option value="3">3 komputery</option>
+    </select>
+    <button onclick="startGame()">Nowa gra</button>
+    <button onclick="playRound()">Runda</button>
   </div>
+
+  <div id="roundInfo"></div>
+  <div id="cardCount"></div>
+  <div id="tieCount">Remisy: 0</div>
+
+  <div class="cards" id="cardDisplay"></div>
 
   <script>
     const suits = ['♠', '♥', '♦', '♣'];
-    const faces = {
-      11: 'Walet',
-      12: 'Dama',
-      13: 'Król',
-      14: 'As'
-    };
+    const values = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'W', 'D', 'K', 'A'];
+    const valueRank = {2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, W: 11, D: 12, K: 13, A: 14};
+
+    let players = [];
+    let numOpponents = 1;
+    let round = 0;
+    let ties = 0;
 
     function createDeck() {
-      let deck = [];
+      const deck = [];
       for (let suit of suits) {
-        for (let value = 2; value <= 14; value++) {
-          deck.push({ value, text: (faces[value] || value) + ' ' + suit });
+        for (let val of values) {
+          deck.push({ suit, val });
         }
       }
       return deck;
     }
 
-    function shuffle(deck) {
-      for (let i = deck.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        [deck[i], deck[j]] = [deck[j], deck[i]];
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
       }
-      return deck;
     }
 
-    let fullDeck = shuffle(createDeck());
-    let playerDeck = fullDeck.slice(0, 26);
-    let computerDeck = fullDeck.slice(26);
-    let pot = [];
-    let roundCount = 0;
+    function startGame() {
+      numOpponents = parseInt(document.getElementById('playerCount').value);
+      const totalPlayers = numOpponents + 1;
+      let deck = createDeck();
+      shuffle(deck);
+      players = Array.from({ length: totalPlayers }, () => []);
 
-    function updateUI(status) {
-      document.getElementById("playerCount").textContent = playerDeck.length;
-      document.getElementById("computerCount").textContent = computerDeck.length;
-      document.getElementById("roundCount").textContent = roundCount;
-      document.getElementById("statusText").textContent = status;
-    }
+      for (let i = 0; i < deck.length; i++) {
+        players[i % totalPlayers].push(deck[i]);
+      }
 
-    function renderCards(cards, highlight = false) {
-      const area = document.getElementById("cardsArea");
-      area.innerHTML = '';
-      cards.forEach(card => {
-        const div = document.createElement("div");
-        div.className = "card";
-        if (highlight) div.classList.add("bold");
-        div.textContent = card.text;
-        area.appendChild(div);
-      });
+      round = 0;
+      ties = 0;
+      document.getElementById('tieCount').textContent = `Remisy: ${ties}`;
+      updateDisplay([], []);
     }
 
     function playRound() {
-      if (playerDeck.length === 0 || computerDeck.length === 0) {
-        const winner = playerDeck.length > 0 ? "Gracz wygrywa grę!" : "Komputer wygrywa grę!";
-        updateUI(winner);
+      if (players.some(p => p.length === 0)) {
+        alert('Koniec gry!');
         return;
       }
 
-      roundCount++;
-      const playerCard = playerDeck.shift();
-      const computerCard = computerDeck.shift();
-
-      pot.push(playerCard, computerCard);
-
-      renderCards([playerCard, computerCard]);
-
-      if (playerCard.value > computerCard.value) {
-        playerDeck.push(...pot);
-        pot = [];
-        updateUI("Gracz wygrywa rundę.");
-      } else if (playerCard.value < computerCard.value) {
-        computerDeck.push(...pot);
-        pot = [];
-        updateUI("Komputer wygrywa rundę.");
-      } else {
-        updateUI("Remis! Każdy kładzie 3 karty...");
-        handleWar();
+      round++;
+      const tableCards = [];
+      const activePlayers = players.map((deck, i) => ({ i, card: deck.shift(), stack: [] }));
+      for (let p of activePlayers) {
+        p.stack.push(p.card);
       }
+
+      let result = resolveRound(activePlayers, tableCards);
+      for (let i = 0; i < players.length; i++) {
+        if (result.winner === i) {
+          players[i].push(...result.cards);
+        }
+      }
+
+      if (result.tie) ties++;
+      document.getElementById('tieCount').textContent = `Remisy: ${ties}`;
+      updateDisplay(result.cards, result.stack || []);
     }
 
-    function handleWar() {
-      let warCards = [];
+    function resolveRound(active, table) {
+      let maxVal = Math.max(...active.map(p => valueRank[p.card.val]));
+      let contenders = active.filter(p => valueRank[p.card.val] === maxVal);
 
-      for (let i = 0; i < 3; i++) {
-        if (playerDeck.length > 0) warCards.push(playerDeck.shift());
-        if (computerDeck.length > 0) warCards.push(computerDeck.shift());
+      // Push revealed cards to table
+      for (let p of active) {
+        table.push({ player: p.i, card: p.card });
       }
 
-      if (playerDeck.length === 0 || computerDeck.length === 0) {
-        updateUI("Brak kart do kontynuowania wojny!");
-        return;
+      if (contenders.length === 1) {
+        return { winner: contenders[0].i, cards: active.flatMap(p => p.stack), tie: false };
       }
 
-      const playerWarCard = playerDeck.shift();
-      const computerWarCard = computerDeck.shift();
-
-      pot.push(...warCards, playerWarCard, computerWarCard);
-
-      renderCards(pot);
-
-      if (playerWarCard.value > computerWarCard.value) {
-        playerDeck.push(...pot);
-        pot = [];
-        updateUI("Gracz wygrywa wojnę!");
-      } else if (playerWarCard.value < computerWarCard.value) {
-        computerDeck.push(...pot);
-        pot = [];
-        updateUI("Komputer wygrywa wojnę!");
-      } else {
-        updateUI("Kolejny remis podczas wojny! Kontynuujemy...");
-        setTimeout(handleWar, 1000); // Kontynuuj wojnę po krótkiej pauzie
+      // Tie! WAR
+      if (contenders.some(p => players[p.i].length < 2)) {
+        return { winner: contenders[0].i, cards: active.flatMap(p => p.stack), tie: true };
       }
+
+      // Everyone puts 1 down, 1 up
+      for (let p of contenders) {
+        if (players[p.i].length >= 2) {
+          p.stack.push(players[p.i].shift()); // face-down
+          p.card = players[p.i].shift(); // face-up
+          p.stack.push(p.card);
+        }
+      }
+
+      return resolveRound(contenders, table);
     }
 
-    updateUI("Gotowy do gry.");
+    function updateDisplay(tableCards, warStack = []) {
+      const container = document.getElementById('cardDisplay');
+      container.innerHTML = '';
+      for (let i = 0; i < players.length; i++) {
+        let playerDiv = document.createElement('div');
+        playerDiv.className = 'player';
+        let label = i === 0 ? 'Ty' : `Komputer ${i}`;
+        let cardText = tableCards.find(c => c.player === i);
+        let card = cardText ? `${cardText.card.val}${cardText.card.suit}` : '—';
+
+        let cardDiv = document.createElement('div');
+        cardDiv.className = 'card';
+        cardDiv.textContent = card;
+
+        playerDiv.appendChild(cardDiv);
+        playerDiv.appendChild(document.createTextNode(`${label} (${players[i].length} kart)`));
+        container.appendChild(playerDiv);
+      }
+
+      document.getElementById('roundInfo').textContent = `Runda: ${round}`;
+      document.getElementById('cardCount').textContent = '';
+    }
   </script>
 </body>
 </html>
