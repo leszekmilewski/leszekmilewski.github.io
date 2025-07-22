@@ -2,205 +2,173 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wojna – gra karciana</title>
   <style>
     body {
-      font-family: 'Georgia', serif;
-      background: #f9f9f9;
+      font-family: 'Libre Baskerville', serif;
+      background: #f6f6f6;
       color: #111;
-      padding: 1rem;
-      max-width: 900px;
-      margin: auto;
+      text-align: center;
+      padding: 2rem;
     }
 
     h1 {
-      text-align: center;
       font-size: 2rem;
+      margin-bottom: 1rem;
     }
 
-    #controls {
-      text-align: center;
-      margin: 1rem 0;
-    }
-
-    #log, #result {
-      text-align: center;
-      margin-top: 1.5rem;
-      font-weight: bold;
+    select, button {
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      margin: 0.5rem;
     }
 
     .cards {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
+      margin: 2rem 0;
       gap: 1rem;
-      margin-top: 1.5rem;
-    }
-
-    .player {
-      text-align: center;
-      flex: 1 1 120px;
-      min-width: 100px;
     }
 
     .card {
-      background: white;
-      border: 1px solid #aaa;
+      background: #fff;
+      border: 1px solid #ccc;
       padding: 1rem;
-      border-radius: 8px;
+      min-width: 70px;
+      border-radius: 5px;
       font-size: 1.2rem;
-      min-width: 60px;
-      margin-bottom: 0.5rem;
     }
 
-    .label {
-      font-weight: bold;
+    .card strong {
+      display: block;
       margin-top: 0.5rem;
+      font-size: 0.9rem;
     }
 
     @media (max-width: 600px) {
-      .cards {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-      }
-
-      .player {
-        flex: 0 0 auto;
-        min-width: 100px;
-      }
-
       .card {
+        min-width: 60px;
         font-size: 1rem;
-        padding: 0.5rem;
+        padding: 0.8rem;
       }
     }
   </style>
 </head>
 <body>
-
   <h1>Wojna – gra karciana</h1>
+  <label for="opponents">Wybierz liczbę przeciwników:</label>
+  <select id="opponents">
+    <option value="1">1 komputer</option>
+    <option value="2">2 komputery</option>
+    <option value="3">3 komputery</option>
+  </select>
+  <button onclick="startGame()">Rozpocznij grę</button>
+  <button onclick="playRound()">Rozegraj turę</button>
 
-  <div id="controls">
-    <label for="numOpponents">Wybierz liczbę przeciwników:</label>
-    <select id="numOpponents">
-      <option value="1">1 komputer</option>
-      <option value="2">2 komputery</option>
-      <option value="3">3 komputery</option>
-    </select>
-    <button onclick="startGame()">Rozpocznij grę</button>
-    <button onclick="playRound()">Rozegraj turę</button>
-  </div>
-
-  <div id="rounds" style="text-align: center;"></div>
-
-  <div class="cards" id="cardArea"></div>
-
-  <div id="log"></div>
-  <div id="result"></div>
+  <p id="status"></p>
+  <div class="cards" id="cards"></div>
+  <p id="result"></p>
 
   <script>
-    const suits = ['♥', '♠', '♦', '♣'];
-    const values = [
-      { label: '2', power: 2 },
-      { label: '3', power: 3 },
-      { label: '4', power: 4 },
-      { label: '5', power: 5 },
-      { label: '6', power: 6 },
-      { label: '7', power: 7 },
-      { label: '8', power: 8 },
-      { label: '9', power: 9 },
-      { label: '10', power: 10 },
-      { label: 'W', power: 11 },
-      { label: 'D', power: 12 },
-      { label: 'K', power: 13 },
-      { label: 'A', power: 14 }
-    ];
+    const suits = ['♠', '♥', '♦', '♣'];
+    const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'Walet', 'Dama', 'Król', 'As'];
+    const valueMap = { '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'Walet': 11, 'Dama': 12, 'Król': 13, 'As': 14 };
 
     let players = [];
-    let round = 0;
-    let draws = 0;
+    let roundCount = 0;
+    let drawCount = 0;
 
     function createDeck() {
-      const deck = [];
+      let deck = [];
       for (let suit of suits) {
-        for (let v of values) {
-          deck.push({ text: `${v.label}${suit}`, value: v.power });
+        for (let val of values) {
+          deck.push({ value: val, suit: suit });
         }
       }
-      return deck;
-    }
-
-    function shuffle(deck) {
-      for (let i = deck.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [deck[i], deck[j]] = [deck[j], deck[i]];
-      }
-      return deck;
+      return deck.sort(() => Math.random() - 0.5);
     }
 
     function startGame() {
-      const numOpponents = parseInt(document.getElementById('numOpponents').value);
-      const deck = shuffle(createDeck());
-      const totalPlayers = numOpponents + 1;
-      players = Array.from({ length: totalPlayers }, () => []);
-      deck.forEach((card, index) => {
-        players[index % totalPlayers].push(card);
-      });
-      round = 0;
-      draws = 0;
-      updateCounts();
-      document.getElementById('log').textContent = '';
+      const numOpponents = parseInt(document.getElementById('opponents').value);
+      const deck = createDeck();
+      players = Array(numOpponents + 1).fill().map(() => []);
+      let i = 0;
+      while (deck.length) {
+        players[i % players.length].push(deck.pop());
+        i++;
+      }
+      roundCount = 0;
+      drawCount = 0;
       document.getElementById('result').textContent = '';
-      document.getElementById('cardArea').innerHTML = '';
+      document.getElementById('cards').innerHTML = '';
+      updateStatus();
     }
 
-    function playRound() {
+    function updateStatus() {
+      const names = ['Gracz', ...players.slice(1).map((_, i) => `Komputer ${i + 1}`)];
+      const cardsDiv = document.getElementById('cards');
+      cardsDiv.innerHTML = '';
+      names.forEach((name, i) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `—<strong>${name} (karty: ${players[i].length})</strong>`;
+        cardsDiv.appendChild(card);
+      });
+      document.getElementById('status').textContent = `Runda: ${roundCount} | Remisów: ${drawCount}`;
+    }
+
+    function playRound(warPile = []) {
       if (players.some(p => p.length === 0)) {
         document.getElementById('result').textContent = 'Gra zakończona!';
         return;
       }
 
-      const revealed = players.map(p => p.shift());
-      const maxVal = Math.max(...revealed.map(c => c.value));
-      const winners = revealed.map(c => c.value === maxVal);
-      const numWinners = winners.filter(Boolean).length;
+      const current = players.map(p => p.shift());
+      warPile.push(current);
 
-      const pot = [...revealed];
+      const valuesDrawn = current.map(c => (c ? valueMap[c.value] : 0));
+      const max = Math.max(...valuesDrawn);
+      const winners = valuesDrawn.reduce((acc, val, i) => {
+        if (val === max) acc.push(i);
+        return acc;
+      }, []);
 
-      const cardArea = document.getElementById('cardArea');
-      cardArea.innerHTML = '';
+      roundCount++;
 
-      for (let i = 0; i < revealed.length; i++) {
+      const cardsDiv = document.getElementById('cards');
+      cardsDiv.innerHTML = '';
+      current.forEach((card, i) => {
         const div = document.createElement('div');
-        div.className = 'player';
-        const cardDiv = document.createElement('div');
-        cardDiv.className = 'card';
-        cardDiv.textContent = revealed[i].text;
-        div.appendChild(cardDiv);
-        const label = document.createElement('div');
-        label.className = 'label';
-        label.textContent = i === 0 ? `Gracz (karty: ${players[i].length})` : `Komputer ${i} (karty: ${players[i].length})`;
-        div.appendChild(label);
-        cardArea.appendChild(div);
-      }
+        div.className = 'card';
+        if (card) {
+          div.innerHTML = `${card.value} ${card.suit}<strong>${i === 0 ? 'Gracz' : 'Komputer ' + i} (karty: ${players[i].length})</strong>`;
+        } else {
+          div.innerHTML = `—<strong>${i === 0 ? 'Gracz' : 'Komputer ' + i}</strong>`;
+        }
+        cardsDiv.appendChild(div);
+      });
 
-      if (numWinners === 1) {
-        const winnerIndex = winners.findIndex(Boolean);
-        players[winnerIndex].push(...pot);
-        document.getElementById('log').textContent = `Turę wygrywa ${winnerIndex === 0 ? 'Gracz' : 'Komputer ' + winnerIndex}.`;
+      if (winners.length === 1) {
+        let allCards = warPile.flat();
+        allCards = allCards.filter(Boolean);
+        players[winners[0]].push(...allCards);
+        document.getElementById('result').textContent = `${winners[0] === 0 ? 'Gracz' : 'Komputer ' + winners[0]} wygrywa tę rundę!`;
       } else {
-        draws++;
-        document.getElementById('log').textContent = `Remis!`;
-        // przy remisie: karty przepadają
+        drawCount++;
+        document.getElementById('result').textContent = 'Remis! Wojna!';
+        const enoughCards = winners.every(i => players[i].length >= 2);
+        if (enoughCards) {
+          const warExtra = players.map((p, i) => winners.includes(i) ? [p.shift(), p.shift()] : []);
+          warPile.push(warExtra.flat());
+          setTimeout(() => playRound(warPile), 1000);
+          return;
+        } else {
+          document.getElementById('result').textContent += ' – przynajmniej jeden gracz nie ma wystarczająco kart.';
+        }
       }
 
-      round++;
-      updateCounts();
-    }
-
-    function updateCounts() {
-      document.getElementById('rounds').textContent = `Runda: ${round} | Remisów: ${draws}`;
+      updateStatus();
     }
   </script>
 </body>
