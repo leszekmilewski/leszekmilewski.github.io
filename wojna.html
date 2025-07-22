@@ -1,39 +1,32 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gra w Wojnę</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wojna – gra karciana</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 1rem;
-      background: #f4f4f4;
+      font-family: 'Georgia', serif;
+      background: #f9f9f9;
       color: #111;
+      padding: 1rem;
+      max-width: 900px;
+      margin: auto;
     }
 
     h1 {
       text-align: center;
       font-size: 2rem;
-      margin-bottom: 1rem;
     }
 
     #controls {
       text-align: center;
-      margin-bottom: 1.5rem;
+      margin: 1rem 0;
     }
 
-    select, button {
-      font-size: 1rem;
-      padding: 0.5rem 1rem;
-      margin: 0.5rem;
-    }
-
-    #roundInfo, #cardCount, #tieCount {
+    #log, #result {
       text-align: center;
-      margin-top: 1rem;
+      margin-top: 1.5rem;
       font-weight: bold;
     }
 
@@ -48,6 +41,7 @@
     .player {
       text-align: center;
       flex: 1 1 120px;
+      min-width: 100px;
     }
 
     .card {
@@ -60,7 +54,22 @@
       margin-bottom: 0.5rem;
     }
 
+    .label {
+      font-weight: bold;
+      margin-top: 0.5rem;
+    }
+
     @media (max-width: 600px) {
+      .cards {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+      }
+
+      .player {
+        flex: 0 0 auto;
+        min-width: 100px;
+      }
+
       .card {
         font-size: 1rem;
         padding: 0.5rem;
@@ -69,144 +78,129 @@
   </style>
 </head>
 <body>
-  <h1>Gra w Wojnę</h1>
+
+  <h1>Wojna – gra karciana</h1>
+
   <div id="controls">
-    <label for="playerCount">Liczba przeciwników:</label>
-    <select id="playerCount">
+    <label for="numOpponents">Wybierz liczbę przeciwników:</label>
+    <select id="numOpponents">
       <option value="1">1 komputer</option>
       <option value="2">2 komputery</option>
       <option value="3">3 komputery</option>
     </select>
-    <button onclick="startGame()">Nowa gra</button>
-    <button onclick="playRound()">Runda</button>
+    <button onclick="startGame()">Rozpocznij grę</button>
+    <button onclick="playRound()">Rozegraj turę</button>
   </div>
 
-  <div id="roundInfo"></div>
-  <div id="cardCount"></div>
-  <div id="tieCount">Remisy: 0</div>
+  <div id="rounds" style="text-align: center;"></div>
 
-  <div class="cards" id="cardDisplay"></div>
+  <div class="cards" id="cardArea"></div>
+
+  <div id="log"></div>
+  <div id="result"></div>
 
   <script>
-    const suits = ['♠', '♥', '♦', '♣'];
-    const values = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'W', 'D', 'K', 'A'];
-    const valueRank = {2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, W: 11, D: 12, K: 13, A: 14};
+    const suits = ['♥', '♠', '♦', '♣'];
+    const values = [
+      { label: '2', power: 2 },
+      { label: '3', power: 3 },
+      { label: '4', power: 4 },
+      { label: '5', power: 5 },
+      { label: '6', power: 6 },
+      { label: '7', power: 7 },
+      { label: '8', power: 8 },
+      { label: '9', power: 9 },
+      { label: '10', power: 10 },
+      { label: 'W', power: 11 },
+      { label: 'D', power: 12 },
+      { label: 'K', power: 13 },
+      { label: 'A', power: 14 }
+    ];
 
     let players = [];
-    let numOpponents = 1;
     let round = 0;
-    let ties = 0;
+    let draws = 0;
 
     function createDeck() {
       const deck = [];
       for (let suit of suits) {
-        for (let val of values) {
-          deck.push({ suit, val });
+        for (let v of values) {
+          deck.push({ text: `${v.label}${suit}`, value: v.power });
         }
       }
       return deck;
     }
 
-    function shuffle(array) {
-      for (let i = array.length - 1; i > 0; i--) {
+    function shuffle(deck) {
+      for (let i = deck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+        [deck[i], deck[j]] = [deck[j], deck[i]];
       }
+      return deck;
     }
 
     function startGame() {
-      numOpponents = parseInt(document.getElementById('playerCount').value);
+      const numOpponents = parseInt(document.getElementById('numOpponents').value);
+      const deck = shuffle(createDeck());
       const totalPlayers = numOpponents + 1;
-      let deck = createDeck();
-      shuffle(deck);
       players = Array.from({ length: totalPlayers }, () => []);
-
-      for (let i = 0; i < deck.length; i++) {
-        players[i % totalPlayers].push(deck[i]);
-      }
-
+      deck.forEach((card, index) => {
+        players[index % totalPlayers].push(card);
+      });
       round = 0;
-      ties = 0;
-      document.getElementById('tieCount').textContent = `Remisy: ${ties}`;
-      updateDisplay([], []);
+      draws = 0;
+      updateCounts();
+      document.getElementById('log').textContent = '';
+      document.getElementById('result').textContent = '';
+      document.getElementById('cardArea').innerHTML = '';
     }
 
     function playRound() {
       if (players.some(p => p.length === 0)) {
-        alert('Koniec gry!');
+        document.getElementById('result').textContent = 'Gra zakończona!';
         return;
       }
 
-      round++;
-      const tableCards = [];
-      const activePlayers = players.map((deck, i) => ({ i, card: deck.shift(), stack: [] }));
-      for (let p of activePlayers) {
-        p.stack.push(p.card);
-      }
+      const revealed = players.map(p => p.shift());
+      const maxVal = Math.max(...revealed.map(c => c.value));
+      const winners = revealed.map(c => c.value === maxVal);
+      const numWinners = winners.filter(Boolean).length;
 
-      let result = resolveRound(activePlayers, tableCards);
-      for (let i = 0; i < players.length; i++) {
-        if (result.winner === i) {
-          players[i].push(...result.cards);
-        }
-      }
+      const pot = [...revealed];
 
-      if (result.tie) ties++;
-      document.getElementById('tieCount').textContent = `Remisy: ${ties}`;
-      updateDisplay(result.cards, result.stack || []);
-    }
+      const cardArea = document.getElementById('cardArea');
+      cardArea.innerHTML = '';
 
-    function resolveRound(active, table) {
-      let maxVal = Math.max(...active.map(p => valueRank[p.card.val]));
-      let contenders = active.filter(p => valueRank[p.card.val] === maxVal);
-
-      // Push revealed cards to table
-      for (let p of active) {
-        table.push({ player: p.i, card: p.card });
-      }
-
-      if (contenders.length === 1) {
-        return { winner: contenders[0].i, cards: active.flatMap(p => p.stack), tie: false };
-      }
-
-      // Tie! WAR
-      if (contenders.some(p => players[p.i].length < 2)) {
-        return { winner: contenders[0].i, cards: active.flatMap(p => p.stack), tie: true };
-      }
-
-      // Everyone puts 1 down, 1 up
-      for (let p of contenders) {
-        if (players[p.i].length >= 2) {
-          p.stack.push(players[p.i].shift()); // face-down
-          p.card = players[p.i].shift(); // face-up
-          p.stack.push(p.card);
-        }
-      }
-
-      return resolveRound(contenders, table);
-    }
-
-    function updateDisplay(tableCards, warStack = []) {
-      const container = document.getElementById('cardDisplay');
-      container.innerHTML = '';
-      for (let i = 0; i < players.length; i++) {
-        let playerDiv = document.createElement('div');
-        playerDiv.className = 'player';
-        let label = i === 0 ? 'Ty' : `Komputer ${i}`;
-        let cardText = tableCards.find(c => c.player === i);
-        let card = cardText ? `${cardText.card.val}${cardText.card.suit}` : '—';
-
-        let cardDiv = document.createElement('div');
+      for (let i = 0; i < revealed.length; i++) {
+        const div = document.createElement('div');
+        div.className = 'player';
+        const cardDiv = document.createElement('div');
         cardDiv.className = 'card';
-        cardDiv.textContent = card;
-
-        playerDiv.appendChild(cardDiv);
-        playerDiv.appendChild(document.createTextNode(`${label} (${players[i].length} kart)`));
-        container.appendChild(playerDiv);
+        cardDiv.textContent = revealed[i].text;
+        div.appendChild(cardDiv);
+        const label = document.createElement('div');
+        label.className = 'label';
+        label.textContent = i === 0 ? `Gracz (karty: ${players[i].length})` : `Komputer ${i} (karty: ${players[i].length})`;
+        div.appendChild(label);
+        cardArea.appendChild(div);
       }
 
-      document.getElementById('roundInfo').textContent = `Runda: ${round}`;
-      document.getElementById('cardCount').textContent = '';
+      if (numWinners === 1) {
+        const winnerIndex = winners.findIndex(Boolean);
+        players[winnerIndex].push(...pot);
+        document.getElementById('log').textContent = `Turę wygrywa ${winnerIndex === 0 ? 'Gracz' : 'Komputer ' + winnerIndex}.`;
+      } else {
+        draws++;
+        document.getElementById('log').textContent = `Remis!`;
+        // przy remisie: karty przepadają
+      }
+
+      round++;
+      updateCounts();
+    }
+
+    function updateCounts() {
+      document.getElementById('rounds').textContent = `Runda: ${round} | Remisów: ${draws}`;
     }
   </script>
 </body>
