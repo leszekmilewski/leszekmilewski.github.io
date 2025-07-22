@@ -11,101 +11,24 @@
       text-align: center;
       padding: 20px;
     }
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 30px;
-      color: #333;
-    }
-    .controls {
-      margin-bottom: 20px;
-      padding: 15px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    select, button {
-      font-size: 1rem;
-      margin: 5px;
-      padding: 8px 12px;
-      border-radius: 5px;
-      border: 1px solid #ddd;
-    }
-    button {
-      background: #4CAF50;
-      color: white;
-      cursor: pointer;
-      border: none;
-    }
-    button:hover {
-      background: #45a049;
-    }
-    button:disabled {
-      background: #cccccc;
-      cursor: not-allowed;
-    }
-    .game-info {
-      background: white;
-      padding: 10px;
-      border-radius: 5px;
-      margin-bottom: 20px;
-      font-weight: bold;
-    }
-    .cards {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 15px;
-      margin: 20px 0;
-    }
-    .player {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: white;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      min-width: 120px;
-    }
-    .card {
-      font-size: 1.4rem;
-      background: #f8f8f8;
-      padding: 15px 20px;
-      border-radius: 8px;
-      border: 2px solid #ddd;
-      margin-bottom: 10px;
-      min-height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-    }
-    .player-name {
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-    .card-count {
-      color: #666;
-      font-size: 0.9rem;
-    }
     .status {
       margin-top: 20px;
-      font-size: 1.2rem;
+      font-size: 1rem;
       padding: 10px;
       background: white;
       border-radius: 5px;
       min-height: 30px;
+      white-space: pre-wrap;
+      text-align: left;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
     }
-    @media (max-width: 600px) {
-      .card {
-        font-size: 1.1rem;
-        padding: 10px 15px;
-        min-height: 50px;
-      }
-      .player {
-        min-width: 100px;
-        padding: 10px;
-      }
+    .card, .player, .controls, .game-info {
+      margin-bottom: 10px;
+    }
+    .card {
+      font-size: 1.5rem;
     }
   </style>
 </head>
@@ -121,10 +44,8 @@
     <button onclick="startGame()">Rozpocznij grę</button>
     <button onclick="playRound()" id="playButton" disabled>Rozegraj turę</button>
   </div>
-  <div class="game-info">
-    <p id="roundInfo">Wybierz liczbę przeciwników i rozpocznij grę</p>
-  </div>
-  <div class="cards" id="cardsContainer"></div>
+  <div id="cardsContainer"></div>
+  <div id="roundInfo" class="status">Wybierz liczbę przeciwników i rozpocznij grę</div>
   <div id="result" class="status"></div>
 
   <script>
@@ -134,7 +55,11 @@
     let players = [];
     let round = 0;
     let wars = 0;
-    let draws = 0;
+
+    function formatCard(card) {
+      const name = valueNames[card.value] || card.value;
+      return `${name}${card.suit}`;
+    }
 
     function createDeck() {
       const deck = [];
@@ -166,14 +91,8 @@
       }
       round = 0;
       wars = 0;
-      draws = 0;
       document.getElementById('playButton').disabled = false;
       updateDisplay([], "Gra rozpoczęta!");
-    }
-
-    function formatCard(card) {
-      const name = valueNames[card.value] || card.value;
-      return `${name}${card.suit}`;
     }
 
     function playRound() {
@@ -187,32 +106,39 @@
       }
 
       round++;
+      const played = players.map(p => p.length > 0 ? p[0] : null);
       let pile = [];
-      let message = resolveBattle(players.map(p => p), pile);
-      updateDisplay([], message);
+      let log = [];
+      let message = resolveBattle(players.map(p => p), pile, log);
+      updateDisplay(played, message + "\\n\\nPrzebieg wojny:\\n" + log.join("\\n"));
     }
 
-    function resolveBattle(currentPlayers, pile) {
+    function resolveBattle(currentPlayers, pile, log) {
       const played = currentPlayers.map(p => p.length > 0 ? p.shift() : null);
       pile.push(...played.filter(c => c));
       const activeCards = played.map((card, i) => ({ card, i })).filter(p => p.card);
+      activeCards.forEach(p => log.push(`Gracz ${p.i === 0 ? 'Ty' : 'Komputer ' + p.i} zagrywa ${formatCard(p.card)}`));
       const maxVal = Math.max(...activeCards.map(p => p.card.value));
       const tied = activeCards.filter(p => p.card.value === maxVal);
 
       if (tied.length === 1) {
         players[tied[0].i].push(...shuffleArray(pile));
+        log.push(`Zwycięzca tej bitwy: ${tied[0].i === 0 ? 'Ty' : 'Komputer ' + tied[0].i}`);
         return `${tied[0].i === 0 ? "Wygrywasz" : "Komputer " + tied[0].i + " wygrywa"} rundę!`;
       } else {
         wars++;
+        log.push("=== WOJNA ===");
         const survivors = [];
         tied.forEach(({ i }) => {
           if (players[i].length < 2) {
-            players[i] = []; // Eliminacja
+            log.push(`Gracz ${i === 0 ? 'Ty' : 'Komputer ' + i} nie ma wystarczająco kart – odpada.`);
+            players[i] = [];
           } else {
-            pile.push(players[i].shift()); // zakryta
-            const open = players[i].shift();
-            pile.push(open);
-            survivors.push({ card: open, i });
+            const faceDown = players[i].shift();
+            const faceUp = players[i].shift();
+            pile.push(faceDown, faceUp);
+            log.push(`Gracz ${i === 0 ? 'Ty' : 'Komputer ' + i} dokłada zakrytą i ${formatCard(faceUp)}`);
+            survivors.push({ card: faceUp, i });
           }
         });
 
@@ -220,7 +146,7 @@
           return "Wojna zakończona – za mało graczy z kartami.";
         }
 
-        return resolveBattle(players.map(p => p), pile);
+        return resolveBattle(players.map(p => p), pile, log);
       }
     }
 
@@ -233,7 +159,7 @@
       return result;
     }
 
-    function updateDisplay(_, message) {
+    function updateDisplay(playedCards, message) {
       const container = document.getElementById('cardsContainer');
       container.innerHTML = '';
       players.forEach((deck, i) => {
@@ -241,7 +167,7 @@
         div.className = 'player';
         const cardDiv = document.createElement('div');
         cardDiv.className = 'card';
-        cardDiv.textContent = deck.length ? '🂠' : '—';
+        cardDiv.textContent = playedCards[i] ? formatCard(playedCards[i]) : '—';
         const name = document.createElement('div');
         name.className = 'player-name';
         name.textContent = i === 0 ? "Gracz (Ty)" : `Komputer ${i}`;
@@ -253,7 +179,7 @@
         div.appendChild(count);
         container.appendChild(div);
       });
-      document.getElementById('roundInfo').textContent = `Runda: ${round} | Wojen: ${wars} | Remisów: ${draws}`;
+      document.getElementById('roundInfo').textContent = `Runda: ${round} | Wojen: ${wars}`;
       document.getElementById('result').textContent = message;
     }
   </script>
