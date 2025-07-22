@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wojna – gra karciana</title>
   <style>
     body {
@@ -18,17 +18,37 @@
       background: white;
       border-radius: 5px;
       min-height: 30px;
-      white-space: pre-wrap;
       text-align: left;
       max-width: 800px;
       margin-left: auto;
       margin-right: auto;
     }
-    .card, .player, .controls, .game-info {
-      margin-bottom: 10px;
+    .log-entry {
+      margin: 4px 0;
     }
-    .card {
-      font-size: 1.5rem;
+    .highlight {
+      font-weight: bold;
+      color: #2a7a2a;
+    }
+    .eliminated {
+      color: #c00;
+    }
+    .info {
+      color: #333;
+      font-style: italic;
+    }
+    .cards {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .player {
+      background: #fff;
+      padding: 10px;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      min-width: 100px;
     }
   </style>
 </head>
@@ -44,10 +64,9 @@
     <button onclick="startGame()">Rozpocznij grę</button>
     <button onclick="playRound()" id="playButton" disabled>Rozegraj turę</button>
   </div>
-  <div id="cardsContainer"></div>
+  <div id="cardsContainer" class="cards"></div>
   <div id="roundInfo" class="status">Wybierz liczbę przeciwników i rozpocznij grę</div>
   <div id="result" class="status"></div>
-
   <script>
     const suits = ['♠', '♥', '♦', '♣'];
     const values = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
@@ -110,7 +129,7 @@
       let pile = [];
       let log = [];
       let message = resolveBattle(players.map(p => p), pile, log);
-      updateDisplay(played, message + "\\n\\nPrzebieg wojny:\\n" + log.join("\\n"));
+      updateDisplay(played, buildLogHtml(message, log));
     }
 
     function resolveBattle(currentPlayers, pile, log) {
@@ -121,23 +140,29 @@
       const maxVal = Math.max(...activeCards.map(p => p.card.value));
       const tied = activeCards.filter(p => p.card.value === maxVal);
 
+      const nonParticipants = activeCards.filter(p => p.card.value !== maxVal);
+      if (nonParticipants.length > 0 && tied.length > 1) {
+        const names = nonParticipants.map(p => p.i === 0 ? 'Ty' : 'Komputer ' + p.i).join(', ');
+        log.push(`ℹ️ Gracze ${names} nie biorą udziału w wojnie, ale ich karty trafią do puli.`);
+      }
+
       if (tied.length === 1) {
         players[tied[0].i].push(...shuffleArray(pile));
         log.push(`Zwycięzca tej bitwy: ${tied[0].i === 0 ? 'Ty' : 'Komputer ' + tied[0].i}`);
         return `${tied[0].i === 0 ? "Wygrywasz" : "Komputer " + tied[0].i + " wygrywa"} rundę!`;
       } else {
         wars++;
-        log.push("=== WOJNA ===");
+        log.push("🚨 Wojna! Remis najwyższych kart!");
         const survivors = [];
         tied.forEach(({ i }) => {
           if (players[i].length < 2) {
-            log.push(`Gracz ${i === 0 ? 'Ty' : 'Komputer ' + i} nie ma wystarczająco kart – odpada.`);
+            log.push(`❌ Gracz ${i === 0 ? 'Ty' : 'Komputer ' + i} nie ma kart – odpada.`);
             players[i] = [];
           } else {
             const faceDown = players[i].shift();
             const faceUp = players[i].shift();
             pile.push(faceDown, faceUp);
-            log.push(`Gracz ${i === 0 ? 'Ty' : 'Komputer ' + i} dokłada zakrytą i ${formatCard(faceUp)}`);
+            log.push(`Gracz ${i === 0 ? 'Ty' : 'Komputer ' + i} kładzie zakrytą kartę i ${formatCard(faceUp)}`);
             survivors.push({ card: faceUp, i });
           }
         });
@@ -159,28 +184,32 @@
       return result;
     }
 
-    function updateDisplay(playedCards, message) {
+    function buildLogHtml(message, logLines) {
+      const logHTML = logLines.map(entry => {
+        if (entry.includes('❌')) return `<div class="log-entry eliminated">${entry}</div>`;
+        if (entry.includes('Zwycięzca')) return `<div class="log-entry highlight">${entry}</div>`;
+        if (entry.includes('🚨')) return `<div class="log-entry"><strong>${entry}</strong></div>`;
+        if (entry.includes('ℹ️')) return `<div class="log-entry info">${entry}</div>`;
+        return `<div class="log-entry">${entry}</div>`;
+      }).join("");
+      return `<div>${message}</div><hr><div><strong>Przebieg wojny:</strong></div>${logHTML}`;
+    }
+
+    function updateDisplay(playedCards, messageHTML) {
       const container = document.getElementById('cardsContainer');
       container.innerHTML = '';
       players.forEach((deck, i) => {
         const div = document.createElement('div');
         div.className = 'player';
-        const cardDiv = document.createElement('div');
-        cardDiv.className = 'card';
-        cardDiv.textContent = playedCards[i] ? formatCard(playedCards[i]) : '—';
-        const name = document.createElement('div');
-        name.className = 'player-name';
-        name.textContent = i === 0 ? "Gracz (Ty)" : `Komputer ${i}`;
-        const count = document.createElement('div');
-        count.className = 'card-count';
-        count.textContent = `Karty: ${deck.length}`;
-        div.appendChild(cardDiv);
-        div.appendChild(name);
-        div.appendChild(count);
+        div.innerHTML = `
+          <div><strong>${i === 0 ? "Gracz (Ty)" : "Komputer " + i}</strong></div>
+          <div>${playedCards[i] ? formatCard(playedCards[i]) : '—'}</div>
+          <div>Karty: ${deck.length}</div>
+        `;
         container.appendChild(div);
       });
       document.getElementById('roundInfo').textContent = `Runda: ${round} | Wojen: ${wars}`;
-      document.getElementById('result').textContent = message;
+      document.getElementById('result').innerHTML = messageHTML;
     }
   </script>
 </body>
