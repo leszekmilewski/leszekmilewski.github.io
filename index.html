@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Leszek Milewski</title>
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Libre Baskerville', serif;
@@ -17,16 +17,16 @@
       line-height: 1.75;
     }
 
-    h1, h2 {
-      font-weight: 700;
-      line-height: 1.3;
-      margin-top: 2rem;
-      margin-bottom: 1rem;
-    }
-
     h1 {
       font-size: 2.5rem;
       text-align: center;
+      margin-bottom: 0.5em;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-top: 2em;
+      margin-bottom: 0.5em;
     }
 
     nav {
@@ -46,15 +46,23 @@
       font-weight: bold;
     }
 
-    article {
-      margin-top: 3rem;
+    img {
+      max-width: 100%;
+      display: block;
+      margin: 2rem auto;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
     }
 
-    article time {
+    time {
       display: block;
       color: #777;
       margin-bottom: 1rem;
       font-size: 1rem;
+    }
+
+    p {
+      margin-bottom: 1.2em;
     }
 
     @media (max-width: 600px) {
@@ -64,16 +72,11 @@
       }
 
       h1 {
-        font-size: 1.8rem;
+        font-size: 2rem;
       }
 
       h2 {
         font-size: 1.5rem;
-      }
-
-      p {
-        font-size: 16px;
-        line-height: 1.6;
       }
 
       nav a {
@@ -92,13 +95,21 @@
     <a href="/kontakt.html">kontakt</a>
   </nav>
 
-  <section>
-    <h2>wpisy</h2>
-    <article>
-      <time datetime="2025-07-25">25.7.2025</time>
-      <a href="2025-07-25-co-to-w-ogole-jest.html">Co to w ogóle jest</a>
-    </article>
-  </section>
+  <h2>Co to w ogóle jest</h2>
+  <time datetime="2025-07-25">25.7.2025</time>
+
+  <img src="images/pierwszy-tekst.png" alt="Zdjęcie z wnętrza auta rajdowego z adresem leszekmilewski.pl">
+
+  <p>Drogi pamiętniczku, kolejny dzień, kolejne podejrzane decyzje. Założyłem stronę internetową.  
+  Ktoś mógłby powiedzieć nawet, że "bloga", ale nie wiem, czy to słowo jeszcze żyje. Jeśli żyje, to EKG słowa "blog" jest takie samo jak słowa "zawżdy", "absztyfikant", a może nawet "serwus". Na pewno leżą w jednym skrzydle szpitalnym.</p>
+
+  <p>Na swoją obronę powiem, że potrzebowałem miejsca, gdzie mógłbym publikować niepiłkarskie felietony.  
+  Nosiłem się z tym pomysłem od dawna, a w związku z nim staję w rozkroku starszym niż stawanie w rozkroku. [...]</p>
+
+  <p>Serwus.</p>
+
+  <p><strong>PS:</strong> Podzielę się z wami refleksją, którą miałem podczas pisania tego tekstu.  
+  Otóż chciałbym napisać felieton "Wszyscy jesteśmy Tumulcami", tylko nie wiem o czym miałby być.</p>
 
 </body>
 </html>
