@@ -2,74 +2,83 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>Za darmo – Leszek Milewski</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
+  <title>Za darmo</title>
   <style>
     body {
       font-family: 'Merriweather', serif;
-      background-color: #f8f8f8;
-      color: #222;
+      background: #f4f4f4;
       margin: 0;
       padding: 0;
     }
-    header {
+
+    nav {
       background-color: #000;
-      color: #fff;
-      padding: 15px 30px;
+      padding: 15px;
+      text-align: center;
     }
+
     nav a {
-      color: #fff;
+      color: white;
       text-decoration: none;
-      margin-right: 15px;
+      margin: 0 20px;
+      font-weight: bold;
     }
+
     nav a:hover {
       text-decoration: underline;
     }
-    main {
-      padding: 30px;
-      max-width: 800px;
-      margin: 0 auto;
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      text-align: center;
     }
+
     h1 {
-      font-size: 2em;
-      margin-bottom: 0.5em;
+      font-size: 2rem;
+      margin-bottom: 10px;
     }
+
     p {
-      line-height: 1.6;
+      font-size: 1.1rem;
+      color: #333;
     }
-    a.button {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 10px 20px;
-      background-color: #000;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 4px;
+
+    .game-cover {
+      margin-top: 30px;
     }
-    a.button:hover {
-      background-color: #444;
+
+    .game-cover img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      transition: transform 0.3s;
+    }
+
+    .game-cover img:hover {
+      transform: scale(1.02);
     }
   </style>
 </head>
 <body>
-
-<header>
   <nav>
-    <a href="/">Strona główna</a>
-    <a href="/2025-07-25-co-to-w-ogole-jest.html">Dziewczyna o wyjątkowych dłoniach</a>
-    <a href="/za-darmo.html">Za darmo</a>
+    <a href="index.html">Strona główna</a>
+    <a href="dziewczyna-o-wyjatkowych-dloniach.html">Dziewczyna o wyjątkowych dłoniach</a>
+    <a href="za-darmo.html">Za darmo</a>
   </nav>
-</header>
 
-<main>
-  <h1>Za darmo</h1>
-  <p>Będę tu wrzucał rzeczy, ale na razie jest tutaj <strong>Quake 3 Arena</strong>.</p>
+  <div class="container">
+    <h1>Za darmo</h1>
+    <p>Będę tu wrzucał rzeczy, ale na razie jest tutaj <strong>Quake 3 Arena</strong>.</p>
 
-  <p>
-    <a href="/gra/clquake3.html" class="button" target="_blank">Uruchom Quake 3 Arena</a>
-  </p>
-</main>
-
+    <div class="game-cover">
+      <a href="gra/clquake3.html">
+        <img src="img/quake3-okladka.jpg" alt="Quake 3 Arena">
+      </a>
+    </div>
+  </div>
 </body>
 </html>
