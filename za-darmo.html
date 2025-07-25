@@ -3,34 +3,426 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Za darmo – Quake 3 Arena</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="quake-style.css">
+  <title>Za darmo – Quake 3 Arena | Darmowe gry online</title>
+  <meta name="description" content="Zagraj w kultową grę Quake 3 Arena za darmo bezpośrednio w przeglądarce. Klasyczny shooter FPS dostępny online bez pobierania.">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+      color: #e0e0e0;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(255, 69, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(0, 162, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(255, 215, 0, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    nav {
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      border-bottom: 2px solid #ff4500;
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(255, 69, 0, 0.3);
+    }
+
+    nav a {
+      color: #e0e0e0;
+      text-decoration: none;
+      margin-right: 2rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      position: relative;
+      font-size: 0.9rem;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #ff4500, #ffa500);
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover::after,
+    nav a.active::after {
+      width: 100%;
+    }
+
+    nav a:hover {
+      color: #ff4500;
+      text-shadow: 0 0 10px rgba(255, 69, 0, 0.5);
+    }
+
+    nav a.active {
+      color: #ffa500;
+      text-shadow: 0 0 15px rgba(255, 165, 0, 0.7);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: 3.5rem;
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 2rem;
+      background: linear-gradient(135deg, #ff4500, #ffa500, #ffff00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 30px rgba(255, 69, 0, 0.5);
+      letter-spacing: 3px;
+      position: relative;
+    }
+
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #ff4500, transparent);
+      border-radius: 2px;
+    }
+
+    .intro-text {
+      text-align: center;
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 3rem;
+      color: #b0b0b0;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      font-weight: 400;
+    }
+
+    .game-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 3rem;
+      border: 1px solid rgba(255, 69, 0, 0.3);
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .game-container::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 69, 0, 0.1) 0%, transparent 70%);
+      animation: rotate 20s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .game-image {
+      position: relative;
+      z-index: 2;
+    }
+
+    .game-image a {
+      display: block;
+      position: relative;
+      border-radius: 15px;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .game-image a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(255, 69, 0, 0.2), rgba(255, 165, 0, 0.2));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 1;
+    }
+
+    .game-image a:hover::before {
+      opacity: 1;
+    }
+
+    .game-image a:hover {
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 0 20px 50px rgba(255, 69, 0, 0.4);
+    }
+
+    .game-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: all 0.4s ease;
+    }
+
+    .game-info {
+      position: relative;
+      z-index: 2;
+    }
+
+    .game-info h2 {
+      font-family: 'Orbitron', monospace;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #ff4500;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 20px rgba(255, 69, 0, 0.6);
+      letter-spacing: 2px;
+    }
+
+    .game-description {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      margin-bottom: 2rem;
+      color: #d0d0d0;
+    }
+
+    .play-button {
+      display: inline-block;
+      background: linear-gradient(135deg, #ff4500, #ff6b00);
+      color: white;
+      padding: 1rem 2.5rem;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(255, 69, 0, 0.4);
+      border: 2px solid transparent;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .play-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .play-button:hover::before {
+      left: 100%;
+    }
+
+    .play-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(255, 69, 0, 0.6);
+      border-color: #ffa500;
+    }
+
+    .play-note {
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      color: #888;
+      font-style: italic;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #666;
+      border-top: 1px solid rgba(255, 69, 0, 0.2);
+      margin-top: 4rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .game-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 2rem;
+      }
+      
+      h1 {
+        font-size: 2.5rem;
+      }
+      
+      nav {
+        padding: 1rem;
+      }
+      
+      nav a {
+        margin-right: 1rem;
+        font-size: 0.8rem;
+      }
+      
+      main {
+        padding: 2rem 1rem;
+      }
+    }
+
+    /* Efekty cząsteczkowe */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: #ff4500;
+      border-radius: 50%;
+      animation: float 6s infinite ease-in-out;
+      opacity: 0.6;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(100vh) translateX(0); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.6; }
+      50% { transform: translateY(-10px) translateX(50px); }
+    }
+  </style>
 </head>
 <body>
+  <div class="particles" id="particles"></div>
 
-  <nav>
+  <nav role="navigation" aria-label="Menu główne">
     <a href="index.html">strona główna</a>
     <a href="dziewczyna.html">dziewczyna o wyjątkowych dłoniach</a>
-    <a href="za-darmo.html" class="active">za darmo</a>
+    <a href="za-darmo.html" class="active" aria-current="page">za darmo</a>
     <a href="kontakt.html">kontakt</a>
   </nav>
-
+  
   <main>
-    <h1>ZA DARMO</h1>
-
-     Zamierzam tu dawać różne rzeczy. Na razie jest tutaj Quake 3 Arena. Wystarczy kliknąć okładkę - odpali się w przeglądarce. Odpali wam się też na telefonie, ale trzeba, rzecz jasna, grać na kompie.
-
-    <div class="game-block">
-      <a href="gra/clquake3.html" target="_blank">
-        <img src="img/quake3-okladka.jpg" alt="Quake 3 Arena – okładka">
-      </a>
-      <p>
-
-        <br><span class="subnote">.</span>
-      </p>
+    <h1>ARENA AWAITS</h1>
+    
+    <p class="intro-text">
+  Tu będą różne darmowe rzeczy. Co? Może opowiadanie. Może zbiór felietonów, które już się ukazały. Na razie jest jednak Quake 3 Arena uruchamialny z wysokości przeglądarki. Smacznego.
+    </p>
+    
+    <div class="game-container">
+      <div class="game-image">
+        <a href="gra/clquake3.html" target="_blank" rel="noopener noreferrer" 
+           aria-label="Zagraj w Quake 3 Arena - otworzy się w nowej karcie">
+         
+               loading="lazy">
+        </a>
+      </div>
+      
+      <div class="game-info">
+        <h2>QUAKE III ARENA</h2>
+        <p class="game-description">
+          
+        </p>
+        
+        <a href="gra/clquake3.html" target="_blank" rel="noopener noreferrer" class="play-button">
+          ⚡ ENTER THE ARENA ⚡
+        </a>
+        
+        <p class="play-note">
+          Gra uruchomi się w nowej karcie przeglądarki<br>
+         
+        </p>
+      </div>
     </div>
   </main>
+  
+  <footer>
+    <p><small>&copy; 2025 - Welcome to the Arena</small></p>
+  </footer>
 
+  <script>
+    // Animowane cząsteczki w tle
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 20;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 6 + 's';
+        particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+        particlesContainer.appendChild(particle);
+      }
+    }
+    
+    // Efekt paralaksy dla myszy
+    document.addEventListener('mousemove', (e) => {
+      const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+      const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+      
+      document.body.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    });
+    
+    // Inicjalizacja
+    createParticles();
+    
+    // Efekt świecenia przy przewijaniu
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      const header = document.querySelector('h1');
+      const glowIntensity = Math.min(scrolled / 500, 1);
+      header.style.filter = `drop-shadow(0 0 ${20 + glowIntensity * 30}px rgba(255, 69, 0, ${0.5 + glowIntensity * 0.5}))`;
+    });
+  </script>
 </body>
 </html>
