@@ -148,6 +148,7 @@
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
       position: relative;
       overflow: hidden;
+      margin-bottom: 3rem;
     }
 
     .game-container::before {
@@ -158,6 +159,37 @@
       width: 200%;
       height: 200%;
       background: radial-gradient(circle, rgba(255, 69, 0, 0.1) 0%, transparent 70%);
+      animation: rotate 20s linear infinite;
+      pointer-events: none;
+    }
+
+    /* SWOS Styling */
+    .swos-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      background: rgba(0, 40, 0, 0.4);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 3rem;
+      border: 1px solid rgba(109, 179, 63, 0.3);
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 3rem;
+    }
+
+    .swos-container::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(109, 179, 63, 0.1) 0%, transparent 70%);
       animation: rotate 20s linear infinite;
       pointer-events: none;
     }
@@ -194,6 +226,10 @@
       z-index: 1;
     }
 
+    .swos-container .game-image a::before {
+      background: linear-gradient(135deg, rgba(109, 179, 63, 0.2), rgba(143, 204, 95, 0.2));
+    }
+
     .game-image a:hover::before {
       opacity: 1;
     }
@@ -201,6 +237,10 @@
     .game-image a:hover {
       transform: translateY(-10px) scale(1.05);
       box-shadow: 0 20px 50px rgba(255, 69, 0, 0.4);
+    }
+
+    .swos-container .game-image a:hover {
+      box-shadow: 0 20px 50px rgba(109, 179, 63, 0.4);
     }
 
     .game-image img {
@@ -223,6 +263,11 @@
       margin-bottom: 1.5rem;
       text-shadow: 0 0 20px rgba(255, 69, 0, 0.6);
       letter-spacing: 2px;
+    }
+
+    .swos-container .game-info h2 {
+      color: #6db33f;
+      text-shadow: 0 0 20px rgba(109, 179, 63, 0.6);
     }
 
     .game-description {
@@ -250,6 +295,11 @@
       overflow: hidden;
     }
 
+    .swos-button {
+      background: linear-gradient(135deg, #4a8028, #6db33f);
+      box-shadow: 0 10px 30px rgba(109, 179, 63, 0.4);
+    }
+
     .play-button::before {
       content: '';
       position: absolute;
@@ -271,6 +321,11 @@
       border-color: #ffa500;
     }
 
+    .swos-button:hover {
+      box-shadow: 0 15px 40px rgba(109, 179, 63, 0.6);
+      border-color: #8fcc5f;
+    }
+
     .play-note {
       margin-top: 1.5rem;
       font-size: 0.9rem;
@@ -288,7 +343,8 @@
 
     /* Responsive */
     @media (max-width: 768px) {
-      .game-container {
+      .game-container,
+      .swos-container {
         grid-template-columns: 1fr;
         gap: 2rem;
         padding: 2rem;
@@ -355,36 +411,56 @@
     <h1>ARENA AWAITS</h1>
     
     <p class="intro-text">
-  Tu będą różne darmowe rzeczy. Co? Może opowiadanie. Może zbiór felietonów, które już się ukazały. Na razie jest jednak Quake 3 Arena uruchamialny z wysokości przeglądarki. Smacznego. </p>
-    
+      Tu będą różne darmowe rzeczy. Co? Może opowiadanie. Może zbiór felietonów, które już się ukazały. Na razie jest jednak Quake 3 Arena uruchamialny z wysokości przeglądarki. Smacznego.
     </p>
     
     <div class="game-container">
       <div class="game-image">
         <a href="gra/clquake3.html" target="_blank" rel="noopener noreferrer" 
            aria-label="Zagraj w Quake 3 Arena - otworzy się w nowej karcie">
-         
-              
         </a>
       </div>
       
       <div class="game-info">
         <h2>QUAKE III ARENA</h2>
         <p class="game-description">
-          
+
         </p>
         
-<div class="button-container">
-  <a href="gra/clquake3.html" target="_blank" rel="noopener noreferrer" class="play-button">
-    ⚡ ENTER THE ARENA ⚡
-  </a>
+        <div class="button-container">
+          <a href="gra/clquake3.html" target="_blank" rel="noopener noreferrer" class="play-button">
+            ⚡ ENTER THE ARENA ⚡
+          </a>
 
-  <p class="play-note">
-    Gra uruchomi się w nowej karcie przeglądarki<br>
-  </p>
-</div>
-         
+          <p class="play-note">
+            Gra uruchomi się w nowej karcie przeglądarki
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SWOS Section -->
+    <div class="swos-container">
+      <div class="game-info">
+        <h2>⚽ SENSIBLE WORLD OF SOCCER</h2>
+        <p class="game-description">
+    
         </p>
+        
+        <div class="button-container">
+          <a href="swos.html" class="play-button swos-button">
+            🏆 WEJDŹ NA BOISKO 🏆
+          </a>
+
+          <p class="play-note">
+            Klasyka gatunku piłkarskiego
+          </p>
+        </div>
+      </div>
+
+      <div class="game-image">
+        <a href="swos.html" aria-label="Zagraj w Sensible World of Soccer">
+        </a>
       </div>
     </div>
   </main>
@@ -428,11 +504,5 @@
       header.style.filter = `drop-shadow(0 0 ${20 + glowIntensity * 30}px rgba(255, 69, 0, ${0.5 + glowIntensity * 0.5}))`;
     });
   </script>
-
-<p>
-  ⚽ Zagraj w <strong>Sensible World of Soccer 95</strong> bezpośrednio z Twojej przeglądarki:
-  <a href="swos.html">kliknij tutaj, by zagrać</a>
-</p>
-  
 </body>
 </html>
