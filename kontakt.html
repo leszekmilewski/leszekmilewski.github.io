@@ -18,19 +18,17 @@
     </nav>
   </header>
 
-  <main>
-    <h2>Kontakt</h2>
-    <p>W sprawach wszelkich, można mnie złapać na skrzynce: <br>
-      <a href="mailto:leszekmilewski@poczta.fm">leszekmilewski@poczta.fm</a>
-    </p>
-    <p>Lub też pisać na Twitterze, otwarta skrzynka PW: <br>
-      <a href="https://x.com/leszekmilewski" target="_blank">x.com/leszekmilewski</a>
-    </p>
-  </main>
+<button onclick="openGameWindow()">⚽ Zagraj w SWOS 1995</button>
 
-<a href="https://archive.org/details/msdos_Sensible_World_of_Soccer_1995" target="_blank">
-  Uruchom grę SWOS 95 w nowym oknie
-</a>
+<script>
+  function openGameWindow() {
+    window.open(
+      "https://archive.org/details/msdos_Sensible_World_of_Soccer_1995",
+      "SWOSGame",
+      "width=960,height=720,resizable=yes"
+    );
+  }
+</script>
 
   
 </body>
