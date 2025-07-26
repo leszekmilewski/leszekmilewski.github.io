@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sensible World of Soccer 95</title>
+</head>
+<body style="text-align: center; padding: 20px; font-family: sans-serif; background: #111; color: #eee;">
+  <h1>Sensible World of Soccer 95 (Internet Archive)</h1>
+  <iframe src="https://archive.org/embed/msdos_Sensible_World_of_Soccer_1995" 
+          width="640" height="480" 
+          frameborder="0" 
+          webkitallowfullscreen="true" 
+          mozallowfullscreen="true" 
+          allowfullscreen>
+  </iframe>
+  <p style="margin-top: 1em;">Kliknij w grę, by aktywować sterowanie. Możesz też uruchomić ją w nowym oknie: 
+    <a href="https://archive.org/details/msdos_Sensible_World_of_Soccer_1995" target="_blank" rel="noopener noreferrer" style="color: lightblue;">
+      Archiwum Internetowe
+    </a>.
+  </p>
+</body>
+</html>
