@@ -30,17 +30,20 @@
       position: sticky;
       top: 0;
       z-index: 100;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
 
     nav a {
       color: #e0e0e0;
       text-decoration: none;
-      margin-right: 2rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 1px;
       font-size: 0.9rem;
       transition: color 0.2s ease;
+      white-space: nowrap;
     }
 
     nav a:hover {
@@ -59,7 +62,7 @@
 
     h1 {
       font-family: 'Orbitron', monospace;
-      font-size: 3.5rem;
+      font-size: clamp(2rem, 8vw, 3.5rem);
       font-weight: 900;
       text-align: center;
       margin-bottom: 2rem;
@@ -67,56 +70,48 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      letter-spacing: 3px;
+      letter-spacing: clamp(1px, 0.5vw, 3px);
+      word-break: break-word;
+      hyphens: auto;
     }
 
     .intro-text {
       text-align: center;
-      font-size: 1.2rem;
+      font-size: clamp(1rem, 3vw, 1.2rem);
       margin-bottom: 3rem;
       color: #b0b0b0;
       max-width: 800px;
       margin-left: auto;
       margin-right: auto;
       font-weight: 400;
+      padding: 0 1rem;
     }
 
-    .game-container {
+    .game-container,
+    .swos-container,
+    .fifa-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 3rem;
       align-items: center;
-      background: rgba(0, 0, 0, 0.6);
       border-radius: 20px;
       padding: 3rem;
       border: 1px solid rgba(255, 69, 0, 0.3);
       margin-bottom: 3rem;
     }
 
-    /* SWOS Styling */
-    .swos-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: center;
-      background: rgba(0, 40, 0, 0.6);
-      border-radius: 20px;
-      padding: 3rem;
-      border: 1px solid rgba(109, 179, 63, 0.3);
-      margin-bottom: 3rem;
+    .game-container {
+      background: rgba(0, 0, 0, 0.6);
     }
 
-    /* FIFA 98 Styling */
+    .swos-container {
+      background: rgba(0, 40, 0, 0.6);
+      border: 1px solid rgba(109, 179, 63, 0.3);
+    }
+
     .fifa-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: center;
       background: rgba(0, 30, 60, 0.6);
-      border-radius: 20px;
-      padding: 3rem;
       border: 1px solid rgba(0, 162, 255, 0.3);
-      margin-bottom: 3rem;
     }
 
     .game-image a {
@@ -138,11 +133,13 @@
 
     .game-info h2 {
       font-family: 'Orbitron', monospace;
-      font-size: 2.5rem;
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
       font-weight: 700;
       color: #ff4500;
       margin-bottom: 1.5rem;
-      letter-spacing: 2px;
+      letter-spacing: clamp(1px, 0.3vw, 2px);
+      word-break: break-word;
+      hyphens: auto;
     }
 
     .swos-container .game-info h2 {
@@ -154,24 +151,28 @@
     }
 
     .game-description {
-      font-size: 1.1rem;
+      font-size: clamp(0.95rem, 2.5vw, 1.1rem);
       margin-bottom: 2rem;
       color: #d0d0d0;
+      line-height: 1.6;
     }
 
     .play-button {
       display: inline-block;
       background: linear-gradient(135deg, #ff4500, #ff6b00);
       color: white;
-      padding: 1rem 2.5rem;
+      padding: clamp(0.8rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2.5rem);
       text-decoration: none;
       border-radius: 50px;
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
       text-transform: uppercase;
       letter-spacing: 1px;
       transition: all 0.2s ease;
       border: 2px solid transparent;
+      text-align: center;
+      word-break: break-word;
+      hyphens: auto;
     }
 
     .swos-button {
@@ -200,7 +201,7 @@
 
     .play-note {
       margin-top: 1.5rem;
-      font-size: 0.9rem;
+      font-size: clamp(0.8rem, 2vw, 0.9rem);
       color: #888;
       font-style: italic;
       font-family: 'JetBrains Mono', monospace;
@@ -215,8 +216,61 @@
       margin-top: 4rem;
     }
 
-    /* Responsive */
-    @media (max-width: 768px) {
+    /* Mobile First - od 480px w dół */
+    @media (max-width: 480px) {
+      nav {
+        padding: 0.8rem 1rem;
+        justify-content: center;
+      }
+      
+      nav a {
+        font-size: 0.75rem;
+        margin: 0.2rem;
+      }
+      
+      main {
+        padding: 1.5rem 1rem;
+      }
+      
+      .game-container,
+      .swos-container,
+      .fifa-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+      }
+      
+      .game-info h2 {
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+      
+      .game-description {
+        text-align: left;
+        margin-bottom: 1.5rem;
+      }
+      
+      .play-note {
+        margin-top: 1rem;
+        text-align: left;
+      }
+    }
+
+    /* Tablet - 481px do 768px */
+    @media (min-width: 481px) and (max-width: 768px) {
+      nav {
+        padding: 1rem 1.5rem;
+      }
+      
+      nav a {
+        font-size: 0.85rem;
+      }
+      
+      main {
+        padding: 2rem 1.5rem;
+      }
+      
       .game-container,
       .swos-container,
       .fifa-container {
@@ -225,21 +279,18 @@
         padding: 2rem;
       }
       
-      h1 {
-        font-size: 2.5rem;
+      .game-info h2 {
+        text-align: center;
       }
-      
-      nav {
-        padding: 1rem;
-      }
-      
-      nav a {
-        margin-right: 1rem;
-        font-size: 0.8rem;
-      }
-      
-      main {
-        padding: 2rem 1rem;
+    }
+
+    /* Większe tablety i małe laptopy - 769px do 1024px */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .game-container,
+      .swos-container,
+      .fifa-container {
+        gap: 2rem;
+        padding: 2.5rem;
       }
     }
 
@@ -252,20 +303,41 @@
       }
     }
 
-    /* Improve performance on mobile */
+    /* Performance optimizations for mobile */
     @media (max-width: 768px) {
-      .game-container,
-      .swos-container,
-      .fifa-container {
-        transform: none !important;
-      }
-      
       .game-image a:hover {
         transform: none;
       }
       
       .play-button:hover {
         transform: none;
+      }
+      
+      /* Remove expensive effects on mobile */
+      h1 {
+        text-shadow: none;
+      }
+    }
+
+    /* Landscape orientation on phones */
+    @media (max-width: 768px) and (orientation: landscape) {
+      main {
+        padding: 1rem;
+      }
+      
+      .game-container,
+      .swos-container,
+      .fifa-container {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+    }
+
+    /* High DPI displays */
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+      .game-image img {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
       }
     }
   </style>
@@ -296,7 +368,7 @@
       <div class="game-info">
         <h2>UNREAL TOURNAMENT</h2>
         <p class="game-description">
-          Gra działa bezpośrednio w przeglądarce dzięki WebAssembly. Klasyczny arena shooter z 1999 roku w pełnej okazałości.
+          Unreal Tournament uwolniony w 2024 przez Epic Games. Zalecam włączyć na pełny ekran, inaczej może się trochę sypać. Przy intro dwa razy Escape. 
         </p>
         
         <div class="button-container">
@@ -386,7 +458,7 @@
     let ticking = false;
     
     window.addEventListener('scroll', () => {
-      if (!ticking) {
+      if (!ticking && window.innerWidth > 768) {
         requestAnimationFrame(() => {
           const scrolled = window.pageYOffset;
           const header = document.querySelector('h1');
