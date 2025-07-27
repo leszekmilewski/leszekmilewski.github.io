@@ -6,7 +6,7 @@
   <title>Za darmo – Unreal Tournament | Darmowe gry online</title>
   <meta name="description" content="Zagraj w kultową grę Unreal Tournament za darmo bezpośrednio w przeglądarce. Klasyczny shooter FPS dostępny online bez pobierania.">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <style>
     * {
@@ -20,34 +20,16 @@
       background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
       color: #e0e0e0;
       min-height: 100vh;
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: 
-        radial-gradient(circle at 20% 80%, rgba(255, 69, 0, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(0, 162, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(255, 215, 0, 0.05) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: -1;
+      line-height: 1.6;
     }
 
     nav {
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.9);
       border-bottom: 2px solid #ff4500;
       padding: 1rem 2rem;
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 4px 20px rgba(255, 69, 0, 0.3);
     }
 
     nav a {
@@ -57,35 +39,16 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 1px;
-      transition: all 0.3s ease;
-      position: relative;
       font-size: 0.9rem;
-    }
-
-    nav a::after {
-      content: '';
-      position: absolute;
-      bottom: -5px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: linear-gradient(90deg, #ff4500, #ffa500);
-      transition: width 0.3s ease;
-    }
-
-    nav a:hover::after,
-    nav a.active::after {
-      width: 100%;
+      transition: color 0.2s ease;
     }
 
     nav a:hover {
       color: #ff4500;
-      text-shadow: 0 0 10px rgba(255, 69, 0, 0.5);
     }
 
     nav a.active {
       color: #ffa500;
-      text-shadow: 0 0 15px rgba(255, 165, 0, 0.7);
     }
 
     main {
@@ -104,27 +67,12 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      text-shadow: 0 0 30px rgba(255, 69, 0, 0.5);
       letter-spacing: 3px;
-      position: relative;
-    }
-
-    h1::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100px;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, #ff4500, transparent);
-      border-radius: 2px;
     }
 
     .intro-text {
       text-align: center;
       font-size: 1.2rem;
-      line-height: 1.6;
       margin-bottom: 3rem;
       color: #b0b0b0;
       max-width: 800px;
@@ -138,29 +86,11 @@
       grid-template-columns: 1fr 1fr;
       gap: 3rem;
       align-items: center;
-      background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(15px);
+      background: rgba(0, 0, 0, 0.6);
       border-radius: 20px;
       padding: 3rem;
       border: 1px solid rgba(255, 69, 0, 0.3);
-      box-shadow: 
-        0 20px 40px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      position: relative;
-      overflow: hidden;
       margin-bottom: 3rem;
-    }
-
-    .game-container::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255, 69, 0, 0.1) 0%, transparent 70%);
-      animation: rotate 20s linear infinite;
-      pointer-events: none;
     }
 
     /* SWOS Styling */
@@ -169,29 +99,11 @@
       grid-template-columns: 1fr 1fr;
       gap: 3rem;
       align-items: center;
-      background: rgba(0, 40, 0, 0.4);
-      backdrop-filter: blur(15px);
+      background: rgba(0, 40, 0, 0.6);
       border-radius: 20px;
       padding: 3rem;
       border: 1px solid rgba(109, 179, 63, 0.3);
-      box-shadow: 
-        0 20px 40px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      position: relative;
-      overflow: hidden;
       margin-bottom: 3rem;
-    }
-
-    .swos-container::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(109, 179, 63, 0.1) 0%, transparent 70%);
-      animation: rotate 20s linear infinite;
-      pointer-events: none;
     }
 
     /* FIFA 98 Styling */
@@ -200,98 +112,28 @@
       grid-template-columns: 1fr 1fr;
       gap: 3rem;
       align-items: center;
-      background: rgba(0, 30, 60, 0.4);
-      backdrop-filter: blur(15px);
+      background: rgba(0, 30, 60, 0.6);
       border-radius: 20px;
       padding: 3rem;
       border: 1px solid rgba(0, 162, 255, 0.3);
-      box-shadow: 
-        0 20px 40px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      position: relative;
-      overflow: hidden;
       margin-bottom: 3rem;
-    }
-
-    .fifa-container::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(0, 162, 255, 0.1) 0%, transparent 70%);
-      animation: rotate 20s linear infinite;
-      pointer-events: none;
-    }
-
-    @keyframes rotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    .game-image {
-      position: relative;
-      z-index: 2;
     }
 
     .game-image a {
       display: block;
-      position: relative;
       border-radius: 15px;
       overflow: hidden;
-      transition: all 0.4s ease;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    }
-
-    .game-image a::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(135deg, rgba(255, 69, 0, 0.2), rgba(255, 165, 0, 0.2));
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: 1;
-    }
-
-    .swos-container .game-image a::before {
-      background: linear-gradient(135deg, rgba(109, 179, 63, 0.2), rgba(143, 204, 95, 0.2));
-    }
-
-    .fifa-container .game-image a::before {
-      background: linear-gradient(135deg, rgba(0, 162, 255, 0.2), rgba(0, 191, 255, 0.2));
-    }
-
-    .game-image a:hover::before {
-      opacity: 1;
+      transition: transform 0.2s ease;
     }
 
     .game-image a:hover {
-      transform: translateY(-10px) scale(1.05);
-      box-shadow: 0 20px 50px rgba(255, 69, 0, 0.4);
-    }
-
-    .swos-container .game-image a:hover {
-      box-shadow: 0 20px 50px rgba(109, 179, 63, 0.4);
-    }
-
-    .fifa-container .game-image a:hover {
-      box-shadow: 0 20px 50px rgba(0, 162, 255, 0.4);
+      transform: translateY(-5px);
     }
 
     .game-image img {
       width: 100%;
       height: auto;
       display: block;
-      transition: all 0.4s ease;
-    }
-
-    .game-info {
-      position: relative;
-      z-index: 2;
     }
 
     .game-info h2 {
@@ -300,23 +142,19 @@
       font-weight: 700;
       color: #ff4500;
       margin-bottom: 1.5rem;
-      text-shadow: 0 0 20px rgba(255, 69, 0, 0.6);
       letter-spacing: 2px;
     }
 
     .swos-container .game-info h2 {
       color: #6db33f;
-      text-shadow: 0 0 20px rgba(109, 179, 63, 0.6);
     }
 
     .fifa-container .game-info h2 {
       color: #00a2ff;
-      text-shadow: 0 0 20px rgba(0, 162, 255, 0.6);
     }
 
     .game-description {
       font-size: 1.1rem;
-      line-height: 1.7;
       margin-bottom: 2rem;
       color: #d0d0d0;
     }
@@ -332,52 +170,32 @@
       font-size: 1.1rem;
       text-transform: uppercase;
       letter-spacing: 1px;
-      transition: all 0.3s ease;
-      box-shadow: 0 10px 30px rgba(255, 69, 0, 0.4);
+      transition: all 0.2s ease;
       border: 2px solid transparent;
-      position: relative;
-      overflow: hidden;
     }
 
     .swos-button {
       background: linear-gradient(135deg, #4a8028, #6db33f);
-      box-shadow: 0 10px 30px rgba(109, 179, 63, 0.4);
     }
 
     .fifa-button {
       background: linear-gradient(135deg, #0080cc, #00a2ff);
-      box-shadow: 0 10px 30px rgba(0, 162, 255, 0.4);
-    }
-
-    .play-button::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-      transition: left 0.5s ease;
-    }
-
-    .play-button:hover::before {
-      left: 100%;
     }
 
     .play-button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 40px rgba(255, 69, 0, 0.6);
+      transform: translateY(-2px);
       border-color: #ffa500;
+      box-shadow: 0 5px 15px rgba(255, 69, 0, 0.3);
     }
 
     .swos-button:hover {
-      box-shadow: 0 15px 40px rgba(109, 179, 63, 0.6);
       border-color: #8fcc5f;
+      box-shadow: 0 5px 15px rgba(109, 179, 63, 0.3);
     }
 
     .fifa-button:hover {
-      box-shadow: 0 15px 40px rgba(0, 162, 255, 0.6);
       border-color: #00bfff;
+      box-shadow: 0 5px 15px rgba(0, 162, 255, 0.3);
     }
 
     .play-note {
@@ -425,38 +243,34 @@
       }
     }
 
-    /* Efekty cząsteczkowe */
-    .particles {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: -1;
+    /* Disable animations for users who prefer reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
     }
 
-    .particle {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: #ff4500;
-      border-radius: 50%;
-      animation: float 6s infinite ease-in-out;
-      opacity: 0.6;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(100vh) translateX(0); opacity: 0; }
-      10% { opacity: 0.6; }
-      90% { opacity: 0.6; }
-      50% { transform: translateY(-10px) translateX(50px); }
+    /* Improve performance on mobile */
+    @media (max-width: 768px) {
+      .game-container,
+      .swos-container,
+      .fifa-container {
+        transform: none !important;
+      }
+      
+      .game-image a:hover {
+        transform: none;
+      }
+      
+      .play-button:hover {
+        transform: none;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="particles" id="particles"></div>
-
   <nav role="navigation" aria-label="Menu główne">
     <a href="index.html">strona główna</a>
     <a href="dziewczyna.html">dziewczyna o wyjątkowych dłoniach</a>
@@ -482,7 +296,7 @@
       <div class="game-info">
         <h2>UNREAL TOURNAMENT</h2>
         <p class="game-description">
-          Unreal Tournament, moje ulubione FPP wszech czasów. Uwolnione w 2024 przez Epic Games. Zapraszam. Zalecam odpalić pełnoekranowo, inaczej mysz trochę wariuje.
+          Gra działa bezpośrednio w przeglądarce dzięki WebAssembly. Klasyczny arena shooter z 1999 roku w pełnej okazałości.
         </p>
         
         <div class="button-container">
@@ -542,7 +356,6 @@
         <h2>🏆 FIFA 98: ROAD TO WORLD CUP</h2>
         <p class="game-description">
           To emulacja z PSX, więc raczej ciężko z zapisem gry, ale działa. Trochę dzika klawiszologia - poniżej opis - ale idzie przywyknąć. W menu poruszasz się 1(Start) i 5 (Select), do tego trzeba wcisnąć Spację, żeby wybrać inną kolumnę i ALT, żeby potwierdzić. Uff. Jak SWOS, odpali się na bazie Archive.org.
-        
         </p>
         
         <div class="button-container">
@@ -569,38 +382,32 @@
   </footer>
 
   <script>
-    // Animowane cząsteczki w tle
-    function createParticles() {
-      const particlesContainer = document.getElementById('particles');
-      const particleCount = 20;
-      
-      for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 6 + 's';
-        particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
-        particlesContainer.appendChild(particle);
-      }
-    }
+    // Simple header glow effect on scroll (lightweight)
+    let ticking = false;
     
-    // Efekt paralaksy dla myszy
-    document.addEventListener('mousemove', (e) => {
-      const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
-      const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
-      
-      document.body.style.transform = `translate(${moveX}px, ${moveY}px)`;
-    });
-    
-    // Inicjalizacja
-    createParticles();
-    
-    // Efekt świecenia przy przewijaniu
     window.addEventListener('scroll', () => {
-      const scrolled = window.pageYOffset;
-      const header = document.querySelector('h1');
-      const glowIntensity = Math.min(scrolled / 500, 1);
-      header.style.filter = `drop-shadow(0 0 ${20 + glowIntensity * 30}px rgba(255, 69, 0, ${0.5 + glowIntensity * 0.5}))`;
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrolled = window.pageYOffset;
+          const header = document.querySelector('h1');
+          const opacity = Math.min(scrolled / 300, 0.3);
+          header.style.textShadow = `0 0 ${10 + opacity * 20}px rgba(255, 69, 0, ${0.3 + opacity})`;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+
+    // Preload critical images (optional performance boost)
+    const criticalImages = [
+      'img/unreal.jpg',
+      'img/swos.png', 
+      'img/fifa98.png'
+    ];
+
+    criticalImages.forEach(src => {
+      const img = new Image();
+      img.src = src;
     });
   </script>
 </body>
