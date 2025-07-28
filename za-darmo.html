@@ -89,7 +89,10 @@
 
     .game-container,
     .swos-container,
-    .fifa-container {
+    .fifa-container,
+    .arnie-container,
+    .lotus-container,
+    .centurion-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 3rem;
@@ -112,6 +115,21 @@
     .fifa-container {
       background: rgba(0, 30, 60, 0.6);
       border: 1px solid rgba(0, 162, 255, 0.3);
+    }
+
+    .arnie-container {
+      background: rgba(60, 20, 0, 0.6);
+      border: 1px solid rgba(255, 140, 0, 0.3);
+    }
+
+    .lotus-container {
+      background: rgba(80, 0, 40, 0.6);
+      border: 1px solid rgba(255, 20, 147, 0.3);
+    }
+
+    .centurion-container {
+      background: rgba(40, 20, 80, 0.6);
+      border: 1px solid rgba(138, 43, 226, 0.3);
     }
 
     .game-image a {
@@ -150,6 +168,18 @@
       color: #00a2ff;
     }
 
+    .arnie-container .game-info h2 {
+      color: #ff8c00;
+    }
+
+    .lotus-container .game-info h2 {
+      color: #ff1493;
+    }
+
+    .centurion-container .game-info h2 {
+      color: #8a2be2;
+    }
+
     .game-description {
       font-size: clamp(0.95rem, 2.5vw, 1.1rem);
       margin-bottom: 2rem;
@@ -183,6 +213,14 @@
       background: linear-gradient(135deg, #0080cc, #00a2ff);
     }
 
+    .arnie-button {
+      background: linear-gradient(135deg, #cc6600, #ff8c00);
+    }
+
+    .lotus-button {
+      background: linear-gradient(135deg, #cc1177, #ff1493);
+    }
+
     .play-button:hover {
       transform: translateY(-2px);
       border-color: #ffa500;
@@ -197,6 +235,16 @@
     .fifa-button:hover {
       border-color: #00bfff;
       box-shadow: 0 5px 15px rgba(0, 162, 255, 0.3);
+    }
+
+    .arnie-button:hover {
+      border-color: #ffaa44;
+      box-shadow: 0 5px 15px rgba(255, 140, 0, 0.3);
+    }
+
+    .lotus-button:hover {
+      border-color: #ff69b4;
+      box-shadow: 0 5px 15px rgba(255, 20, 147, 0.3);
     }
 
     .play-note {
@@ -234,7 +282,9 @@
       
       .game-container,
       .swos-container,
-      .fifa-container {
+      .fifa-container,
+      .arnie-container,
+      .lotus-container {
         grid-template-columns: 1fr;
         gap: 1.5rem;
         padding: 1.5rem;
@@ -273,7 +323,9 @@
       
       .game-container,
       .swos-container,
-      .fifa-container {
+      .fifa-container,
+      .arnie-container,
+      .lotus-container {
         grid-template-columns: 1fr;
         gap: 2rem;
         padding: 2rem;
@@ -288,7 +340,9 @@
     @media (min-width: 769px) and (max-width: 1024px) {
       .game-container,
       .swos-container,
-      .fifa-container {
+      .fifa-container,
+      .arnie-container,
+      .lotus-container {
         gap: 2rem;
         padding: 2.5rem;
       }
@@ -327,7 +381,9 @@
       
       .game-container,
       .swos-container,
-      .fifa-container {
+      .fifa-container,
+      .arnie-container,
+      .lotus-container {
         padding: 1.5rem;
         margin-bottom: 1.5rem;
       }
@@ -448,6 +504,68 @@
         </div>
       </div>
     </div>
+
+    <div class="arnie-container">
+      <div class="game-info">
+        <h2>💪 ARNIE</h2>
+        <p class="game-description">
+          Klasyk z 1992 roku od Zeppelin Games. Wciel się w rolę muskularnego bohatera inspirowanego filmami akcji lat 80. i 90. Platformówka pełna adrenaliny, wybuchów i klasycznego humoru z epoki 16-bitowej. Gra dostępna dzięki Archive.org na licencji abandonware.
+        </p>
+        
+        <div class="button-container">
+          <a href="https://archive.org/details/Arnie_1992_Zeppelin" 
+             target="_blank" 
+             rel="noopener noreferrer" 
+             class="play-button arnie-button">
+            💥 GET TO THE CHOPPER 💥
+          </a>
+
+          <p class="play-note">
+            Klasyczna platformówka z lat 90.
+          </p>
+        </div>
+      </div>
+
+      <div class="game-image">
+        <a href="https://archive.org/details/Arnie_1992_Zeppelin" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           aria-label="Zagraj w Arnie - otworzy się w nowej karcie">
+          <img src="img/arnie.jpg" alt="Arnie – zrzut ekranu">
+        </a>
+      </div>
+    </div>
+
+    <div class="lotus-container">
+      <div class="game-image">
+        <a href="https://archive.org/details/lotus-turbo-challenge-2-1991-racing-amiga" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           aria-label="Zagraj w Lotus Turbo Challenge 2 - otworzy się w nowej karcie">
+          <img src="img/lotus.jpg" alt="Lotus Turbo Challenge 2 – zrzut ekranu">
+        </a>
+      </div>
+
+      <div class="game-info">
+        <h2>🏎️ LOTUS TURBO CHALLENGE 2</h2>
+        <p class="game-description">
+          Kultowa gra wyścigowa z 1991 roku z Amigi. Jedna z najlepszych arkadowych gier wyścigowych w historii. Szybka jazda, fantastyczna muzyka i klimat lat 90. Ścigaj się Lotusem Esprit przez malownicze trasy w różnych porach roku. Gra emulowana dzięki Archive.org.
+        </p>
+        
+        <div class="button-container">
+          <a href="https://archive.org/details/lotus-turbo-challenge-2-1991-racing-amiga" 
+             target="_blank" 
+             rel="noopener noreferrer" 
+             class="play-button lotus-button">
+            🏁 START YOUR ENGINES 🏁
+          </a>
+
+          <p class="play-note">
+            Legenda gier wyścigowych z Amigi
+          </p>
+        </div>
+      </div>
+    </div>
   
   <footer>
     <p><small>&copy; 2025 - Welcome to the Arena</small></p>
@@ -474,7 +592,9 @@
     const criticalImages = [
       'img/unreal.jpg',
       'img/swos.png', 
-      'img/fifa98.png'
+      'img/fifa98.png',
+      'img/arnie.jpg',
+      'img/lotus.jpg'
     ];
 
     criticalImages.forEach(src => {
