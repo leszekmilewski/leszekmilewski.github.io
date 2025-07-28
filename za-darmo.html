@@ -221,6 +221,10 @@
       background: linear-gradient(135deg, #cc1177, #ff1493);
     }
 
+    .centurion-button {
+      background: linear-gradient(135deg, #6620aa, #8a2be2);
+    }
+
     .play-button:hover {
       transform: translateY(-2px);
       border-color: #ffa500;
@@ -245,6 +249,11 @@
     .lotus-button:hover {
       border-color: #ff69b4;
       box-shadow: 0 5px 15px rgba(255, 20, 147, 0.3);
+    }
+
+    .centurion-button:hover {
+      border-color: #9370db;
+      box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
     }
 
     .play-note {
@@ -284,7 +293,8 @@
       .swos-container,
       .fifa-container,
       .arnie-container,
-      .lotus-container {
+      .lotus-container,
+      .centurion-container {
         grid-template-columns: 1fr;
         gap: 1.5rem;
         padding: 1.5rem;
@@ -325,7 +335,8 @@
       .swos-container,
       .fifa-container,
       .arnie-container,
-      .lotus-container {
+      .lotus-container,
+      .centurion-container {
         grid-template-columns: 1fr;
         gap: 2rem;
         padding: 2rem;
@@ -342,7 +353,8 @@
       .swos-container,
       .fifa-container,
       .arnie-container,
-      .lotus-container {
+      .lotus-container,
+      .centurion-container {
         gap: 2rem;
         padding: 2.5rem;
       }
@@ -383,7 +395,8 @@
       .swos-container,
       .fifa-container,
       .arnie-container,
-      .lotus-container {
+      .lotus-container,
+      .centurion-container {
         padding: 1.5rem;
         margin-bottom: 1.5rem;
       }
@@ -566,6 +579,37 @@
         </div>
       </div>
     </div>
+
+    <div class="centurion-container">
+      <div class="game-info">
+        <h2>⚔️ CENTURION: DEFENDER OF ROME</h2>
+        <p class="game-description">
+          Kultowa strategia z 1990 roku od Bits of Magic. Wciel się w rolę rzymskiego centuriona i podbijaj świat antyczny. Połączenie strategii turowej z elementami RPG i zręcznościowymi mini-grami. Klasyk gatunku strategicznego z czasów DOS-a, dostępny dzięki Archive.org.
+        </p>
+        
+        <div class="button-container">
+          <a href="https://archive.org/details/msdos_Centurion_-_Defender_of_Rome_1990" 
+             target="_blank" 
+             rel="noopener noreferrer" 
+             class="play-button centurion-button">
+            🏛️ VENI, VIDI, VICI 🏛️
+          </a>
+
+          <p class="play-note">
+            Strategia i historia starożytnego Rzymu
+          </p>
+        </div>
+      </div>
+
+      <div class="game-image">
+        <a href="https://archive.org/details/msdos_Centurion_-_Defender_of_Rome_1990" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           aria-label="Zagraj w Centurion: Defender of Rome - otworzy się w nowej karcie">
+          <img src="img/centurion.jpg" alt="Centurion: Defender of Rome – zrzut ekranu">
+        </a>
+      </div>
+    </div>
   
   <footer>
     <p><small>&copy; 2025 - Welcome to the Arena</small></p>
@@ -594,7 +638,8 @@
       'img/swos.png', 
       'img/fifa98.png',
       'img/arnie.jpg',
-      'img/lotus.jpg'
+      'img/lotus.jpg',
+      'img/centurion.jpg'
     ];
 
     criticalImages.forEach(src => {
