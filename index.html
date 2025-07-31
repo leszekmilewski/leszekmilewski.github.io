@@ -98,6 +98,22 @@
       margin: 2rem 0;
     }
 
+    /* Stylizacja licznika odwiedzin */
+    .visitor-counter {
+      text-align: center;
+      margin: 1rem 0;
+      padding: 0.5rem;
+      font-size: 0.9rem;
+      color: #777;
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+    }
+
+    .counter-number {
+      font-weight: bold;
+      color: #333;
+    }
+
     @media (max-width: 600px) {
       body {
         font-size: 16px;
@@ -127,6 +143,11 @@
     <a href="/za-darmo.html">za darmo</a>
     <a href="/kontakt.html">kontakt</a>
   </nav>
+
+  <!-- Licznik odwiedzin -->
+  <div class="visitor-counter">
+    Odwiedziny: <span class="counter-number" id="visit-count">Ładowanie...</span>
+  </div>
 
   <h2><a href="/jakubolkiewicz.html" style="text-decoration: none; color:  #008080;">JAK CO ŚRODĘ... Jakub Olkiewicz</a></h2>
   <time datetime="2025-07-30">30.7.2025</time>
@@ -206,6 +227,38 @@
     </a>
 
   </div>
+
+  <!-- Licznik odwiedzin na końcu strony -->
+  <div class="visitor-counter" style="margin-top: 3rem;">
+    Strona odwiedzona <span class="counter-number" id="visit-count-footer">Ładowanie...</span> razy od uruchomienia
+  </div>
   
+  <script>
+    // Licznik odwiedzin używający localStorage
+    function updateVisitorCounter() {
+      if (typeof(Storage) !== "undefined") {
+        let visits = localStorage.getItem('leszekmilewski_visits');
+        if (!visits) visits = 0;
+        visits = parseInt(visits) + 1;
+        localStorage.setItem('leszekmilewski_visits', visits);
+        
+        const visitCountElements = document.querySelectorAll('#visit-count, #visit-count-footer');
+        visitCountElements.forEach(element => {
+          if (element) {
+            element.textContent = visits.toLocaleString('pl-PL');
+          }
+        });
+      } else {
+        const visitCountElements = document.querySelectorAll('#visit-count, #visit-count-footer');
+        visitCountElements.forEach(element => {
+          if (element) {
+            element.textContent = '?';
+          }
+        });
+      }
+    }
+    
+    window.addEventListener('load', updateVisitorCounter);
+  </script>
 </body>
 </html>
