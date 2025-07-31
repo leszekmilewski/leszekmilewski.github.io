@@ -98,22 +98,6 @@
       margin: 2rem 0;
     }
 
-    /* Stylizacja licznika odwiedzin */
-    .visitor-counter {
-      text-align: center;
-      margin: 1rem 0;
-      padding: 0.5rem;
-      font-size: 0.9rem;
-      color: #777;
-      border-top: 1px solid #eee;
-      border-bottom: 1px solid #eee;
-    }
-
-    .counter-number {
-      font-weight: bold;
-      color: #333;
-    }
-
     @media (max-width: 600px) {
       body {
         font-size: 16px;
@@ -143,11 +127,6 @@
     <a href="/za-darmo.html">za darmo</a>
     <a href="/kontakt.html">kontakt</a>
   </nav>
-
-  <!-- Globalny licznik odwiedzin -->
-  <div class="visitor-counter">
-    Odwiedziny: <span class="counter-number" id="visit-count">Ładowanie...</span>
-  </div>
 
   <h2><a href="/jakubolkiewicz.html" style="text-decoration: none; color:  #008080;">JAK CO ŚRODĘ... Jakub Olkiewicz</a></h2>
   <time datetime="2025-07-30">30.7.2025</time>
@@ -228,78 +207,5 @@
 
   </div>
 
-  <!-- Licznik odwiedzin na końcu strony -->
-  <div class="visitor-counter" style="margin-top: 3rem;">
-    Strona odwiedzona <span class="counter-number" id="visit-count-footer">Ładowanie...</span> razy
-  </div>
-  
-  <script>
-    // Plan A: Próbuj CountAPI
-    async function tryCountAPI() {
-      try {
-        const response = await fetch('https://api.countapi.xyz/hit/leszekmilewski-pl/visits');
-        const data = await response.json();
-        
-        const visitCountElements = document.querySelectorAll('#visit-count, #visit-count-footer');
-        visitCountElements.forEach(element => {
-          if (element) {
-            element.textContent = data.value.toLocaleString('pl-PL');
-          }
-        });
-        return true;
-      } catch (error) {
-        console.log('CountAPI nie działa, próbuję alternatywy...');
-        return false;
-      }
-    }
-    
-    // Plan B: Symulacja globalnego licznika (dla demonstracji)
-    async function trySimulatedGlobal() {
-      try {
-        // Symulujemy globalny licznik z bazową wartością
-        const baseCount = 1247; // Startowa wartość
-        const randomDaily = Math.floor(Math.random() * 50) + 10; // 10-60 dziennych
-        const simulatedTotal = baseCount + randomDaily;
-        
-        const visitCountElements = document.querySelectorAll('#visit-count, #visit-count-footer');
-        visitCountElements.forEach(element => {
-          if (element) {
-            element.textContent = simulatedTotal.toLocaleString('pl-PL');
-          }
-        });
-        return true;
-      } catch (error) {
-        return false;
-      }
-    }
-    
-    // Plan C: Symulacja z localStorage (fallback)
-    function fallbackCounter() {
-      let visits = localStorage.getItem('leszekmilewski_fallback') || 0;
-      visits = parseInt(visits) + 1;
-      localStorage.setItem('leszekmilewski_fallback', visits);
-      
-      const visitCountElements = document.querySelectorAll('#visit-count, #visit-count-footer');
-      visitCountElements.forEach(element => {
-        if (element) {
-          element.textContent = visits + ' (lokalnie)';
-        }
-      });
-    }
-    
-    // Główna funkcja - próbuj kolejno różne opcje
-    async function updateCounter() {
-      const countApiWorked = await tryCountAPI();
-      if (countApiWorked) return;
-      
-      const simulatedWorked = await trySimulatedGlobal();
-      if (simulatedWorked) return;
-      
-      // Jeśli nic nie działa, użyj fallback
-      fallbackCounter();
-    }
-    
-    window.addEventListener('load', updateCounter);
-  </script>
 </body>
 </html>
