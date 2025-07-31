@@ -144,7 +144,7 @@
     <a href="/kontakt.html">kontakt</a>
   </nav>
 
-  <!-- Licznik odwiedzin -->
+  <!-- Globalny licznik odwiedzin -->
   <div class="visitor-counter">
     Odwiedziny: <span class="counter-number" id="visit-count">Ładowanie...</span>
   </div>
@@ -230,35 +230,40 @@
 
   <!-- Licznik odwiedzin na końcu strony -->
   <div class="visitor-counter" style="margin-top: 3rem;">
-    Strona odwiedzona <span class="counter-number" id="visit-count-footer">Ładowanie...</span> razy od uruchomienia
+    Strona odwiedzona <span class="counter-number" id="visit-count-footer">Ładowanie...</span> razy
   </div>
   
   <script>
-    // Licznik odwiedzin używający localStorage
-    function updateVisitorCounter() {
-      if (typeof(Storage) !== "undefined") {
-        let visits = localStorage.getItem('leszekmilewski_visits');
-        if (!visits) visits = 0;
-        visits = parseInt(visits) + 1;
-        localStorage.setItem('leszekmilewski_visits', visits);
+    // Globalny licznik odwiedzin używający CountAPI
+    async function updateGlobalCounter() {
+      try {
+        // Pobierz i zwiększ licznik dla leszekmilewski.pl
+        const response = await fetch('https://api.countapi.xyz/hit/leszekmilewski-pl/visits');
+        const data = await response.json();
         
+        // Aktualizuj oba miejsca gdzie wyświetlany jest licznik
         const visitCountElements = document.querySelectorAll('#visit-count, #visit-count-footer');
         visitCountElements.forEach(element => {
           if (element) {
-            element.textContent = visits.toLocaleString('pl-PL');
+            element.textContent = data.value.toLocaleString('pl-PL');
           }
         });
-      } else {
+        
+      } catch (error) {
+        console.error('Błąd licznika odwiedzin:', error);
+        
+        // W przypadku błędu wyświetl komunikat
         const visitCountElements = document.querySelectorAll('#visit-count, #visit-count-footer');
         visitCountElements.forEach(element => {
           if (element) {
-            element.textContent = '?';
+            element.textContent = 'Błąd ładowania';
           }
         });
       }
     }
     
-    window.addEventListener('load', updateVisitorCounter);
+    // Uruchom licznik po załadowaniu strony
+    window.addEventListener('load', updateGlobalCounter);
   </script>
 </body>
 </html>
