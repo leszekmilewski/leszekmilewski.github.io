@@ -516,8 +516,15 @@ function applyAIErrors(bot, target, scale) {
  * Porusza bota w kierunku celu
  */
 function moveBotToTarget(bot, target) {
+    // Sprawdź ograniczenie połowy boiska
+    if (bot.canCrossHalf === false && target.x < canvas.width / 2) {
+        target.x = canvas.width / 2 + 20; // Zostań po swojej stronie
+    }
+    
     const dx = target.x - bot.x;
     const dy = target.y - bot.y;
+    // ... reszta funkcji bez zmian
+}
     const distance = Math.sqrt(dx * dx + dy * dy);
     const scale = getCurrentScale();
     
