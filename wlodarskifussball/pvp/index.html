@@ -910,7 +910,7 @@
             ctx.strokeText(name, player.x, nameY);
             ctx.fillText(name, player.x, nameY);
         }
-        
+
         function drawBall() {
             const radius = ball.radius;
             
@@ -948,8 +948,9 @@
             ctx.arc(ball.x - radius * 0.3, ball.y - radius * 0.3, radius * 0.25, 0, Math.PI * 2);
             ctx.fill();
         }
+
+
         
-        // Główna pętla gry
         function gameLoop() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
@@ -969,6 +970,10 @@
         }
         
         // Inicjalizacja
+
+selectScale(1.0);
+selectField('simple');
+        
         gameLoop();
     </script>
 </body>
