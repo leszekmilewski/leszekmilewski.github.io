@@ -582,18 +582,13 @@
             gameSettings.field = teamData.field;
             gameSettings.scale = teamData.fieldScale;
             
-            // Zaktualizuj interfejs
-            document.querySelectorAll('.field-btn').forEach(btn => btn.classList.remove('selected'));
-            document.querySelector(`[data-field="${teamData.field}"]`).classList.add('selected');
-            
-            document.querySelectorAll('.scale-btn').forEach(btn => btn.classList.remove('selected'));
-            document.querySelector(`[data-scale="${teamData.fieldScale}"]`).classList.add('selected');
+            // Ustaw parametry fizyki zgodnie z wyborem
+            selectField(teamData.field);
+            selectScale(teamData.fieldScale);
         }
         
         function selectField(fieldType) {
             gameSettings.field = fieldType;
-            document.querySelectorAll('.field-btn').forEach(btn => btn.classList.remove('selected'));
-            document.querySelector(`[data-field="${fieldType}"]`).classList.add('selected');
             
             // Ustaw parametry piłki i graczy w zależności od typu boiska
             switch(fieldType) {
@@ -657,8 +652,6 @@
         
         function selectScale(scale) {
             gameSettings.scale = scale;
-            document.querySelectorAll('.scale-btn').forEach(btn => btn.classList.remove('selected'));
-            document.querySelector(`[data-scale="${scale}"]`).classList.add('selected');
             
             // Zaktualizuj rozmiary graczy i piłki
             let playerRadius, ballRadius;
@@ -1342,7 +1335,7 @@
         }
         
         // Inicjalizacja
-        selectTeam(0); // Domyślny wybór drużyny
+        selectTeam(0); // Domyślny wybór drużyny, automatycznie ustawi field i scale
         gameLoop();
     </script>
 </body>
