@@ -523,8 +523,6 @@ function moveBotToTarget(bot, target) {
     
     const dx = target.x - bot.x;
     const dy = target.y - bot.y;
-    // ... reszta funkcji bez zmian
-}
     const distance = Math.sqrt(dx * dx + dy * dy);
     const scale = getCurrentScale();
     
@@ -532,7 +530,7 @@ function moveBotToTarget(bot, target) {
         const normalizedX = dx / distance;
         const normalizedY = dy / distance;
         
-    const currentSpeed = bot.maxSpeed;
+        const currentSpeed = bot.maxSpeed;
         
         bot.vx = normalizedX * currentSpeed;
         bot.vy = normalizedY * currentSpeed;
