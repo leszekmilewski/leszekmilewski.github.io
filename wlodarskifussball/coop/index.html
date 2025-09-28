@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARIAN WŁODARSKI GESUNDHEIT FUSSBALL 2</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(45deg, #001122, #003344);
+            color: #00ff00;
+            font-family: 'Press Start 2P', monospace;
+            text-align: center;
+            min-height: 100vh;
+        }
+        
+        h1 {
+            color: #ffff00;
+            text-shadow: 2px 2px 4px #000;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .subtitle {
+            color: #00ffff;
+            margin-bottom: 30px;
+            font-size: 10px;
+        }
+        
+        .main-menu, .game-setup {
+            background: rgba(0,0,0,0.8);
+            border: 3px solid #00ff00;
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 700px;
+            border-radius: 10px;
+        }
+        
+        .menu-btn, .setup-btn, .control-btn {
+            background: linear-gradient(45deg, #006600, #00aa00);
+            color: #ffffff;
+            border: 2px solid #00ff00;
+            padding: 15px 25px;
+            margin: 10px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        
+        .menu-btn:hover, .setup-btn:hover, .control-btn:hover {
+            background: linear-gradient(45deg, #00aa00, #00ff00);
+            transform: scale(1.05);
+        }
+        
+        .team-selector, .field-selector, .scale-selector {
+            margin: 20px 0;
+        }
+        
+        .team-btn, .field-btn {
+            background: linear-gradient(45deg, #004400, #006600);
+            color: #ffffff;
+            border: 2px solid #00ff00;
+            padding: 10px 15px;
+            margin: 5px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 8px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        
+        .team-btn.selected, .field-btn.selected {
+            background: linear-gradient(45deg, #ff6600, #ffaa00);
+            border-color: #ffff00;
+        }
+        
+        .scale-btn {
+            background: linear-gradient(45deg, #000066, #0000aa);
+            color: #ffffff;
+            border: 2px solid #0066ff;
+            padding: 8px 12px;
+            margin: 3px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 8px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        
+        .scale-btn.selected {
+            background: linear-gradient(45deg, #ff0066, #ff00aa);
+            border-color: #ff66ff;
+        }
+        
+        .game-container {
+            display: none;
+            text-align: center;
+            margin: 20px auto;
+        }
+        
+        #gameCanvas {
+            border: 4px solid #00ff00;
+            background: #228B22;
+            border-radius: 10px;
+        }
+        
+        .score {
+            font-size: 16px;
+            color: #ffff00;
+            margin: 10px 0;
+            text-shadow: 2px 2px 4px #000;
+        }
+        
+        .controls-info {
+            background: rgba(0,0,0,0.8);
+            border: 2px solid #00ff00;
+            padding: 15px;
+            margin: 10px auto;
+            max-width: 800px;
+            border-radius: 5px;
+            font-size: 8px;
+        }
+        
+        .player-controls {
+            display: inline-block;
+            margin: 10px 20px;
+            padding: 10px;
+            border: 1px solid #0066ff;
+            border-radius: 5px;
+        }
+        
+        .start-message, .winner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.9);
+            border: 3px solid #ffff00;
+            padding: 20px;
+            border-radius: 10px;
+            color: #ffff00;
+            text-shadow: 2px 2px 4px #000;
+        }
+        
+        .winner {
+            border-color: #00ff00;
+            color: #00ff00;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>⚽🚬 MARIAN WŁODARSKI GESUNDHEIT FUSSBALL 2 🚬⚽</h1>
+    <div class="subtitle">*** KOOPERATION GEGEN MODE ***</div>
+    
+    <!-- HAUPTMENÜ -->
+    <div id="mainMenu" class="main-menu">
+        <h2 style="color: #ffff00; margin-bottom: 20px;">♞ HAUPTMENÜ ♞</h2>
+        <button class="menu-btn" onclick="showGameSetup()">🤝 CO-OP MODUS</button>
+        <div style="margin-top: 20px; font-size: 8px; color: #00ffff;">
+            STEUERUNG:<br>
+            SPIELER 1: WASD | SPIELER 2: IJKL<br>
+            LEERTASTE: START/RESET BALL<br>
+            <span style="color: #ffff00;">ZUSAMMEN GEGEN KI BOTS!</span>
+        </div>
+    </div>
+    
+    <!-- SPIEL SETUP -->
+    <div id="gameSetup" class="game-setup hidden">
+        <h2 style="color: #00ff00; margin-bottom: 20px;">CO-OP EINSTELLUNGEN</h2>
+        
+        <div class="team-selector">
+            <h3 style="color: #ffff00; font-size: 10px;">GEGNER WÄHLEN:</h3>
+            <button class="team-btn selected" data-team="0" onclick="selectTeam(0)">MSV DUISBURG - Einfach (1 Bot)</button>
+            <button class="team-btn" data-team="1" onclick="selectTeam(1)">SV WALDHOF - Matsch (1 Bot)</button>
+            <button class="team-btn" data-team="2" onclick="selectTeam(2)">FC HANSA ROSTOCK - Winter (2 Bots)</button>
+            <button class="team-btn" data-team="3" onclick="selectTeam(3)">EINTRACHT BRAUNSCHWEIG - Stadion (4 Bots)</button>
+            <button class="team-btn" data-team="4" onclick="selectTeam(4)">LOKOMOTIV LEIPZIG - Profi Schwer (4 Bots)</button>
+            <button class="team-btn" data-team="5" onclick="selectTeam(5)">FC CARL ZEISS JENA - Sand (3 Bots)</button>
+        </div>
+        
+        <div style="margin: 30px 0; font-size: 8px; color: #00ffff;">
+            Jede Mannschaft hat ihr eigenes Spielfeld und Schwierigkeitsgrad!
+        </div>
+        
+        <div style="margin: 20px 0;">
+            <button class="setup-btn" onclick="startCoOpGame()">🚀 SPIEL STARTEN</button>
+            <button class="setup-btn" onclick="backToMenu()">← ZURÜCK</button>
+        </div>
+    </div>
+    
+    <!-- SPIEL INTERFACE -->
+    <div class="game-container" id="gameContainer">
+        <div class="score" id="scoreDisplay">
+            <span style="color: #00ff00;">MENSCHEN TEAM</span>
+            <span id="humanScore">0</span> : <span id="botScore">0</span>
+            <span style="color: #ff0000;" id="botTeamName">COMPUTER BOTS</span>
+        </div>
+        
+        <div style="position: relative;">
+            <canvas id="gameCanvas" width="800" height="400"></canvas>
+            <div id="startMessage" class="start-message">
+                <h3>🚀 LEERTASTE DRÜCKEN! 🚀</h3>
+                <p style="font-size: 8px;">*** CO-OP SPIEL BEGINNT! ***</p>
+            </div>
+            <div id="winnerMessage" class="winner hidden"></div>
+        </div>
+        
+        <div class="controls-info">
+            <div class="player-controls">
+                <strong style="color: #00ff00;">WŁODARSKI</strong><br>
+                W/A/S/D = BEWEGUNG
+            </div>
+            <div class="player-controls">
+                <strong style="color: #00ff00;">KOSECKI</strong><br>
+                I/J/K/L = BEWEGUNG
+            </div>
+            <div style="margin: 10px 0;">
+                LEERTASTE: START/RESET BALL | ERSTER BIS 5 TORE GEWINNT!<br>
+                <span style="color: #ffff00;">ARBEITET ZUSAMMEN GEGEN DIE KI!</span>
+            </div>
+        </div>
+        
+        <div>
+            <button class="control-btn" onclick="backToMenu()">🏠 HAUPTMENÜ</button>
+            <button class="control-btn" id="restartBtn" onclick="restartMatch()" style="display: none;">🔄 SPIEL WIEDERHOLEN</button>
+        </div>
+    </div>
+
+    <script>
+        // Definicje drużyn (oparte na oryginalnych)
+        const teams = [
+            {
+                number: 1,
+                opponentTeam: "MSV DUISBURG",
+                field: 'simple',
+                fieldScale: 1.0,
+                ballSpeed: 5.7,
+                ballMaxSpeed: 11.5,
+                bots: [
+                    { 
+                        name: "HAJTO", 
+                        x: 700, y: 200, 
+                        color: "#0000ff", 
+                        maxSpeed: 3.75,
+                        shootPower: 1.0,
+                        radius: 20,
+                        number: 2, 
+                        role: "defender", 
+                        preferredY: 200, 
+                        team: "opponent" 
+                    }
+                ]
+            },
+            {
+                number: 2, 
+                opponentTeam: "SV WALDHOF MANNHEIM",
+                field: "muddy",
+                fieldScale: 1.0,
+                ballSpeed: 5.5,
+                ballMaxSpeed: 11.0,
+                bots: [
+                    { 
+                        name: "KOBYLANSKI", 
+                        x: 700, y: 200, 
+                        color: "#800080", 
+                        maxSpeed: 4.5,
+                        shootPower: 1.5,
+                        radius: 18,
+                        number: 9, 
+                        role: "ball_chaser", 
+                        preferredY: 200, 
+                        team: "opponent" 
+                    }
+                ]
+            },
+            {
+                number: 3,
+                opponentTeam: "FC HANSA ROSTOCK",
+                field: "winter",
+                fieldScale: 0.75,
+                ballSpeed: 5.2,
+                ballMaxSpeed: 10.5,
+                bots: [
+                    { 
+                        name: "MAJAK", 
+                        x: 650, y: 150, 
+                        color: "#006600", 
+                        maxSpeed: 3.5,
+                        shootPower: 1.3,
+                        radius: 16,
+                        number: 8, 
+                        role: "attacker", 
+                        preferredY: 150, 
+                        team: "opponent" 
+                    },
+                    { 
+                        name: "LANGE", 
+                        x: 650, y: 250, 
+                        color: "#006600", 
+                        maxSpeed: 2.75,
+                        shootPower: 0.9,
+                        radius: 18,
+                        number: 11, 
+                        role: "defender", 
+                        preferredY: 200, 
+                        team: "opponent" 
+                    }
+                ]
+            },
+            {
+                number: 4,
+                opponentTeam: "EINTRACHT BRAUNSCHWEIG", 
+                field: 'professional',
+                fieldScale: 0.5,
+                ballSpeed: 6.0,
+                ballMaxSpeed: 12.0,
+                bots: [
+                    { 
+                        name: "G.HOFFMAN", 
+                        x: 600, y: 120, 
+                        color: "#ff6600", 
+                        maxSpeed: 5.25,
+                        shootPower: 1.6,
+                        radius: 12,
+                        number: 6, 
+                        role: "attacker", 
+                        preferredY: 120, 
+                        team: "opponent" 
+                    },
+                    { 
+                        name: "D.KLEIN", 
+                        x: 650, y: 200, 
+                        color: "#ff6600", 
+                        maxSpeed: 4.5,
+                        shootPower: 1.2,
+                        radius: 11,
+                        number: 4, 
+                        role: "midfielder", 
+                        preferredY: 200, 
+                        team: "opponent" 
+                    },
+                    { 
+                        name: "S.BRAUN", 
+                        x: 600, y: 280, 
+                        color: "#ff6600", 
+                        maxSpeed: 5.25,
+                        shootPower: 0.8,
+                        radius: 12,
+                        number: 3, 
+                        role: "defender", 
+                        preferredY: 280, 
+                        team: "opponent" 
+                    },
+                    { 
+                        name: "KEEPER", 
+                        x: 750, y: 200, 
+                        color: "#cc3300", 
+                        maxSpeed: 1.8,
+                        shootPower: 0.5,
+                        radius: 14,
+                        number: 1, 
+                        role: "goalkeeper", 
+                        isGoalkeeper: true, 
+                        preferredY: 200, 
+                        team: "opponent" 
+                    }
+                ]
+            },
+            {
+                number: 5,
+                opponentTeam: "LOKOMOTIV LEIPZIG",
+                field: "professional", 
+                fieldScale: 0.25,
+                ballSpeed: 6.2,
+                ballMaxSpeed: 13.0,
+                bots: [
+                    { 
+                        name: "W.RICHTER", 
+                        x: 600, y: 100, 
+                        color: "#990000", 
+                        maxSpeed: 6,
+                        shootPower: 1.8,
+                        radius: 6,
+                        number: 5, 
+                        role: "attacker", 
+                        preferredY: 100, 
+                        team: "opponent" 
+                    },
+                    { 
+                        name: "H.FISCHER", 
+                        x: 650, y: 200, 
+                        color: "#990000", 
+                        maxSpeed: 5.25,
+                        shootPower: 1.4,
+                        radius: 6,
+                        number: 2, 
+                        role: "midfielder", 
+                        preferredY: 200, 
+                        team: "opponent" 
+                    },
+                    { 
+                        name: "R.BECKER", 
+                        x: 600, y: 300, 
+                        color: "#990000", 
+                        maxSpeed: 6,
+                        shootPower: 1.0,
+                        radius: 6,
+                        number: 1, 
+                        role: "defender", 
+                        preferredY: 300, 
+                        team: "opponent" 
+                    },
+                    { 
+                        name: "O.SCHULZ", 
+                        x: 750, y: 200, 
+                        color: "#660000", 
+                        maxSpeed: 2.25,
+                        shootPower: 0.4,
+                        radius: 7,
+                        isGoalkeeper: true, 
+                        number: 12, 
+                        role: "goalkeeper", 
+                        preferredY: 200, 
+                        team: "opponent" 
+                    }
+                ]
+            },
+            {
+                number: 6,
+                opponentTeam: "FC CARL ZEISS JENA",
+                field: "sandy",
+                fieldScale: 0.75,
+                ballSpeed: 5.0,
+                ballMaxSpeed: 10.0,
+                bots: [
+                    { 
+                        name: "B.KOCH", 
+                        x: 650, y: 130, 
+                        color: "#0066ff", 
+                        maxSpeed: 3.0,
+                        shootPower: 0.8,
+                        radius: 17,
+                        number: 14, 
+                        role: "defender", 
+                        preferredY: 130, 
+                        team: "opponent" 
+                    },
+                    { 
+                        name: "U.KRAUSE", 
+                        x: 680, y: 200, 
+                        color: "#0066ff", 
+                        maxSpeed: 2.8,
+                        shootPower: 1.1,
+                        radius: 16,
+                        number: 8, 
+                        role: "midfielder", 
+                        preferredY: 200, 
+                        team: "opponent" 
+                    },
+                    { 
+                        name: "T.WEBER", 
+                        x: 650, y: 270, 
+                        color: "#0066ff", 
+                        maxSpeed: 3.2,
+                        shootPower: 1.4,
+                        radius: 15,
+                        number: 9, 
+                        role: "attacker", 
+                        preferredY: 270, 
+                        team: "opponent" 
+                    }
+                ]
+            }
+        ];
+        
+        // Globalne zmienne
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let gameSettings = {
+            field: 'simple',
+            scale: 1.0,
+            selectedTeam: 0
+        };
+        
+        let gameState = {
+            humanScore: 0,
+            botScore: 0,
+            gameWon: false,
+            gameStarted: false,
+            ballInPlay: false,
+            ballRotation: 0,
+            lastCollisionTime: 0
+        };
+        
+        // Gracz 1 (WASD) - zielony
+        const player1 = {
+            x: 150,
+            y: canvas.height / 2,
+            radius: 15,
+            color: '#00ff00',
+            vx: 0,
+            vy: 0,
+            speed: 5
+        };
+        
+        // Gracz 2 (IJKL) - zielony
+        const player2 = {
+            x: 100,
+            y: canvas.height / 2 + 50,
+            radius: 15,
+            color: '#00ff00',
+            vx: 0,
+            vy: 0,
+            speed: 5
+        };
+        
+        // Piłka
+        const ball = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            radius: 8,
+            vx: 0,
+            vy: 0,
+            color: '#ffffff',
+            maxSpeed: 12,
+            startSpeed: 6,
+            friction: 0.998
+        };
+        
+        // Boty przeciwników
+        let bots = [];
+        
+        // Sterowanie
+        const keys = {};
+        
+        document.addEventListener('keydown', (e) => {
+            keys[e.key.toLowerCase()] = true;
+            
+            if (e.key === ' ') {
+                e.preventDefault();
+                if (!gameState.gameStarted) {
+                    startGame();
+                } else if (!gameState.ballInPlay && !gameState.gameWon) {
+                    launchBall();
+                }
+            }
+        });
+        
+        document.addEventListener('keyup', (e) => {
+            keys[e.key.toLowerCase()] = false;
+        });
+        
+        // Funkcje menu
+        function showGameSetup() {
+            document.getElementById('mainMenu').style.display = 'none';
+            document.getElementById('gameSetup').classList.remove('hidden');
+        }
+        
+        function backToMenu() {
+            document.getElementById('gameContainer').style.display = 'none';
+            document.getElementById('gameSetup').classList.add('hidden');
+            document.getElementById('mainMenu').style.display = 'block';
+            resetGame();
+        }
+        
+        function selectTeam(teamIndex) {
+            gameSettings.selectedTeam = teamIndex;
+            document.querySelectorAll('.team-btn').forEach(btn => btn.classList.remove('selected'));
+            document.querySelector(`[data-team="${teamIndex}"]`).classList.add('selected');
+            
+            // Automatycznie ustaw boisko i skalę zgodnie z wybraną drużyną
+            const teamData = teams[teamIndex];
+            gameSettings.field = teamData.field;
+            gameSettings.scale = teamData.fieldScale;
+            
+            // Zaktualizuj interfejs
+            document.querySelectorAll('.field-btn').forEach(btn => btn.classList.remove('selected'));
+            document.querySelector(`[data-field="${teamData.field}"]`).classList.add('selected');
+            
+            document.querySelectorAll('.scale-btn').forEach(btn => btn.classList.remove('selected'));
+            document.querySelector(`[data-scale="${teamData.fieldScale}"]`).classList.add('selected');
+        }
+        
+        function selectField(fieldType) {
+            gameSettings.field = fieldType;
+            document.querySelectorAll('.field-btn').forEach(btn => btn.classList.remove('selected'));
+            document.querySelector(`[data-field="${fieldType}"]`).classList.add('selected');
+            
+            // Ustaw parametry piłki i graczy w zależności od typu boiska
+            switch(fieldType) {
+                case 'simple':
+                    ball.startSpeed = 6;
+                    ball.maxSpeed = 12;
+                    ball.friction = 0.998;
+                    player1.speed = 5;
+                    player2.speed = 5;
+                    break;
+                case 'grass':
+                    ball.startSpeed = 5.5;
+                    ball.maxSpeed = 11;
+                    ball.friction = 0.997;
+                    player1.speed = 4.5;
+                    player2.speed = 4.5;
+                    break;
+                case 'muddy':
+                    ball.startSpeed = 4;
+                    ball.maxSpeed = 8;
+                    ball.friction = 0.992;
+                    player1.speed = 3.5;
+                    player2.speed = 3.5;
+                    break;
+                case 'winter':
+                    ball.startSpeed = 7;
+                    ball.maxSpeed = 14;
+                    ball.friction = 0.999;
+                    player1.speed = 6;
+                    player2.speed = 6;
+                    break;
+                case 'sandy':
+                    ball.startSpeed = 3.5;
+                    ball.maxSpeed = 7;
+                    ball.friction = 0.990;
+                    player1.speed = 3;
+                    player2.speed = 3;
+                    break;
+                case 'asphalt':
+                    ball.startSpeed = 7.5;
+                    ball.maxSpeed = 15;
+                    ball.friction = 0.999;
+                    player1.speed = 5.5;
+                    player2.speed = 5.5;
+                    break;
+                case 'professional':
+                    ball.startSpeed = 8;
+                    ball.maxSpeed = 16;
+                    ball.friction = 0.9995;
+                    player1.speed = 6;
+                    player2.speed = 6;
+                    break;
+                default:
+                    ball.startSpeed = 6;
+                    ball.maxSpeed = 12;
+                    ball.friction = 0.998;
+                    player1.speed = 5;
+                    player2.speed = 5;
+            }
+        }
+        
+        function selectScale(scale) {
+            gameSettings.scale = scale;
+            document.querySelectorAll('.scale-btn').forEach(btn => btn.classList.remove('selected'));
+            document.querySelector(`[data-scale="${scale}"]`).classList.add('selected');
+            
+            // Zaktualizuj rozmiary graczy i piłki
+            let playerRadius, ballRadius;
+            
+            switch(scale) {
+                case 0.25:
+                    playerRadius = 30;
+                    ballRadius = 15;
+                    break;
+                case 0.5:
+                    playerRadius = 22;
+                    ballRadius = 11;
+                    break;
+                case 0.75:
+                    playerRadius = 18;
+                    ballRadius = 9;
+                    break;
+                case 1.0:
+                default:
+                    playerRadius = 15;
+                    ballRadius = 8;
+                    break;
+            }
+            
+            player1.radius = playerRadius;
+            player2.radius = playerRadius;
+            ball.radius = ballRadius;
+        }
+        
+        function startCoOpGame() {
+            const teamData = teams[gameSettings.selectedTeam];
+            
+            // Załaduj botów przeciwników
+            bots = teamData.bots.map(botData => ({
+                ...botData,
+                radius: Math.max(3, (botData.radius || 20) * gameSettings.scale),
+                vx: 0,
+                vy: 0,
+                startY: botData.y,
+                role: botData.role || "midfielder",
+                preferredY: botData.preferredY || botData.y
+            }));
+            
+            // Ustaw nazwę drużyny przeciwników
+            document.getElementById('botTeamName').textContent = teamData.opponentTeam;
+            
+            // Przejdź do gry
+            document.getElementById('gameSetup').classList.add('hidden');
+            document.getElementById('gameContainer').style.display = 'block';
+            resetGame();
+        }
+        
+        function resetGame() {
+            gameState.humanScore = 0;
+            gameState.botScore = 0;
+            gameState.gameWon = false;
+            gameState.gameStarted = false;
+            gameState.ballInPlay = false;
+            gameState.ballRotation = 0;
+            gameState.lastCollisionTime = 0;
+            
+            // Reset pozycji graczy
+            player1.x = 150;
+            player1.y = canvas.height / 2;
+            player1.vx = 0;
+            player1.vy = 0;
+            
+            player2.x = 100;
+            player2.y = canvas.height / 2 + 50;
+            player2.vx = 0;
+            player2.vy = 0;
+            
+            ball.x = canvas.width / 2;
+            ball.y = canvas.height / 2;
+            ball.vx = 0;
+            ball.vy = 0;
+            
+            updateScore();
+            document.getElementById('startMessage').classList.remove('hidden');
+            document.getElementById('winnerMessage').classList.add('hidden');
+            document.getElementById('restartBtn').style.display = 'none';
+        }
+        
+        function startGame() {
+            gameState.gameStarted = true;
+            document.getElementById('startMessage').classList.add('hidden');
+            launchBall();
+        }
+        
+        function restartMatch() {
+            resetGame();
+        }
+        
+        // Fizyka gry
+        function updatePlayer1() {
+            player1.vx = 0;
+            player1.vy = 0;
+            
+            if (keys['w']) player1.vy = -player1.speed;
+            if (keys['s']) player1.vy = player1.speed;
+            if (keys['a']) player1.vx = -player1.speed;
+            if (keys['d']) player1.vx = player1.speed;
+            
+            player1.x += player1.vx;
+            player1.y += player1.vy;
+            
+            applyFieldBoundaries(player1);
+        }
+        
+        function updatePlayer2() {
+            player2.vx = 0;
+            player2.vy = 0;
+            
+            if (keys['i']) player2.vy = -player2.speed;
+            if (keys['k']) player2.vy = player2.speed;
+            if (keys['j']) player2.vx = -player2.speed;
+            if (keys['l']) player2.vx = player2.speed;
+            
+            player2.x += player2.vx;
+            player2.y += player2.vy;
+            
+            applyFieldBoundaries(player2);
+        }
+        
+        // AI dla botów
+        function updateBots() {
+            bots.forEach(bot => {
+                if (!gameState.ballInPlay && !bot.isGoalkeeper) {
+                    positionBotForKickoff(bot);
+                    return;
+                }
+
+                if (bot.isGoalkeeper) {
+                    updateGoalkeeper(bot);
+                } else {
+                    updateFieldBot(bot);
+                }
+            });
+        }
+
+        function positionBotForKickoff(bot) {
+            const scale = gameSettings.scale;
+            
+            let readyX, readyY;
+            
+            if (bot.isGoalkeeper) {
+                readyX = canvas.width - 40 * scale;
+                readyY = canvas.height / 2;
+            } else {
+                readyX = canvas.width / 2 + 80 * scale;
+                readyY = bot.startY || canvas.height / 2;
+            }
+            
+            bot.vx = (readyX - bot.x) * 0.1;
+            bot.vy = (readyY - bot.y) * 0.1;
+            
+            bot.x += bot.vx;
+            bot.y += bot.vy;
+        }
+
+        function updateFieldBot(bot) {
+            const scale = gameSettings.scale;
+            const distanceToBall = Math.sqrt((ball.x - bot.x) ** 2 + (ball.y - bot.y) ** 2);
+            const ballInReach = distanceToBall < 120 * scale;
+
+            let target;
+            
+            switch(bot.role) {
+                case "attacker":
+                case "ball_chaser":
+                    if (ballInReach) {
+                        target = { x: ball.x, y: ball.y };
+                    } else {
+                        target = { x: canvas.width * 0.85, y: canvas.height / 2 };
+                    }
+                    break;
+                case "midfielder":
+                    if (ballInReach) {
+                        target = { x: ball.x, y: ball.y };
+                    } else {
+                        target = { x: canvas.width * 0.65, y: bot.preferredY };
+                    }
+                    break;
+                case "defender":
+                default:
+                    if (ballInReach && ball.x > canvas.width * 0.6) {
+                        target = { x: ball.x - 20 * scale, y: ball.y };
+                    } else {
+                        target = { x: canvas.width * 0.8, y: bot.preferredY };
+                    }
+                    break;
+            }
+
+            // Porusz bota w kierunku celu
+            const dx = target.x - bot.x;
+            const dy = target.y - bot.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance > 3 * scale) {
+                const normalizedX = dx / distance;
+                const normalizedY = dy / distance;
+                
+                bot.vx = normalizedX * bot.maxSpeed;
+                bot.vy = normalizedY * bot.maxSpeed;
+            } else {
+                bot.vx *= 0.8;
+                bot.vy *= 0.8;
+            }
+
+            bot.x += bot.vx;
+            bot.y += bot.vy;
+            
+            applyFieldBoundaries(bot);
+        }
+
+        function updateGoalkeeper(bot) {
+            const scale = gameSettings.scale;
+            let targetY = ball.y;
+            
+            bot.x = Math.max(canvas.width - 50 * scale, Math.min(canvas.width - 20 * scale, bot.x));
+            targetY = Math.max(canvas.height * 0.35, Math.min(canvas.height * 0.65, targetY));
+            
+            const dy = targetY - bot.y;
+            bot.vy = dy * 0.12;
+            bot.y += bot.vy;
+        }
+        
+        function updateBall() {
+            if (!gameState.ballInPlay || gameState.gameWon) return;
+            
+            ball.x += ball.vx;
+            ball.y += ball.vy;
+            
+            // Rotacja piłki
+            const speed = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy);
+            gameState.ballRotation += speed * 0.05;
+            
+            // Odbicia od ścian
+            if (ball.y <= ball.radius + 15 || ball.y >= canvas.height - ball.radius - 15) {
+                ball.vy = -ball.vy;
+                ball.y = ball.y <= ball.radius + 15 ? ball.radius + 15 : canvas.height - ball.radius - 15;
+            }
+            
+            // Gole
+            if (ball.x <= 15) {
+                const goalBounds = getGoalBounds();
+                if (ball.y > goalBounds.top && ball.y < goalBounds.bottom) {
+                    gameState.botScore++;
+                    updateScore();
+                    resetBallAfterGoal();
+                } else {
+                    ball.vx = -ball.vx;
+                    ball.x = ball.radius + 15;
+                }
+            }
+            
+            if (ball.x >= canvas.width - 15) {
+                const goalBounds = getGoalBounds();
+                if (ball.y > goalBounds.top && ball.y < goalBounds.bottom) {
+                    gameState.humanScore++;
+                    updateScore();
+                    resetBallAfterGoal();
+                } else {
+                    ball.vx = -ball.vx;
+                    ball.x = canvas.width - ball.radius - 15;
+                }
+            }
+            
+            // Kolizje z wszystkimi graczami (ludźmi i botami)
+            const currentTime = Date.now();
+            const allPlayers = [player1, player2, ...bots];
+            
+            allPlayers.forEach(player => {
+                const dx = ball.x - player.x;
+                const dy = ball.y - player.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < ball.radius + player.radius) {
+                    if (currentTime - gameState.lastCollisionTime < 200) {
+                        return;
+                    }
+                    
+                    const nx = dx / distance;
+                    const ny = dy / distance;
+                    
+                    // Rozdziel obiekty
+                    const overlap = ball.radius + player.radius - distance;
+                    const separationDistance = overlap + 5;
+                    ball.x += nx * separationDistance;
+                    ball.y += ny * separationDistance;
+                    
+                    // Oblicz prędkość piłki
+                    let kickPower;
+                    
+                    if (player === player1 || player === player2) {
+                        // Gracze ludzcy
+                        const playerSpeed = Math.sqrt(player.vx * player.vx + player.vy * player.vy);
+                        kickPower = Math.max(4, playerSpeed + 3);
+                        ball.vx = nx * kickPower + player.vx * 0.5;
+                        ball.vy = ny * kickPower + player.vy * 0.5;
+                    } else {
+                        // Boty - celują w bramkę przeciwnika
+                        const goalCenterY = canvas.height / 2;
+                        const targetGoalX = 15; // Boty strzelają w lewo (do bramki graczy)
+                        const shootAngle = Math.atan2(goalCenterY - ball.y, targetGoalX - ball.x);
+                        
+                        const shootPowerX = Math.cos(shootAngle) * (player.shootPower || 1.2) * 6;
+                        const shootPowerY = Math.sin(shootAngle) * (player.shootPower || 1.2) * 6;
+                        
+                        ball.vx = shootPowerX + player.vx * 0.2;
+                        ball.vy = shootPowerY + player.vy * 0.2;
+                    }
+                    
+                    // Ograniczenie prędkości
+                    const ballSpeed = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy);
+                    if (ballSpeed > ball.maxSpeed) {
+                        ball.vx = (ball.vx / ballSpeed) * ball.maxSpeed;
+                        ball.vy = (ball.vy / ballSpeed) * ball.maxSpeed;
+                    }
+                    
+                    gameState.lastCollisionTime = currentTime;
+                }
+            });
+            
+            // Tarcie
+            ball.vx *= ball.friction;
+            ball.vy *= ball.friction;
+            
+            if (Math.abs(ball.vx) < 0.05 && Math.abs(ball.vy) < 0.05) {
+                ball.vx = 0;
+                ball.vy = 0;
+                gameState.ballInPlay = false;
+            }
+        }
+        
+        function applyFieldBoundaries(entity) {
+            const border = 15 * gameSettings.scale;
+            entity.x = Math.max(entity.radius + border, Math.min(canvas.width - entity.radius - border, entity.x));
+            entity.y = Math.max(entity.radius + border, Math.min(canvas.height - entity.radius - border, entity.y));
+        }
+        
+        function getGoalBounds() {
+            const goalAreaHeight = 0.3 * gameSettings.scale;
+            const goalTop = 0.5 - goalAreaHeight/2;
+            const goalBottom = 0.5 + goalAreaHeight/2;
+            
+            return {
+                top: canvas.height * goalTop,
+                bottom: canvas.height * goalBottom
+            };
+        }
+        
+        function launchBall() {
+            gameState.ballInPlay = true;
+            const angle = (Math.random() - 0.5) * Math.PI * 0.4;
+            const direction = Math.random() < 0.5 ? 1 : -1;
+            
+            ball.vx = Math.cos(angle) * ball.startSpeed * direction;
+            ball.vy = Math.sin(angle) * ball.startSpeed;
+        }
+        
+        function resetBallAfterGoal() {
+            ball.x = canvas.width / 2;
+            ball.y = canvas.height / 2;
+            ball.vx = 0;
+            ball.vy = 0;
+            gameState.ballInPlay = false;
+        }
+        
+        function updateScore() {
+            document.getElementById('humanScore').textContent = gameState.humanScore;
+            document.getElementById('botScore').textContent = gameState.botScore;
+            
+            if (gameState.humanScore >= 5) {
+                gameState.gameWon = true;
+                showWinMessage('MENSCHEN TEAM GEWINNT!');
+            } else if (gameState.botScore >= 5) {
+                gameState.gameWon = true;
+                showWinMessage('COMPUTER BOTS GEWINNEN!');
+            }
+        }
+        
+        function showWinMessage(message) {
+            document.getElementById('winnerMessage').innerHTML = `
+                <div style="font-size: 14px;">🎉 ${message} 🎉</div>
+                <div style="font-size: 10px; margin: 10px 0; color: #ffff00;">
+                    ERGEBNIS: ${gameState.humanScore} - ${gameState.botScore}
+                </div>
+            `;
+            document.getElementById('winnerMessage').classList.remove('hidden');
+            document.getElementById('restartBtn').style.display = 'inline-block';
+        }
+        
+        // Rysowanie - te same funkcje co w PvP
+        function drawField() {
+            switch(gameSettings.field) {
+                case 'grass':
+                    drawGrassField();
+                    break;
+                case 'muddy':
+                    drawMuddyField();
+                    break;
+                case 'winter':
+                    drawWinterField();
+                    break;
+                case 'sandy':
+                    drawSandyField();
+                    break;
+                case 'asphalt':
+                    drawAsphaltField();
+                    break;
+                case 'professional':
+                    drawProfessionalField();
+                    break;
+                default:
+                    drawSimpleField();
+            }
+        }
+        
+        function drawSimpleField() {
+            ctx.fillStyle = '#32CD32';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            drawStandardFieldLines();
+        }
+        
+        function drawGrassField() {
+            const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, 400);
+            gradient.addColorStop(0, '#32CD32');
+            gradient.addColorStop(0.7, '#228B22');
+            gradient.addColorStop(1, '#1F7A1F');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.strokeStyle = 'rgba(50, 205, 50, 0.2)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < canvas.width; i += 20) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i, canvas.height);
+                ctx.stroke();
+            }
+            drawStandardFieldLines();
+        }
+        
+        function drawMuddyField() {
+            const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, 400);
+            gradient.addColorStop(0, '#8B4513');
+            gradient.addColorStop(0.5, '#654321');
+            gradient.addColorStop(1, '#2F1B0C');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = 'rgba(0,100,150,0.7)';
+            [[200,100,40,20], [600,300,35,25], [400,150,30,15]].forEach(([x,y,w,h]) => {
+                ctx.beginPath();
+                ctx.ellipse(x, y, w, h, 0, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            drawStandardFieldLines();
+        }
+        
+        function drawWinterField() {
+            const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, 400);
+            gradient.addColorStop(0, '#e8e8e8');
+            gradient.addColorStop(0.7, '#d5d5d5');
+            gradient.addColorStop(1, '#c0c0c0');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const time = Date.now() * 0.001;
+            ctx.fillStyle = 'rgba(200,200,200,0.8)';
+            for(let i = 0; i < 20; i++) {
+                const x = (i * 37 + Math.sin(time + i) * 10) % canvas.width;
+                const y = (i * 23 + time * 10) % canvas.height;
+                ctx.beginPath();
+                ctx.arc(x, y, (2 + Math.sin(time + i)) * gameSettings.scale, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            drawStandardFieldLines();
+        }
+        
+        function drawSandyField() {
+            const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, 400);
+            gradient.addColorStop(0, '#F4A460');
+            gradient.addColorStop(0.5, '#D2B48C');
+            gradient.addColorStop(1, '#DEB887');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.strokeStyle = 'rgba(210, 180, 140, 0.3)';
+            ctx.lineWidth = 1 * gameSettings.scale;
+            for (let i = 0; i < canvas.width; i += 15 * gameSettings.scale) {
+                for (let j = 0; j < canvas.height; j += 15 * gameSettings.scale) {
+                    ctx.beginPath();
+                    ctx.arc(i + Math.sin(i*j*0.01) * 3 * gameSettings.scale, j + Math.cos(i*j*0.01) * 3 * gameSettings.scale, 1 * gameSettings.scale, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+            }
+            drawStandardFieldLines();
+        }
+        
+        function drawAsphaltField() {
+            const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, 400);
+            gradient.addColorStop(0, '#404040');
+            gradient.addColorStop(0.5, '#333333');
+            gradient.addColorStop(1, '#1a1a1a');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = 'rgba(80, 80, 80, 0.3)';
+            for (let i = 0; i < 200; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const size = Math.random() * 2 + 1;
+                ctx.beginPath();
+                ctx.arc(x, y, size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            drawStandardFieldLines();
+        }
+        
+        function drawProfessionalField() {
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+            gradient.addColorStop(0, '#228B22');
+            gradient.addColorStop(0.5, '#32CD32');
+            gradient.addColorStop(1, '#228B22');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = 'rgba(50, 205, 50, 0.5)';
+            for (let i = 0; i < canvas.width; i += 80) {
+                ctx.fillRect(i, 0, 40, canvas.height);
+            }
+            drawStandardFieldLines();
+        }
+        
+        function drawStandardFieldLines() {
+            const scale = gameSettings.scale;
+            
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 4 * scale;
+            
+            ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+            
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2, 10);
+            ctx.lineTo(canvas.width / 2, canvas.height - 10);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.arc(canvas.width / 2, canvas.height / 2, 60 * scale, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(canvas.width / 2, canvas.height / 2, 4 * scale, 0, Math.PI * 2);
+            ctx.fill();
+            
+            drawGoals(scale);
+        }
+        
+        function drawGoals(scale) {
+            const goalHeight = canvas.height * 0.3 * scale;
+            const goalTop = canvas.height * 0.5 - goalHeight/2;
+            const goalBottom = canvas.height * 0.5 + goalHeight/2;
+            const goalWidth = 15 * scale;
+            
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+            ctx.fillRect(10 - goalWidth, goalTop, goalWidth, goalHeight);
+            ctx.fillRect(canvas.width - 10, goalTop, goalWidth, goalHeight);
+            
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 8 * scale;
+            ctx.beginPath();
+            ctx.moveTo(10, goalTop);
+            ctx.lineTo(10, goalBottom);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(canvas.width - 10, goalTop);
+            ctx.lineTo(canvas.width - 10, goalBottom);
+            ctx.stroke();
+            
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 2 * scale;
+            
+            const boxWidth = canvas.width * 0.05;
+            const boxHeight = canvas.height * 0.2;
+            const boxTop = canvas.height * 0.5 - boxHeight/2;
+            
+            ctx.strokeRect(10, boxTop, boxWidth, boxHeight);
+            ctx.strokeRect(canvas.width - 10 - boxWidth, boxTop, boxWidth, boxHeight);
+        }
+        
+        function drawPlayer(player, name) {
+            const radius = player.radius;
+            
+            ctx.fillStyle = 'rgba(0,0,0,0.3)';
+            ctx.beginPath();
+            ctx.arc(player.x + 2 * gameSettings.scale, player.y + 2 * gameSettings.scale, radius, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = player.color;
+            ctx.beginPath();
+            ctx.arc(player.x, player.y, radius, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 2 * gameSettings.scale;
+            ctx.beginPath();
+            ctx.arc(player.x, player.y, radius, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            ctx.fillStyle = 'white';
+            ctx.font = `bold ${6 * gameSettings.scale}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 1 * gameSettings.scale;
+            const nameY = player.y + radius + 12 * gameSettings.scale;
+            ctx.strokeText(name, player.x, nameY);
+            ctx.fillText(name, player.x, nameY);
+        }
+        
+        function drawBall() {
+            const radius = ball.radius;
+            
+            ctx.fillStyle = 'rgba(0,0,0,0.4)';
+            ctx.beginPath();
+            ctx.arc(ball.x + 2 * gameSettings.scale, ball.y + 2 * gameSettings.scale, radius * 1.1, 0, Math.PI * 2);
+            ctx.fill();
+            
+            if (!gameState.ballInPlay && gameState.gameStarted && !gameState.gameWon) {
+                if (Math.floor(Date.now() / 300) % 2) {
+                    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+                } else {
+                    ctx.fillStyle = ball.color;
+                }
+            } else {
+                ctx.fillStyle = ball.color;
+            }
+            
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, radius, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 1 * gameSettings.scale;
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, radius, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            ctx.fillStyle = 'rgba(255,255,255,0.8)';
+            ctx.beginPath();
+            ctx.arc(ball.x - radius * 0.3, ball.y - radius * 0.3, radius * 0.25, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        // Główna pętla gry
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            drawField();
+            
+            if (gameState.gameStarted) {
+                updatePlayer1();
+                updatePlayer2();
+                updateBots();
+                updateBall();
+            }
+            
+            drawPlayer(player1, 'WŁODARSKI');
+            drawPlayer(player2, 'KOSECKI');
+            
+            bots.forEach(bot => {
+                drawPlayer(bot, bot.name);
+            });
+            
+            drawBall();
+            
+            requestAnimationFrame(gameLoop);
+        }
+        
+        // Inicjalizacja
+        selectTeam(0); // Domyślny wybór drużyny
+        gameLoop();
+    </script>
+</body>
+</html>
