@@ -168,7 +168,7 @@ const teams = [
             team: "opponent" 
         }
     ]
-}
+},
     {
         number: 5,
         playerTeam: "SV BABELSBERG 04", 
