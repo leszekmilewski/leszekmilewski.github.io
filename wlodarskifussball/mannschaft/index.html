@@ -29,6 +29,12 @@
             from { text-shadow: 2px 2px 4px #000, 0 0 10px #ffff00; }
             to { text-shadow: 2px 2px 4px #000, 0 0 20px #ffff00, 0 0 30px #ffff00; }
         }
+
+        @keyframes goalPulse {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1.0); opacity: 1; }
+        }
         
         .subtitle {
             color: #ff0000;
@@ -189,7 +195,7 @@
         <div style="display: flex; justify-content: space-between; max-width: 900px; margin: 0 auto; gap: 20px;">
             <!-- Polnische Mannschaft -->
             <div style="width: 45%; background: linear-gradient(135deg, rgba(220,0,0,0.3), rgba(255,0,0,0.2)); padding: 20px; border: 3px solid #ff0000; border-radius: 15px; box-shadow: 0 0 20px rgba(255,0,0,0.3);">
-                <h3 style="color: #ff0000; font-size: 12px; text-shadow: 2px 2px 4px #000; margin-bottom: 15px;">🇵🇱 POLEN</h3>
+                <h3 style="color: #ff0000; font-size: 12px; text-shadow: 2px 2px 4px #000; margin-bottom: 15px;">🇵🇱 POLEN (4-3-3)</h3>
                 <div style="font-size: 8px; color: #ffffff; text-align: left; line-height: 1.4;">
                     <div style="background: rgba(0,0,0,0.5); padding: 8px; margin: 5px 0; border-radius: 5px;">
                         <strong style="color: #00ff00;">TOR:</strong> 1. SZCZĘSNY
@@ -216,7 +222,7 @@
             
             <!-- Deutsche Mannschaft -->
             <div style="width: 45%; background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(255,215,0,0.2)); padding: 20px; border: 3px solid #ffff00; border-radius: 15px; box-shadow: 0 0 20px rgba(255,255,0,0.3);">
-                <h3 style="color: #ffff00; font-size: 12px; text-shadow: 2px 2px 4px #000; margin-bottom: 15px;">🇩🇪 DEUTSCHLAND</h3>
+                <h3 style="color: #ffff00; font-size: 12px; text-shadow: 2px 2px 4px #000; margin-bottom: 15px;">🇩🇪 DEUTSCHLAND (4-4-2)</h3>
                 <div style="font-size: 8px; color: #ffffff; text-align: left; line-height: 1.4;">
                     <div style="background: rgba(0,0,0,0.5); padding: 8px; margin: 5px 0; border-radius: 5px;">
                         <strong style="color: #00ff00;">TOR:</strong> 1. KAHN
@@ -242,7 +248,8 @@
         <div style="margin: 30px 0; font-size: 10px; color: #00ffff; background: rgba(0,255,255,0.1); padding: 15px; border-radius: 10px; max-width: 600px; margin-left: auto; margin-right: auto;">
             <strong>🏟️  ZABRZE STADION 🏟️</strong><br>
             Sehr schwieriges Finale! 11 gegen 11 Spieler auf kleinem Feld!<br>
-            <span style="color: #ff6666;">Erste Mannschaft mit 3 Toren gewinnt!</span>
+            <span style="color: #ff6666;">Erste Mannschaft mit 3 Toren gewinnt!</span><br>
+            <span style="color: #00ff00;">Mit taktischen Formationen vor Anpfiff!</span>
         </div>
         
         <button class="menu-btn" onclick="startFromLineup()">⚽ STARTEN!</button>
@@ -252,7 +259,7 @@
     <div class="game-container" id="gameContainer">
         <div class="match-info">
             <strong>🏆 POLEN - DEUTSCHLAND 🏆</strong><br>
-            ZABRZE STADION | 11 gegen 11 Spieler
+            ZABRZE STADION | 11 gegen 11 Spieler | Taktische Formationen
         </div>
         
         <div class="score" id="scoreDisplay">
@@ -266,7 +273,7 @@
             <div id="startMessage" class="start-message">
                 <h3>🏆 ZABRZE ARENA 🏆</h3>
                 <p style="font-size: 10px;">DRÜCKEN SIE LEERTASTE!</p>
-                <p style="font-size: 8px;">*** POLEN - DEUTSCHLAND ***</p>
+                <p style="font-size: 8px;">*** FORMATIONEN BEREIT ***</p>
             </div>
             <div id="winnerMessage" class="winner hidden"></div>
         </div>
@@ -288,6 +295,164 @@
     </div>
 
     <script>
+        // ============ SYSTEM FORMACJI TAKTYCZNYCH ============
+        
+        const FORMATIONS = {
+            player: {
+                formation: "4-3-3",
+                positions: {
+                    goalkeeper: { x: 0.08, y: 0.5 },
+                    
+                    // Obrona
+                    fullback_left: { x: 0.22, y: 0.25 },    // WOJTALA
+                    centerback_left: { x: 0.25, y: 0.4 },   // ŁAPIŃSKI  
+                    centerback_right: { x: 0.25, y: 0.6 },  // ZIELIŃSKI
+                    fullback_right: { x: 0.22, y: 0.75 },   // HAJTO
+                    
+                    // Pomocnicy
+                    defensive_midfielder_left: { x: 0.35, y: 0.35 },  // CZERWIEC
+                    defensive_midfielder_right: { x: 0.35, y: 0.65 }, // MICHALSKI
+                    attacking_midfielder: { x: 0.45, y: 0.5 },        // BRZĘCZEK
+                    
+                    // Atak
+                    attacker_left: { x: 0.55, y: 0.3 },     // WARZYCHA
+                    attacker_right: { x: 0.55, y: 0.7 },    // KOWALCZYK
+                    striker: { x: 0.65, y: 0.5 }            // WŁODARSKI (gracz)
+                }
+            },
+            
+            opponent: {
+                formation: "4-4-2", 
+                positions: {
+                    goalkeeper: { x: 0.92, y: 0.5 },        // KAHN
+                    
+                    // Obrona  
+                    fullback_left: { x: 0.78, y: 0.3 },     // KOHLER
+                    centerback_left: { x: 0.75, y: 0.4 },   // HELMER
+                    centerback_right: { x: 0.75, y: 0.6 },  // REUTER  
+                    fullback_right: { x: 0.78, y: 0.7 },    // ZIEGE
+                    
+                    // Pomocnicy
+                    winger_left: { x: 0.65, y: 0.35 },      // EILTS
+                    defensive_midfielder: { x: 0.68, y: 0.5 }, // STRUNZ
+                    winger_right_top: { x: 0.65, y: 0.3 },  // MÖLLER
+                    winger_right_bottom: { x: 0.65, y: 0.7 }, // HÄSLER
+                    
+                    // Atak
+                    striker_left: { x: 0.55, y: 0.425 },    // KLINSMANN
+                    striker_right: { x: 0.55, y: 0.575 }    // BIERHOFF
+                }
+            }
+        };
+
+        let formationState = {
+            inFormation: false,
+            transitionTime: 0,
+            formationDuration: 3000
+        };
+
+        function getFormationPosition(bot) {
+            const formation = bot.team === "player" ? FORMATIONS.player : FORMATIONS.opponent;
+            
+            if (bot.isGoalkeeper) {
+                return formation.positions.goalkeeper;
+            }
+            
+            if (bot.team === "player") {
+                switch(bot.name) {
+                    case "WOJTALA": return formation.positions.fullback_left;
+                    case "LAPINSKI": return formation.positions.centerback_left;
+                    case "ZIELINSKI": return formation.positions.centerback_right;
+                    case "HAJTO": return formation.positions.fullback_right;
+                    case "CZERWIEC": return formation.positions.defensive_midfielder_left;
+                    case "MICHALSKI": return formation.positions.defensive_midfielder_right;
+                    case "BRZECZEK": return formation.positions.attacking_midfielder;
+                    case "WARZYCHA": return formation.positions.attacker_left;
+                    case "KOWALCZYK": return formation.positions.attacker_right;
+                    default: return formation.positions.striker;
+                }
+            } else {
+                switch(bot.name) {
+                    case "KAHN": return formation.positions.goalkeeper;
+                    case "KOHLER": return formation.positions.fullback_left;
+                    case "HELMER": return formation.positions.centerback_left;
+                    case "REUTER": return formation.positions.centerback_right;
+                    case "ZIEGE": return formation.positions.fullback_right;
+                    case "EILTS": return formation.positions.winger_left;
+                    case "STRUNZ": return formation.positions.defensive_midfielder;
+                    case "MOLLER": return formation.positions.winger_right_top;
+                    case "HASLER": return formation.positions.winger_right_bottom;
+                    case "KLINSMANN": return formation.positions.striker_left;
+                    case "BIERHOFF": return formation.positions.striker_right;
+                    default: return formation.positions.defensive_midfielder;
+                }
+            }
+        }
+
+        function resetFormationAfterGoal() {
+            formationState.inFormation = false;
+            formationState.transitionTime = 0;
+            
+            ball.x = canvas.width / 2;
+            ball.y = canvas.height / 2;
+            ball.vx = 0;
+            ball.vy = 0;
+            gameState.ballInPlay = false;
+        }
+
+        function showGoalCelebration(scorer) {
+            const celebrationDiv = document.createElement('div');
+            celebrationDiv.style.cssText = `
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(255,215,0,0.95);
+                border: 3px solid #ff0000;
+                padding: 20px;
+                border-radius: 15px;
+                color: #000;
+                font-family: 'Press Start 2P', monospace;
+                font-size: 14px;
+                text-align: center;
+                box-shadow: 0 0 30px rgba(255,215,0,0.8);
+                z-index: 1000;
+                animation: goalPulse 0.5s ease-in-out;
+            `;
+            
+            celebrationDiv.innerHTML = `
+                <div style="font-size: 16px; margin-bottom: 10px;">⚽ TOOR! ⚽</div>
+                <div style="font-size: 10px; margin-bottom: 8px; color: #333;">${scorer}</div>
+                <div style="font-size: 10px;">${gameState.playerScore} - ${gameState.botScore}</div>
+            `;
+            
+            document.getElementById('gameContainer').appendChild(celebrationDiv);
+            
+            setTimeout(() => {
+                celebrationDiv.remove();
+            }, 2000);
+        }
+
+        function drawFormationInfo() {
+            if (formationState.inFormation && !gameState.ballInPlay) {
+                const timeLeft = Math.max(0, formationState.formationDuration - (Date.now() - formationState.transitionTime));
+                
+                if (timeLeft > 0) {
+                    ctx.fillStyle = 'rgba(0,0,0,0.7)';
+                    ctx.fillRect(canvas.width/2 - 120, 20, 240, 50);
+                    
+                    ctx.fillStyle = '#ffff00';
+                    ctx.font = 'bold 12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('FORMACJE TAKTYCZNE', canvas.width/2, 40);
+                    
+                    ctx.fillStyle = '#00ff00';
+                    ctx.font = '10px Arial';
+                    ctx.fillText('POLSKA 4-3-3 vs DEUTSCHLAND 4-4-2', canvas.width/2, 58);
+                }
+            }
+        }
+
         // Finałowa drużyna Unterhaching (Niemcy '96)
         const finalTeam = {
             number: 7,
@@ -298,7 +463,7 @@
             
             // Ekstremalne parametry finału
             playerRadius: 10,
-            playerSpeed: 2.0, // ZWIĘKSZONE DLA WŁODARSKIEGO
+            playerSpeed: 2.3, // ZWIĘKSZONE DLA WŁODARSKIEGO
             playerShootPower: 1.5,
             
             ballSpeed: 2.5,
@@ -576,7 +741,8 @@
             gameStarted: false,
             ballInPlay: false,
             ballRotation: 0,
-            lastCollisionTime: 0
+            lastCollisionTime: 0,
+            lastTouchedBy: null
         };
         
         // Włodarski - POWIĘKSZONY I SZYBSZY Z NUMEREM 10
@@ -672,6 +838,10 @@
             gameState.ballRotation = 0;
             gameState.lastCollisionTime = 0;
             
+            // Reset formacji
+            formationState.inFormation = false;
+            formationState.transitionTime = 0;
+            
             // Reset pozycji
             player.x = 250;
             player.y = canvas.height / 2;
@@ -706,20 +876,68 @@
             resetGame();
         }
         
-        // Fizyka gry
+        // ZMODYFIKOWANA funkcja updatePlayer z obsługą formacji
         function updatePlayer() {
+            // Jeśli gra nie rozpoczęta lub nie ma piłki w grze - pozycjonuj automatycznie
+            if (!gameState.gameStarted || !gameState.ballInPlay) {
+                positionPlayerForKickoff();
+                return;
+            }
+            
+            // Normalny ruch gracza podczas gry
+            const speed = player.speed || 5.1;
             player.vx = 0;
             player.vy = 0;
             
-            if (keys['w']) player.vy = -player.speed;
-            if (keys['s']) player.vy = player.speed;
-            if (keys['a']) player.vx = -player.speed;
-            if (keys['d']) player.vx = player.speed;
-            
+            if (keys['w']) player.vy = -speed;
+            if (keys['s']) player.vy = speed;
+            if (keys['a']) player.vx = -speed;
+            if (keys['d']) player.vx = speed;
+
             player.x += player.vx;
             player.y += player.vy;
-            
+
+            checkPlayerBallCollision();
             applyFieldBoundaries(player);
+        }
+
+        function positionPlayerForKickoff() {
+            if (!gameState.ballInPlay) {
+                const formationPos = FORMATIONS.player.positions.striker;
+                const targetX = canvas.width * formationPos.x;
+                const targetY = canvas.height * formationPos.y;
+                
+                const distance = Math.sqrt((targetX - player.x) ** 2 + (targetY - player.y) ** 2);
+                
+                if (distance > 8) {
+                    player.vx = (targetX - player.x) * 0.1;
+                    player.vy = (targetY - player.y) * 0.1;
+                    
+                    player.x += player.vx;
+                    player.y += player.vy;
+                    
+                    applyFieldBoundaries(player);
+                }
+            }
+        }
+
+        function checkPlayerBallCollision() {
+            const dx = ball.x - player.x;
+            const dy = ball.y - player.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const minDistance = ball.radius + player.radius;
+
+            if (distance < minDistance && distance > 0) {
+                const nx = dx / distance;
+                const ny = dy / distance;
+                
+                ball.x = player.x + nx * minDistance;
+                ball.y = player.y + ny * minDistance;
+                
+                const kickPower = Math.max(2, Math.sqrt(player.vx * player.vx + player.vy * player.vy) + player.shootPower);
+                ball.vx = nx * kickPower + player.vx * 0.5;
+                ball.vy = ny * kickPower + player.vy * 0.5;
+            }
         }
         
         // AI dla botów
@@ -738,22 +956,43 @@
             });
         }
 
+        // ZMODYFIKOWANA funkcja positionBotForKickoff z formacjami
         function positionBotForKickoff(bot) {
-            let readyX, readyY;
+            const currentTime = Date.now();
             
-            if (bot.team === "player") {
-                readyX = canvas.width / 2 - 80;
-                readyY = bot.startY || canvas.height / 2;
-            } else {
-                readyX = canvas.width / 2 + 80;
-                readyY = bot.startY || canvas.height / 2;
+            if (!formationState.inFormation) {
+                formationState.inFormation = true;
+                formationState.transitionTime = currentTime;
             }
             
-            bot.vx = (readyX - bot.x) * 0.1;
-            bot.vy = (readyY - bot.y) * 0.1;
+            const formationPos = getFormationPosition(bot);
+            let targetX = canvas.width * formationPos.x;
+            let targetY = canvas.height * formationPos.y;
+            
+            const timeInFormation = currentTime - formationState.transitionTime;
+            const formationComplete = timeInFormation > formationState.formationDuration;
+            
+            if (formationComplete && !gameState.ballInPlay) {
+                const breathingTime = currentTime * 0.0008;
+                targetX += Math.sin(breathingTime + bot.number) * 8;
+                targetY += Math.cos(breathingTime * 1.3 + bot.number) * 5;
+            }
+            
+            const distance = Math.sqrt((targetX - bot.x) ** 2 + (targetY - bot.y) ** 2);
+            let speed = formationComplete ? 0.05 : 0.12;
+            
+            if (distance > 5) {
+                bot.vx = (targetX - bot.x) * speed;
+                bot.vy = (targetY - bot.y) * speed;
+            } else {
+                bot.vx *= 0.8;
+                bot.vy *= 0.8;
+            }
             
             bot.x += bot.vx;
             bot.y += bot.vy;
+            
+            applyFieldBoundaries(bot);
         }
 
         function updateFieldBot(bot) {
@@ -1195,7 +1434,8 @@
                 if (ball.y > goalBounds.top && ball.y < goalBounds.bottom) {
                     gameState.botScore++;
                     updateScore();
-                    resetBallAfterGoal();
+                    const scorer = gameState.lastTouchedBy ? gameState.lastTouchedBy.name || "WŁODARSKI" : "NIEMIECKI ZAWODNIK";
+                    resetBallAfterGoal(scorer);
                 } else {
                     ball.vx = -ball.vx;
                     ball.x = ball.radius + 15;
@@ -1207,7 +1447,8 @@
                 if (ball.y > goalBounds.top && ball.y < goalBounds.bottom) {
                     gameState.playerScore++;
                     updateScore();
-                    resetBallAfterGoal();
+                    const scorer = gameState.lastTouchedBy ? gameState.lastTouchedBy.name || "WŁODARSKI" : "POLSKI ZAWODNIK";
+                    resetBallAfterGoal(scorer);
                 } else {
                     ball.vx = -ball.vx;
                     ball.x = canvas.width - ball.radius - 15;
@@ -1230,6 +1471,9 @@
                     if (currentTime - gameState.lastCollisionTime < 200) {
                         return;
                     }
+                    
+                    // Śledź kto ostatnio dotknął piłki
+                    gameState.lastTouchedBy = p;
                     
                     const nx = dx / distance;
                     const ny = dy / distance;
@@ -1401,12 +1645,10 @@
             ball.vy = Math.sin(angle) * ball.startSpeed;
         }
         
-        function resetBallAfterGoal() {
-            ball.x = canvas.width / 2;
-            ball.y = canvas.height / 2;
-            ball.vx = 0;
-            ball.vy = 0;
-            gameState.ballInPlay = false;
+        // ZMODYFIKOWANA funkcja resetBallAfterGoal z celebracją
+        function resetBallAfterGoal(scorer) {
+            resetFormationAfterGoal();
+            showGoalCelebration(scorer);
         }
         
         function updateScore() {
@@ -1464,6 +1706,9 @@
             ctx.fill();
             
             drawStandardFieldLines();
+            
+            // DODANE: Rysuj informacje o formacji
+            drawFormationInfo();
         }
         
         function drawStandardFieldLines() {
