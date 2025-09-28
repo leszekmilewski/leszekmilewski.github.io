@@ -1,5 +1,40 @@
 const teams = [
     {
+        number: 0,
+        playerTeam: "SV BABELSBERG 04",
+        opponentTeam: "VFL OLDENBURG",
+        field: 'simple2',
+        fieldScale: 1.0,
+        
+        // === PARAMETRY WŁODARSKIEGO ===
+        playerRadius: 20,
+        playerSpeed: 5.1,
+        playerShootPower: 8,
+        canCrossHalf: true,
+        
+        // === PARAMETRY PIŁKI ===
+        ballSpeed: 5.7,
+        ballMaxSpeed: 11.5,
+        
+        bots: [
+            { 
+                name: "SZUBERT", 
+                x: 700, 
+                y: 200, 
+                color: "#8000FF", 
+                maxSpeed: 2.25,
+                shootPower: 1.0,
+                radius: 20,
+                errorChance: 0.12,
+                canCrossHalf: false, 
+                number: 2, 
+                role: "midfielder", 
+                preferredY: 200, 
+                team: "opponent" 
+            }
+        ]
+    },
+    {
         number: 1,
         playerTeam: "SV BABELSBERG 04",
         opponentTeam: "MSV DUISBURG",
@@ -23,8 +58,8 @@ const teams = [
                 y: 200, 
                 color: "#0000ff", 
                 maxSpeed: 3.75,
-                shootPower: 1.0,  // Słabszy strzelec
-                radius: 20,       // Standardowy rozmiar
+                shootPower: 1.0,
+                radius: 20,
                 errorChance: 0.12,
                 canCrossHalf: false, 
                 number: 2, 
@@ -43,11 +78,11 @@ const teams = [
         
         // === PARAMETRY WŁODARSKIEGO ===
         playerRadius: 20,
-        playerSpeed: 6.0,        // Nieco wolniejszy na błocie
-        playerShootPower: 7.5,   // Nieco słabsze strzały
+        playerSpeed: 6.0,
+        playerShootPower: 7.5,
         
         // === PARAMETRY PIŁKI ===
-        ballSpeed: 4.5,          // Wolniejsza na błocie
+        ballSpeed: 4.5,
         ballMaxSpeed: 8.0,
         
         bots: [
@@ -57,8 +92,8 @@ const teams = [
                 y: 200, 
                 color: "#800080", 
                 maxSpeed: 4.5,
-                shootPower: 1.5,  // Mocniejszy strzelec
-                radius: 18,       // Nieco mniejszy, zwinniejszy
+                shootPower: 1.5,
+                radius: 18,
                 canCrossHalf: true, 
                 number: 9, 
                 role: "ball_chaser", 
@@ -68,7 +103,73 @@ const teams = [
         ]
     },
     {
-        number: 3,
+        number: 3, 
+        playerTeam: "SV BABELSBERG 04",
+        opponentTeam: "FC KAISERSLAUTERN",
+        field: "professional",
+        fieldScale: 1.0,
+        
+        // === PARAMETRY WŁODARSKIEGO ===
+        playerRadius: 20,
+        playerSpeed: 6.0,
+        playerShootPower: 7.5,
+        
+        // === PARAMETRY PIŁKI ===
+        ballSpeed: 7.5,
+        ballMaxSpeed: 11.0,
+        
+        bots: [
+            { 
+                name: "RATINHO", 
+                x: 700, 
+                y: 200, 
+                color: "#a33f2e", 
+                maxSpeed: 7.0,
+                shootPower: 1.5,
+                radius: 16,
+                canCrossHalf: false, 
+                number: 9, 
+                role: "ball_chaser", 
+                preferredY: 200, 
+                team: "opponent" 
+            }
+        ]
+    },
+    {
+        number: 4, 
+        playerTeam: "SV BABELSBERG 04",
+        opponentTeam: "FC GUTERSLOH",
+        field: "simple",
+        fieldScale: 1.0,
+        
+        // === PARAMETRY WŁODARSKIEGO ===
+        playerRadius: 20,
+        playerSpeed: 6.0,
+        playerShootPower: 7.5,
+        
+        // === PARAMETRY PIŁKI ===
+        ballSpeed: 7.5,
+        ballMaxSpeed: 11.0,
+        
+        bots: [
+            { 
+                name: "MATYSEK", 
+                x: 700, 
+                y: 200, 
+                color: "#3b3635", 
+                maxSpeed: 3.0,
+                shootPower: 1.5,
+                radius: 16,
+                canCrossHalf: false, 
+                number: 9, 
+                role: "midfielder", 
+                preferredY: 200, 
+                team: "opponent" 
+            }
+        ]
+    },
+    {
+        number: 5,
         playerTeam: "SV BABELSBERG 04", 
         opponentTeam: "FC HANSA ROSTOCK",
         field: "winter",
@@ -76,11 +177,11 @@ const teams = [
         
         // === PARAMETRY WŁODARSKIEGO ===
         playerRadius: 20,
-        playerSpeed: 5.1,        // Ślisko na śniegu
-        playerShootPower: 7,     // Trudniej kopać na śniegu
+        playerSpeed: 5.1,
+        playerShootPower: 7,
         
         // === PARAMETRY PIŁKI ===
-        ballSpeed: 4.2,          // Wolniejsza na śniegu
+        ballSpeed: 4.2,
         ballMaxSpeed: 10.5,
         
         bots: [
@@ -91,7 +192,7 @@ const teams = [
                 color: "#006600", 
                 maxSpeed: 3.0,
                 shootPower: 1.3,
-                radius: 16,       // Skalowane do boiska 0.75
+                radius: 16,
                 canCrossHalf: true, 
                 number: 8, 
                 role: "attacker", 
@@ -104,7 +205,7 @@ const teams = [
                 y: 250, 
                 color: "#006600", 
                 maxSpeed: 2.75,
-                shootPower: 0.9,  // Obrońca - słabszy w strzałach
+                shootPower: 0.9,
                 radius: 18,
                 canCrossHalf: false, 
                 number: 11, 
@@ -115,7 +216,7 @@ const teams = [
         ]
     },
     {
-        number: 4,
+        number: 6,
         playerTeam: "SV BABELSBERG 04",
         opponentTeam: "EINTRACHT BRAUNSCHWEIG", 
         field: 'stadium',
@@ -124,11 +225,11 @@ const teams = [
         
         // === PARAMETRY WŁODARSKIEGO ===
         playerRadius: 20,
-        playerSpeed: 5.2,        // Szybsze na stadionowej murawie
-        playerShootPower: 8.5,   // Mocniejsze strzały
+        playerSpeed: 5.2,
+        playerShootPower: 8.5,
         
         // === PARAMETRY PIŁKI ===
-        ballSpeed: 6.0,          // Szybsza na dobrej nawierzchni
+        ballSpeed: 6.0,
         ballMaxSpeed: 12.0,
         
         bots: [
@@ -138,8 +239,8 @@ const teams = [
                 y: 120, 
                 color: "#ff6600", 
                 maxSpeed: 3.25,
-                shootPower: 1.6,  // Silny napastnik
-                radius: 12,       // Skalowane do 0.5
+                shootPower: 1.6,
+                radius: 12,
                 canCrossHalf: true, 
                 number: 6, 
                 role: "attacker", 
@@ -166,7 +267,7 @@ const teams = [
                 y: 280, 
                 color: "#ff6600", 
                 maxSpeed: 2.25,
-                shootPower: 0.8,  // Obrońca
+                shootPower: 0.8,
                 radius: 12,
                 canCrossHalf: false, 
                 number: 3, 
@@ -180,8 +281,8 @@ const teams = [
                 y: 200, 
                 color: "#cc3300", 
                 maxSpeed: 0.8,
-                shootPower: 0.5,  // Bramkarz - bardzo słaby w strzałach
-                radius: 14,       // Większy bramkarz
+                shootPower: 0.5,
+                radius: 14,
                 number: 1, 
                 role: "goalkeeper", 
                 isGoalkeeper: true, 
@@ -202,7 +303,7 @@ const teams = [
         }
     },
     {
-        number: 5,
+        number: 7,
         playerTeam: "SV BABELSBERG 04",
         opponentTeam: "LOKOMOTIV LEIPZIG",
         field: "professional", 
@@ -210,11 +311,11 @@ const teams = [
         
         // === PARAMETRY WŁODARSKIEGO ===
         playerRadius: 20,
-        playerSpeed: 4.7,        // Trudniejszy mecz - wolniejszy
-        playerShootPower: 7,     // Słabsze strzały
+        playerSpeed: 4.7,
+        playerShootPower: 7,
         
         // === PARAMETRY PIŁKI ===
-        ballSpeed: 6.2,          // Szybsza piłka = trudniejsza kontrola
+        ballSpeed: 6.2,
         ballMaxSpeed: 13.0,
         
         bots: [
@@ -224,8 +325,8 @@ const teams = [
                 y: 100, 
                 color: "#990000", 
                 maxSpeed: 6,
-                shootPower: 1.8,  // Bardzo mocny napastnik
-                radius: 6,        // Bardzo małe boisko
+                shootPower: 1.8,
+                radius: 6,
                 canCrossHalf: true, 
                 number: 5, 
                 role: "attacker", 
@@ -266,8 +367,8 @@ const teams = [
                 y: 200, 
                 color: "#660000", 
                 maxSpeed: 2.25,
-                shootPower: 0.4,  // Słaby bramkarz w strzałach
-                radius: 7,        // Większy bramkarz
+                shootPower: 0.4,
+                radius: 7,
                 isGoalkeeper: true, 
                 canCrossHalf: false, 
                 number: 12, 
@@ -278,19 +379,19 @@ const teams = [
         ]
     },
     {
-        number: 6,
+        number: 8,
         playerTeam: "SV BABELSBERG 04",
         opponentTeam: "FC CARL ZEISS JENA",
         field: "sandy",
         fieldScale: 0.75,
         
         // === PARAMETRY WŁODARSKIEGO ===
-        playerRadius: 18,        // Mniejszy na piasku
-        playerSpeed: 4.5,        // Trudno biegać na piasku
-        playerShootPower: 6.5,   // Słabsze strzały na piasku
+        playerRadius: 18,
+        playerSpeed: 4.5,
+        playerShootPower: 6.5,
         
         // === PARAMETRY PIŁKI ===
-        ballSpeed: 5.0,          // Piasek hamuje piłkę
+        ballSpeed: 5.0,
         ballMaxSpeed: 10.0,
         
         bots: [
@@ -328,8 +429,8 @@ const teams = [
                 y: 270, 
                 color: "#0066ff", 
                 maxSpeed: 3.2,
-                shootPower: 1.4,  // Napastnik
-                radius: 15,       // Mniejszy, szybszy
+                shootPower: 1.4,
+                radius: 15,
                 canCrossHalf: true, 
                 number: 9, 
                 role: "attacker", 
@@ -339,297 +440,94 @@ const teams = [
         ]
     },
     {
-        number: 7,
+        number: 9,
         playerTeam: "SV BABELSBERG 04",
-        opponentTeam: "SPVGG UNTERHACHING",
-        field: "professional",
-        fieldScale: 0.25,
+        opponentTeam: "VFL BOCHUM",
+        field: "asphalt",
+        fieldScale: 0.6,
         hasPlayerGoalkeeper: true,
         
-        // === PARAMETRY WŁODARSKIEGO - FINAŁ! ===
-        playerRadius: 4,        // Większy, mocniejszy
-        playerSpeed: 1,        // Najszybszy
-        playerShootPower: 1,    // Najsilniejsze strzały
+        // === PARAMETRY WŁODARSKIEGO ===
+        playerRadius: 22,
+        playerSpeed: 5.5,
+        playerShootPower: 7.8,
         
         // === PARAMETRY PIŁKI ===
-        ballSpeed: 0.5,          // Bardzo szybka
-        ballMaxSpeed: 1.5,      // Najszybsza możliwa
+        ballSpeed: 6.8,
+        ballMaxSpeed: 13.5,
         
         bots: [
-            // DRUŻYNA PRZECIWNIKA (11 zawodników) - NIEMCY '96
+            // DRUŻYNA PRZECIWNIKA
             { 
-                name: "KAHN", 
-                x: 750, 
+                name: "WOSZ", 
+                x: 650, 
                 y: 200, 
-                color: "#080808", 
-                maxSpeed: 1.8,
-                shootPower: 0.3,  // Bramkarz
-                radius: 20,
-                number: 21, 
-                role: "goalkeeper", 
-                isGoalkeeper: true, 
-                preferredY: 200, 
-                team: "opponent" 
-            },
-            { 
-                name: "KOHLER", 
-                x: 700, 
-                y: 120, 
-                color: "#080808", 
-                maxSpeed: 0.8,
-                shootPower: 0.9,
-                radius: 25,
-                number: 20, 
-                role: "fullback", 
-                preferredY: 120, 
-                team: "opponent" 
-            },
-            { 
-                name: "HELMER", 
-                x: 720, 
-                y: 160, 
-                color: "#080808", 
-                maxSpeed: 0.5,
-                shootPower: 0.7,
-                radius: 19,
-                number: 29, 
-                role: "centerback", 
-                preferredY: 160, 
-                team: "opponent" 
-            },
-            { 
-                name: "REUTER", 
-                x: 720, 
-                y: 240, 
-                color: "#080808", 
-                maxSpeed: 0.5,
-                shootPower: 0.7,
-                radius: 6,
-                number: 19, 
-                role: "centerback", 
-                preferredY: 240, 
-                team: "opponent" 
-            },
-            { 
-                name: "ZIEGE", 
-                x: 700, 
-                y: 280, 
-                color: "#080808", 
-                maxSpeed: 0.8,
-                shootPower: 1.1,  // Ziege był dobry w strzałach
-                radius: 6,
-                number: 18, 
-                role: "fullback", 
-                preferredY: 280, 
-                team: "opponent" 
-            },
-            { 
-                name: "ELITS", 
-                x: 650, 
-                y: 140, 
-                color: "#080808", 
-                maxSpeed: 1.0,
-                shootPower: 1.0,
-                radius: 40,
-                number: 16, 
-                role: "defensive_midfielder", 
-                preferredY: 140, 
-                team: "opponent" 
-            },
-            { 
-                name: "STRUNZ", 
-                x: 650, 
-                y: 260, 
-                color: "#080808", 
-                maxSpeed: 1.0,
-                shootPower: 1.0,
-                radius: 23,
-                number: 15, 
-                role: "defensive_midfielder", 
-                preferredY: 260, 
-                team: "opponent" 
-            },
-            { 
-                name: "MOLLER", 
-                x: 580, 
-                y: 120, 
-                color: "#080808", 
-                maxSpeed: 0.5,
-                shootPower: 1.5,  // Möller był świetnym strzelcem
-                radius: 34,
-                number: 14, 
-                role: "winger", 
-                preferredY: 140, 
-                team: "opponent" 
-            },
-            { 
-                name: "HASLER", 
-                x: 580, 
-                y: 280, 
-                color: "#080808", 
-                maxSpeed: 0.5,
-                shootPower: 1.3,
-                radius: 5,
-                number: 13, 
-                role: "winger", 
-                preferredY: 280, 
-                team: "opponent" 
-            },
-            { 
-                name: "KLINSMANN", 
-                x: 520, 
-                y: 170, 
-                color: "#080808", 
-                maxSpeed: 1.8,
-                shootPower: 2.0,  // Klinsmann - legendarny strzelec!
-                radius: 8,
-                number: 12, 
-                role: "striker", 
-                preferredY: 170, 
-                team: "opponent" 
-            },
-            { 
-                name: "BIERHOFF", 
-                x: 520, 
-                y: 230, 
-                color: "#080808", 
-                maxSpeed: 0.8,
-                shootPower: 1.9,  // Bierhoff też mocny strzelec
-                radius: 6,        // Większy fizycznie
-                number: 11, 
-                role: "striker", 
-                preferredY: 230, 
-                team: "opponent" 
-            },
-
-            // DRUŻYNA GRACZA (9 zawodników z pola + Włodarski + bramkarz)
-            { 
-                name: "WOJTALA", 
-                x: 100, 
-                y: 120, 
-                color: "#ff0000", 
-                maxSpeed: 0.8,
-                shootPower: 0.9,
-                radius: 25,
-                number: 17, 
-                role: "fullback", 
-                preferredY: 120, 
-                team: "player" 
-            },
-            { 
-                name: "ŁAPIŃSKI", 
-                x: 120, 
-                y: 160, 
-                color: "#ff0000", 
-                maxSpeed: 0.5,
-                shootPower: 0.7,
-                radius: 6,
-                number: 9, 
-                role: "centerback", 
-                preferredY: 160, 
-                team: "player" 
-            },
-            { 
-                name: "ZIELIŃSKI", 
-                x: 120, 
-                y: 240, 
-                color: "#ff0000", 
-                maxSpeed: 0.5,
-                shootPower: 0.7,
-                radius: 12,
+                color: "#004488", 
+                maxSpeed: 4.8,
+                shootPower: 1.4,
+                radius: 13,
+                errorChance: 0.08,
+                canCrossHalf: true, 
                 number: 8, 
-                role: "centerback", 
-                preferredY: 240, 
-                team: "player" 
+                role: "midfielder", 
+                preferredY: 200, 
+                team: "opponent" 
             },
             { 
-                name: "HAJTO", 
-                x: 100, 
-                y: 280, 
-                color: "#ff0000", 
-                maxSpeed: 0.8,
-                shootPower: 1.0,
-                radius: 25,
-                number: 7, 
-                role: "fullback", 
-                preferredY: 280, 
-                team: "player" 
+                name: "WAŁDOCH", 
+                x: 720, 
+                y: 200, 
+                color: "#004488", 
+                maxSpeed: 3.2,
+                shootPower: 0.9,
+                radius: 15,
+                errorChance: 0.06,
+                canCrossHalf: false, 
+                number: 5, 
+                role: "sweeper", 
+                preferredY: 200, 
+                team: "opponent" 
             },
             { 
-                name: "CZERWIEC", 
-                x: 150, 
-                y: 140, 
-                color: "#ff0000", 
-                maxSpeed: 1.0,
-                shootPower: 1.1,
-                radius: 10,
-                number: 6, 
-                role: "defensive_midfielder", 
-                preferredY: 140, 
-                team: "player" 
+                name: "BAŁUSZYŃSKI", 
+                x: 580, 
+                y: 180, 
+                color: "#004488", 
+                maxSpeed: 5.5,
+                shootPower: 1.8,
+                radius: 12,
+                errorChance: 0.09,
+                canCrossHalf: true, 
+                number: 10, 
+                role: "attacker", 
+                preferredY: 180, 
+                team: "opponent" 
             },
+            
+            // DRUŻYNA GRACZA - OBROŃCA
             { 
-                name: "MICHALSKI", 
-                x: 150, 
-                y: 260, 
-                color: "#ff0000", 
-                maxSpeed: 1.0,
-                shootPower: 1.1,
-                radius: 30,
-                number: 4, 
-                role: "defensive_midfielder", 
-                preferredY: 260, 
-                team: "player" 
-            },
-            { 
-                name: "BRZĘCZEK", 
-                x: 200, 
+                name: "SZUMNARSKI", 
+                x: 120, 
                 y: 200, 
                 color: "#ff0000", 
-                maxSpeed: 1.3,
-                shootPower: 1.4,  // Kreatywny pomocnik
-                radius: 5,
-                number: 3, 
-                role: "attacking_midfielder", 
+                maxSpeed: 4.0,
+                shootPower: 1.1,
+                radius: 15,
+                number: 4, 
+                role: "centerback", 
                 preferredY: 200, 
-                team: "player" 
-            },
-            { 
-                name: "WARZYCHA", 
-                x: 220, 
-                y: 120, 
-                color: "#ff0000", 
-                maxSpeed: 1.5,
-                shootPower: 1.6,  // Skrzydłowy z dryblingu i strzałami
-                radius: 25,
-                number: 2, 
-                role: "winger", 
-                preferredY: 120, 
-                team: "player" 
-            },
-            { 
-                name: "KOWALCZYK", 
-                x: 220, 
-                y: 280, 
-                color: "#ff0000", 
-                maxSpeed: 1.5,
-                shootPower: 1.6,
-                radius: 25,
-                number: 1, 
-                role: "winger", 
-                preferredY: 280, 
                 team: "player" 
             }
         ],
         playerGoalkeeper: { 
-            name: "SZCZESNY", 
+            name: "HANAUER", 
             x: 50, 
             y: 200, 
             color: "#cc0000", 
-            maxSpeed: 2.0,
-            shootPower: 0.5,
-            radius: 25,
-            number: 5, 
+            maxSpeed: 2.2,
+            shootPower: 0.6,
+            radius: 17,
+            number: 1, 
             role: "goalkeeper" 
         }
     }
