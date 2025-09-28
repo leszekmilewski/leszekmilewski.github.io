@@ -135,39 +135,40 @@ const teams = [
             }
         ]
     },
-    {
-        number: 4, 
-        playerTeam: "SV BABELSBERG 04",
-        opponentTeam: "FC GUTERSLOH",
-        field: "simple",
-        fieldScale: 1.0,
-        
-        // === PARAMETRY WŁODARSKIEGO ===
-        playerRadius: 20,
-        playerSpeed: 6.0,
-        playerShootPower: 7.5,
-        
-        // === PARAMETRY PIŁKI ===
-        ballSpeed: 7.5,
-        ballMaxSpeed: 11.0,
-        
-        bots: [
-            { 
-                name: "MATYSEK", 
-                x: 700, 
-                y: 200, 
-                color: "#3b3635", 
-                maxSpeed: 3.0,
-                shootPower: 1.5,
-                radius: 16,
-                canCrossHalf: false, 
-                number: 9, 
-                role: "midfielder", 
-                preferredY: 200, 
-                team: "opponent" 
-            }
-        ]
-    },
+{
+    number: 4, 
+    playerTeam: "SV BABELSBERG 04",
+    opponentTeam: "FC GUTERSLOH",
+    field: "simple",
+    fieldScale: 1.0,
+    
+    // === PARAMETRY WŁODARSKIEGO ===
+    playerRadius: 20,
+    playerSpeed: 6.0,
+    playerShootPower: 7.5,
+    
+    // === PARAMETRY PIŁKI ===
+    ballSpeed: 7.5,
+    ballMaxSpeed: 11.0,
+    
+    bots: [
+        { 
+            name: "MATYSEK", 
+            x: 750,              // Bliżej bramki
+            y: 200, 
+            color: "#3b3635", 
+            maxSpeed: 1.8,       // Wolniejszy jak bramkarz
+            shootPower: 0.5,     // Słabszy w strzałach
+            radius: 18,          // Nieco większy
+            canCrossHalf: false, 
+            number: 1,           // Numer bramkarza
+            role: "goalkeeper",  // ZMIANA: z "midfielder" na "goalkeeper"
+            isGoalkeeper: true,  // DODANE: oznacza bramkarza
+            preferredY: 200, 
+            team: "opponent" 
+        }
+    ]
+}
     {
         number: 5,
         playerTeam: "SV BABELSBERG 04", 
