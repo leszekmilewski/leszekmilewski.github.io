@@ -43,12 +43,12 @@ const teams = [
         
         // === PARAMETRY WŁODARSKIEGO ===
         playerRadius: 20,
-        playerSpeed: 5.0,        // Nieco wolniejszy na błocie
+        playerSpeed: 6.0,        // Nieco wolniejszy na błocie
         playerShootPower: 7.5,   // Nieco słabsze strzały
         
         // === PARAMETRY PIŁKI ===
-        ballSpeed: 5.5,          // Wolniejsza na błocie
-        ballMaxSpeed: 11.0,
+        ballSpeed: 4.5,          // Wolniejsza na błocie
+        ballMaxSpeed: 8.0,
         
         bots: [
             { 
@@ -76,11 +76,11 @@ const teams = [
         
         // === PARAMETRY WŁODARSKIEGO ===
         playerRadius: 20,
-        playerSpeed: 4.8,        // Ślisko na śniegu
+        playerSpeed: 5.1,        // Ślisko na śniegu
         playerShootPower: 7,     // Trudniej kopać na śniegu
         
         // === PARAMETRY PIŁKI ===
-        ballSpeed: 5.2,          // Wolniejsza na śniegu
+        ballSpeed: 4.2,          // Wolniejsza na śniegu
         ballMaxSpeed: 10.5,
         
         bots: [
@@ -89,7 +89,7 @@ const teams = [
                 x: 650, 
                 y: 150, 
                 color: "#006600", 
-                maxSpeed: 3.5,
+                maxSpeed: 3.0,
                 shootPower: 1.3,
                 radius: 16,       // Skalowane do boiska 0.75
                 canCrossHalf: true, 
@@ -137,7 +137,7 @@ const teams = [
                 x: 600, 
                 y: 120, 
                 color: "#ff6600", 
-                maxSpeed: 5.25,
+                maxSpeed: 3.25,
                 shootPower: 1.6,  // Silny napastnik
                 radius: 12,       // Skalowane do 0.5
                 canCrossHalf: true, 
@@ -151,7 +151,7 @@ const teams = [
                 x: 650, 
                 y: 200, 
                 color: "#ff6600", 
-                maxSpeed: 4.5,
+                maxSpeed: 3.5,
                 shootPower: 1.2,
                 radius: 11,
                 canCrossHalf: false, 
@@ -165,7 +165,7 @@ const teams = [
                 x: 600, 
                 y: 280, 
                 color: "#ff6600", 
-                maxSpeed: 5.25,
+                maxSpeed: 2.25,
                 shootPower: 0.8,  // Obrońca
                 radius: 12,
                 canCrossHalf: false, 
@@ -179,7 +179,7 @@ const teams = [
                 x: 750, 
                 y: 200, 
                 color: "#cc3300", 
-                maxSpeed: 1.8,
+                maxSpeed: 0.8,
                 shootPower: 0.5,  // Bramkarz - bardzo słaby w strzałach
                 radius: 14,       // Większy bramkarz
                 number: 1, 
