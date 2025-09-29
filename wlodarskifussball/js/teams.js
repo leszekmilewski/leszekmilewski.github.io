@@ -219,7 +219,7 @@ const teams = [
     {
         number: 6,
         playerTeam: "SV BABELSBERG 04",
-        opponentTeam: "EINTRACHT BRAUNSCHWEIG", 
+        opponentTeam: "SV MEPPEN", 
         field: 'stadium',
         fieldScale: 0.5,
         hasPlayerGoalkeeper: true,
@@ -235,7 +235,7 @@ const teams = [
         
         bots: [
             { 
-                name: "GÜNTER", 
+                name: "CLAASEN", 
                 x: 600, 
                 y: 120, 
                 color: "#ff6600", 
@@ -250,7 +250,7 @@ const teams = [
             },
 
             { 
-                name: "BRAUN", 
+                name: "BRASAS", 
                 x: 750, 
                 y: 200, 
                 color: "#cc3300", 
@@ -279,7 +279,7 @@ const teams = [
     {
         number: 7,
         playerTeam: "SV BABELSBERG 04",
-        opponentTeam: "LOKOMOTIV LEIPZIG",
+        opponentTeam: "FORTUNA KOLN",
         field: "professional", 
         fieldScale: 0.25,
         
@@ -294,7 +294,7 @@ const teams = [
         
         bots: [
             { 
-                name: "RICHTER", 
+                name: "BRDARIC", 
                 x: 600, 
                 y: 100, 
                 color: "#990000", 
@@ -308,7 +308,7 @@ const teams = [
                 team: "opponent" 
             },
             { 
-                name: "FISCHER", 
+                name: "AKONNOR", 
                 x: 650, 
                 y: 200, 
                 color: "#990000", 
@@ -322,7 +322,7 @@ const teams = [
                 team: "opponent" 
             },
             { 
-                name: "RUDOLF BECKER", 
+                name: "NIEDZIELLA", 
                 x: 600, 
                 y: 300, 
                 color: "#990000", 
@@ -336,7 +336,7 @@ const teams = [
                 team: "opponent" 
             },
             { 
-                name: "OTTO SCHULZ", 
+                name: "WESSELS", 
                 x: 750, 
                 y: 200, 
                 color: "#660000", 
