@@ -417,7 +417,7 @@ const teams = [
         number: 9,
         playerTeam: "SV BABELSBERG 04",
         opponentTeam: "VFL BOCHUM",
-        field: "forest",
+        field: "simple",
         fieldScale: 0.75,
         hasPlayerGoalkeeper: true,
         
@@ -543,7 +543,7 @@ playerGoalkeeper: {
         number: 11, 
         playerTeam: "SV BABELSBERG 04",
         opponentTeam: "STUTTGARTER KICKERS",
-        field: "retro",
+        field: "beach",
         fieldScale: 0.5,
         
         // === PARAMETRY WŁODARSKIEGO ===
@@ -658,7 +658,7 @@ playerGoalkeeper: {
         number: 14,
         playerTeam: "SV BABELSBERG 04",
         opponentTeam: "FC ST. PAULI",
-        field: "rain",
+        field: "neon",
         fieldScale: 0.5,
         hasPlayerGoalkeeper: true,
         
