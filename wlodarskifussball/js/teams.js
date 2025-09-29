@@ -3,7 +3,7 @@ const teams = [
         number: 0,
         playerTeam: "SV BABELSBERG 04",
         opponentTeam: "VFL OLDENBURG",
-        field: 'storm',
+        field: 'rain',
         fieldScale: 1.0,
         
         // === PARAMETRY WŁODARSKIEGO ===
@@ -746,7 +746,7 @@ playerGoalkeeper: {
         number: 15,
         playerTeam: "SV BABELSBERG 04",
         opponentTeam: "1. FC UNION BERLIN",
-        field: "rain",
+        field: "storm",
         fieldScale: 0.5,
         hasPlayerGoalkeeper: true,
         
