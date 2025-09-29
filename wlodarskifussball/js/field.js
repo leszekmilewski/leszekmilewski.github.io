@@ -538,3 +538,286 @@ ctx.stroke();
 
     }
     
+function drawAutumnField() {
+    // Jesienne boisko - brązowo-pomarańczowe
+    const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, 400);
+    gradient.addColorStop(0, '#8B4513');
+    gradient.addColorStop(0.5, '#D2691E');
+    gradient.addColorStop(1, '#A0522D');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Spadające liście
+    const currentTeamData = gameMode === 'tournament' ? teams[gameState.currentRound] : teams[selectedTeam];
+    const scale = currentTeamData.fieldScale || 1.0;
+    const time = Date.now() * 0.0005;
+    ctx.fillStyle = 'rgba(255, 140, 0, 0.6)';
+    for(let i = 0; i < 15; i++) {
+        const x = (i * 50 + Math.sin(time + i) * 20) % canvas.width;
+        const y = (i * 30 + time * 30) % canvas.height;
+        ctx.beginPath();
+        ctx.arc(x, y, 3 * scale, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    
+    drawStandardFieldLines();
+}
+
+function drawDesertField() {
+    // Pustynne boisko
+    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    gradient.addColorStop(0, '#EDC9AF');
+    gradient.addColorStop(0.5, '#F5DEB3');
+    gradient.addColorStop(1, '#D2B48C');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Wydmy
+    const currentTeamData = gameMode === 'tournament' ? teams[gameState.currentRound] : teams[selectedTeam];
+    const scale = currentTeamData.fieldScale || 1.0;
+    ctx.fillStyle = 'rgba(222, 184, 135, 0.5)';
+    [[200,100,80,30], [500,250,100,35], [650,150,70,25]].forEach(([x,y,w,h]) => {
+        ctx.beginPath();
+        ctx.ellipse(x, y, w * scale, h * scale, 0, 0, Math.PI * 2);
+        ctx.fill();
+    });
+    
+    drawStandardFieldLines();
+}
+
+function drawBeachField() {
+    // Plażowe boisko
+    const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, 400);
+    gradient.addColorStop(0, '#F4E4C1');
+    gradient.addColorStop(0.7, '#E6D7B0');
+    gradient.addColorStop(1, '#D4C5A0');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Fale na brzegu
+    ctx.strokeStyle = 'rgba(70, 130, 180, 0.3)';
+    ctx.lineWidth = 3;
+    for(let i = 0; i < 3; i++) {
+        ctx.beginPath();
+        ctx.moveTo(0, 50 + i * 30);
+        ctx.quadraticCurveTo(canvas.width/2, 80 + i * 30, canvas.width, 50 + i * 30);
+        ctx.stroke();
+    }
+    
+    drawStandardFieldLines();
+}
+
+function drawForestField() {
+    // Leśne boisko
+    const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, 400);
+    gradient.addColorStop(0, '#2D5016');
+    gradient.addColorStop(0.5, '#1F3A0F');
+    gradient.addColorStop(1, '#152608');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Cienie drzew
+    const currentTeamData = gameMode === 'tournament' ? teams[gameState.currentRound] : teams[selectedTeam];
+    const scale = currentTeamData.fieldScale || 1.0;
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+    [[100,80,40,60], [700,120,35,50], [300,300,45,70], [600,280,38,55]].forEach(([x,y,w,h]) => {
+        ctx.beginPath();
+        ctx.ellipse(x, y, w * scale, h * scale, 0, 0, Math.PI * 2);
+        ctx.fill();
+    });
+    
+    drawStandardFieldLines();
+}
+
+function drawClayField() {
+    // Boisko z gliny
+    const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, 400);
+    gradient.addColorStop(0, '#B87333');
+    gradient.addColorStop(0.5, '#A0633D');
+    gradient.addColorStop(1, '#8B5A3C');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Tekstura gliny
+    ctx.fillStyle = 'rgba(160, 82, 45, 0.2)';
+    for(let i = 0; i < 100; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        ctx.fillRect(x, y, 2, 2);
+    }
+    
+    drawStandardFieldLines();
+}
+
+function drawRubberField() {
+    // Gumowe boisko (orlik)
+    const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+    gradient.addColorStop(0, '#DC143C');
+    gradient.addColorStop(0.5, '#B22222');
+    gradient.addColorStop(1, '#8B0000');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Tekstura gumy
+    ctx.fillStyle = 'rgba(139, 0, 0, 0.3)';
+    for(let i = 0; i < canvas.width; i += 50) {
+        ctx.fillRect(i, 0, 25, canvas.height);
+    }
+    
+    drawStandardFieldLines();
+}
+
+function drawConcreteField() {
+    // Betonowe boisko
+    const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, 400);
+    gradient.addColorStop(0, '#A9A9A9');
+    gradient.addColorStop(0.5, '#808080');
+    gradient.addColorStop(1, '#696969');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Pęknięcia w betonie
+    ctx.strokeStyle = 'rgba(50, 50, 50, 0.6)';
+    ctx.lineWidth = 2;
+    [[150,100,300,120], [500,200,650,250], [200,300,250,350]].forEach(([x1,y1,x2,y2]) => {
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+    });
+    
+    drawStandardFieldLines();
+}
+
+function drawParquetField() {
+    // Parkiet (hala)
+    ctx.fillStyle = '#DEB887';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Wzór parkietu
+    const currentTeamData = gameMode === 'tournament' ? teams[gameState.currentRound] : teams[selectedTeam];
+    const scale = currentTeamData.fieldScale || 1.0;
+    ctx.strokeStyle = 'rgba(139, 69, 19, 0.4)';
+    ctx.lineWidth = 1 * scale;
+    for(let i = 0; i < canvas.width; i += 40 * scale) {
+        ctx.beginPath();
+        ctx.moveTo(i, 0);
+        ctx.lineTo(i, canvas.height);
+        ctx.stroke();
+    }
+    
+    drawStandardFieldLines();
+}
+
+function drawNightField() {
+    // Nocne boisko z reflektorami
+    const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, 400);
+    gradient.addColorStop(0, '#1a4d1a');
+    gradient.addColorStop(0.7, '#0d260d');
+    gradient.addColorStop(1, '#000000');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Światło reflektorów
+    const time = Date.now() * 0.001;
+    ctx.fillStyle = `rgba(255, 255, 200, ${0.15 + Math.sin(time) * 0.05})`;
+    ctx.beginPath();
+    ctx.arc(canvas.width/4, 0, 150, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(3*canvas.width/4, 0, 150, 0, Math.PI * 2);
+    ctx.fill();
+    
+    drawStandardFieldLines();
+}
+
+function drawRainField() {
+    // Deszczowe boisko
+    const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, 400);
+    gradient.addColorStop(0, '#2F5F2F');
+    gradient.addColorStop(0.5, '#1F4F1F');
+    gradient.addColorStop(1, '#0F3F0F');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Krople deszczu
+    const currentTeamData = gameMode === 'tournament' ? teams[gameState.currentRound] : teams[selectedTeam];
+    const scale = currentTeamData.fieldScale || 1.0;
+    const time = Date.now() * 0.01;
+    ctx.strokeStyle = 'rgba(173, 216, 230, 0.5)';
+    ctx.lineWidth = 1 * scale;
+    for(let i = 0; i < 30; i++) {
+        const x = (i * 25 + time * 2) % canvas.width;
+        const y = (i * 13 + time * 5) % canvas.height;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x, y + 10 * scale);
+        ctx.stroke();
+    }
+    
+    // Kałuże
+    ctx.fillStyle = 'rgba(100, 149, 237, 0.3)';
+    [[200,150,30,20], [500,250,35,25], [350,320,25,18]].forEach(([x,y,w,h]) => {
+        ctx.beginPath();
+        ctx.ellipse(x, y, w * scale, h * scale, 0, 0, Math.PI * 2);
+        ctx.fill();
+    });
+    
+    drawStandardFieldLines();
+}
+
+function drawRetroField() {
+    // Retro boisko (lata 80)
+    ctx.fillStyle = '#FF6347';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Retro paski
+    ctx.fillStyle = 'rgba(255, 215, 0, 0.3)';
+    for(let i = 0; i < canvas.height; i += 30) {
+        ctx.fillRect(0, i, canvas.width, 15);
+    }
+    
+    // Kropki
+    ctx.fillStyle = 'rgba(0, 255, 255, 0.2)';
+    for(let i = 0; i < canvas.width; i += 50) {
+        for(let j = 0; j < canvas.height; j += 50) {
+            ctx.beginPath();
+            ctx.arc(i, j, 5, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+    
+    drawStandardFieldLines();
+}
+
+function drawNeonField() {
+    // Neonowe boisko futurystyczne
+    ctx.fillStyle = '#0a0a0a';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Neonowa siatka
+    const time = Date.now() * 0.001;
+    ctx.strokeStyle = `rgba(0, 255, 255, ${0.5 + Math.sin(time) * 0.3})`;
+    ctx.lineWidth = 2;
+    for(let i = 0; i < canvas.width; i += 50) {
+        ctx.beginPath();
+        ctx.moveTo(i, 0);
+        ctx.lineTo(i, canvas.height);
+        ctx.stroke();
+    }
+    for(let i = 0; i < canvas.height; i += 50) {
+        ctx.beginPath();
+        ctx.moveTo(0, i);
+        ctx.lineTo(canvas.width, i);
+        ctx.stroke();
+    }
+    
+    // Świecące okręgi
+    ctx.strokeStyle = `rgba(255, 0, 255, ${0.6 + Math.sin(time * 2) * 0.3})`;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(canvas.width/2, canvas.height/2, 100, 0, Math.PI * 2);
+    ctx.stroke();
+    
+    drawStandardFieldLines();
+}
