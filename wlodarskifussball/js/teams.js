@@ -746,7 +746,7 @@ playerGoalkeeper: {
         number: 15,
         playerTeam: "SV BABELSBERG 04",
         opponentTeam: "1. FC UNION BERLIN",
-        field: "desert",
+        field: "storm",
         fieldScale: 0.5,
         hasPlayerGoalkeeper: true,
         
