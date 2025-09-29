@@ -658,7 +658,7 @@ playerGoalkeeper: {
         number: 14,
         playerTeam: "SV BABELSBERG 04",
         opponentTeam: "FC ST. PAULI",
-        field: "beach",
+        field: "grass",
         fieldScale: 0.5,
         hasPlayerGoalkeeper: true,
         
