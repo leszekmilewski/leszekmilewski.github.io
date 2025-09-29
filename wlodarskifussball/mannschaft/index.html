@@ -248,7 +248,7 @@
         <div style="margin: 30px 0; font-size: 10px; color: #00ffff; background: rgba(0,255,255,0.1); padding: 15px; border-radius: 10px; max-width: 600px; margin-left: auto; margin-right: auto;">
             <strong>🏟️  ZABRZE STADION 🏟️</strong><br>
             Sehr schwieriges Finale! 11 gegen 11 Spieler auf kleinem Feld!<br>
-            <span style="color: #ff6666;">Erste Mannschaft mit 3 Toren gewinnt!</span><br>
+            <span style="color: #ff6666;">Erste Mannschaft mit 5 Toren gewinnt!</span><br>
             <span style="color: #00ff00;">Mit taktischen Formationen vor Anpfiff!</span>
         </div>
         
@@ -281,7 +281,7 @@
         <div class="controls-info">
             <div style="margin: 10px 0;">
                 <strong>LEERTASTE:</strong> START/RESET BALL | <strong>WASD:</strong> WŁODARSKI<br>
-                <strong>ERSTE MANNSCHAFT MIT 3 TOREN GEWINNT!</strong>
+                <strong>ERSTE MANNSCHAFT MIT 5 TOREN GEWINNT!</strong>
             </div>
             <div style="margin: 10px 0; color: #ff6666;">
                 ⚠️ ACHTUNG: Auf dem Mini-Feld ist es sehr eng - Strategie ist der Schlüssel!
@@ -463,11 +463,11 @@
             
             // Ekstremalne parametry finału
             playerRadius: 10,
-            playerSpeed: 2.3, // ZWIĘKSZONE DLA WŁODARSKIEGO
+            playerSpeed: 2.3,
             playerShootPower: 1.5,
             
-            ballSpeed: 2.5,
-            ballMaxSpeed: 5.0,
+            ballSpeed: 2.0,
+            ballMaxSpeed: 4.0,
             
             bots: [
                 // NIEMCY - Bramkarz
@@ -477,7 +477,7 @@
                     color: "#000000", 
                     maxSpeed: 1.8,
                     shootPower: 0.3,
-                    radius: 8, // WYRÓWNANE
+                    radius: 8,
                     number: 1, 
                     role: "goalkeeper", 
                     isGoalkeeper: true, 
@@ -582,13 +582,13 @@
                     preferredY: 280, 
                     team: "opponent" 
                 },
-                // NIEMCY - Napastnicy - MOCNIEJSZE STRZAŁY
+                // NIEMCY - Napastnicy
                 { 
                     name: "KLINSMANN", 
                     x: 520, y: 170, 
                     color: "#000000", 
                     maxSpeed: 1.7,
-                    shootPower: 3.2, // ZWIĘKSZONE
+                    shootPower: 3.2,
                     radius: 12,
                     number: 18, 
                     role: "striker", 
@@ -600,7 +600,7 @@
                     x: 520, y: 230, 
                     color: "#000000", 
                     maxSpeed: 1.0,
-                    shootPower: 3.0, // ZWIĘKSZONE
+                    shootPower: 3.0,
                     radius: 14,
                     number: 20, 
                     role: "striker", 
@@ -698,7 +698,7 @@
                     x: 220, y: 120, 
                     color: "#ff0000", 
                     maxSpeed: 1.3,
-                    shootPower: 2.8, // MOCNE STRZAŁY
+                    shootPower: 2.8,
                     radius: 10,
                     number: 8, 
                     role: "attacker",
@@ -710,7 +710,7 @@
                     x: 220, y: 280, 
                     color: "#ff0000", 
                     maxSpeed: 1.3,
-                    shootPower: 2.6, // MOCNE STRZAŁY
+                    shootPower: 2.6,
                     radius: 10,
                     number: 7, 
                     role: "attacker",
@@ -724,7 +724,7 @@
                 color: "#cc0000", 
                 maxSpeed: 2.0,
                 shootPower: 0.5,
-                radius: 8, // WYRÓWNANE
+                radius: 8,
                 number: 1, 
                 role: "goalkeeper" 
             }
@@ -745,17 +745,17 @@
             lastTouchedBy: null
         };
         
-        // Włodarski - POWIĘKSZONY I SZYBSZY Z NUMEREM 10
+        // Włodarski
         const player = {
             x: 250,
             y: canvas.height / 2,
-            radius: 10, // POWIĘKSZONY
+            radius: 10,
             color: '#ff0000',
             vx: 0,
             vy: 0,
-            speed: 1.8, // SZYBSZY
+            speed: 1.8,
             shootPower: finalTeam.playerShootPower,
-            number: 10 // NUMER 10
+            number: 10
         };
         
         // Bramkarz gracza
@@ -838,11 +838,9 @@
             gameState.ballRotation = 0;
             gameState.lastCollisionTime = 0;
             
-            // Reset formacji
             formationState.inFormation = false;
             formationState.transitionTime = 0;
             
-            // Reset pozycji
             player.x = 250;
             player.y = canvas.height / 2;
             player.vx = 0;
@@ -876,15 +874,12 @@
             resetGame();
         }
         
-        // ZMODYFIKOWANA funkcja updatePlayer z obsługą formacji
         function updatePlayer() {
-            // Jeśli gra nie rozpoczęta lub nie ma piłki w grze - pozycjonuj automatycznie
             if (!gameState.gameStarted || !gameState.ballInPlay) {
                 positionPlayerForKickoff();
                 return;
             }
             
-            // Normalny ruch gracza podczas gry
             const speed = player.speed || 5.1;
             player.vx = 0;
             player.vy = 0;
@@ -956,7 +951,6 @@
             });
         }
 
-        // ZMODYFIKOWANA funkcja positionBotForKickoff z formacjami
         function positionBotForKickoff(bot) {
             const currentTime = Date.now();
             
@@ -999,7 +993,6 @@
             const distanceToBall = Math.sqrt((ball.x - bot.x) ** 2 + (ball.y - bot.y) ** 2);
             const ballSpeed = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy);
             
-            // Ograniczenia strefowe
             let minX, maxX, minY, maxY;
             
             if (bot.team === "player") {
@@ -1220,7 +1213,6 @@
                 speedMultiplier = 0.7;
             }
             
-            // Unikanie kolizji
             const nearbyBots = bots.filter(otherBot => {
                 if (otherBot === bot || otherBot.isGoalkeeper) return false;
                 const distance = Math.sqrt((bot.x - otherBot.x) ** 2 + (bot.y - otherBot.y) ** 2);
@@ -1269,7 +1261,6 @@
             bot.y = Math.max(minY, Math.min(maxY, bot.y));
         }
 
-        // POPRAWIONA FUNKCJA BRAMKARZA - WOLNIEJSZE REAKCJE I BŁĘDY
         function updateGoalkeeper(bot) {
             const isPlayerGoalkeeper = bot.team === "player" || bot === playerGoalkeeper;
             
@@ -1286,19 +1277,17 @@
                 targetX = canvas.width - 40;
             }
             
-            // BŁĘDY W POZYCJONOWANIU
-            targetX += (Math.random() - 0.5) * 25; // ±12.5 pikseli błędu w X
+            targetX += (Math.random() - 0.5) * 25;
             
             if (ballClose && ballMovingToGoal && ballSpeed > 1.5) {
                 const timeToGoal = isPlayerGoalkeeper ? 
                     Math.abs(ball.x - 15) / Math.max(0.1, Math.abs(ball.vx)) : 
                     Math.abs(ball.x - (canvas.width - 15)) / Math.max(0.1, Math.abs(ball.vx));
                 
-                const predictedY = ball.y + ball.vy * timeToGoal * 0.4; // BARDZO SŁABA PRECYZJA
+                const predictedY = ball.y + ball.vy * timeToGoal * 0.4;
                 targetY = predictedY;
                 
-                // DODAJ DUŻE BŁĘDY W POZYCJONOWANIU Y
-                targetY += (Math.random() - 0.5) * 40; // ±20 pikseli błędu w Y
+                targetY += (Math.random() - 0.5) * 40;
                 
                 if ((isPlayerGoalkeeper && ball.x < 60) || (!isPlayerGoalkeeper && ball.x > canvas.width - 60)) {
                     if (isPlayerGoalkeeper) {
@@ -1309,7 +1298,7 @@
                 }
                 
             } else {
-                targetY = ball.y + (Math.random() - 0.5) * 35; // Duże błędy pozycjonowania
+                targetY = ball.y + (Math.random() - 0.5) * 35;
             }
             
             const goalBounds = getGoalBounds();
@@ -1324,7 +1313,6 @@
             const dx = targetX - bot.x;
             const dy = targetY - bot.y;
             
-            // BARDZO WOLNA REAKCJA
             const reactionSpeed = (ballClose && ballMovingToGoal) ? 0.06 : 0.03;
             
             bot.vx = dx * reactionSpeed;
@@ -1422,13 +1410,11 @@
             ball.x += ball.vx;
             ball.y += ball.vy;
             
-            // Odbicia od ścian
             if (ball.y <= ball.radius + 15 || ball.y >= canvas.height - ball.radius - 15) {
                 ball.vy = -ball.vy;
                 ball.y = ball.y <= ball.radius + 15 ? ball.radius + 15 : canvas.height - ball.radius - 15;
             }
             
-            // Gole
             if (ball.x <= 15) {
                 const goalBounds = getGoalBounds();
                 if (ball.y > goalBounds.top && ball.y < goalBounds.bottom) {
@@ -1455,7 +1441,6 @@
                 }
             }
             
-            // Kolizje z graczami
             const currentTime = Date.now();
             const allPlayers = [player, ...bots];
             if (playerGoalkeeper) {
@@ -1472,7 +1457,6 @@
                         return;
                     }
                     
-                    // Śledź kto ostatnio dotknął piłki
                     gameState.lastTouchedBy = p;
                     
                     const nx = dx / distance;
@@ -1516,7 +1500,6 @@
                             ball.vy = Math.sin(passAngle) * passStrength;
                             
                         } else {
-                            // INTELIGENTNE CELOWANIE W BRAMKĘ
                             const goalBounds = getGoalBounds();
                             let targetGoalX, targetGoalY;
                             
@@ -1531,7 +1514,6 @@
                                         targetGoalY = goalBounds.top + 20;
                                     }
                                     
-                                    // Napastnicy wolą rogi
                                     if (p.role === "striker" || p.role === "attacker") {
                                         if (Math.random() < 0.7) {
                                             targetGoalY = Math.random() < 0.5 ? goalBounds.top + 10 : goalBounds.bottom - 10;
@@ -1561,7 +1543,6 @@
                                 }
                             }
                             
-                            // Błędy celowania
                             const aimError = p.role === "striker" || p.role === "attacker" ? 
                                 (Math.random() - 0.5) * 15 :
                                 (Math.random() - 0.5) * 25;
@@ -1571,12 +1552,11 @@
                             
                             const shootAngle = Math.atan2(targetGoalY - ball.y, targetGoalX - ball.x);
                             
-                            // ZWIĘKSZONE SIŁY STRZAŁU DLA NAPASTNIKÓW
                             let shootMultiplier;
                             switch(p.role) {
                                 case "striker":
                                 case "attacker":
-                                    shootMultiplier = 6; // ZWIĘKSZONE
+                                    shootMultiplier = 6;
                                     break;
                                 case "winger":
                                 case "attacking_midfielder":
@@ -1624,9 +1604,8 @@
             entity.y = Math.max(entity.radius + border, Math.min(canvas.height - entity.radius - border, entity.y));
         }
         
-        // MNIEJSZE BRAMKI
         function getGoalBounds() {
-            const goalAreaHeight = 0.4 * finalTeam.fieldScale; // ZMNIEJSZONE Z 0.6 DO 0.4
+            const goalAreaHeight = 0.4 * finalTeam.fieldScale;
             const goalTop = 0.5 - goalAreaHeight/2;
             const goalBottom = 0.5 + goalAreaHeight/2;
             
@@ -1645,7 +1624,6 @@
             ball.vy = Math.sin(angle) * ball.startSpeed;
         }
         
-        // ZMODYFIKOWANA funkcja resetBallAfterGoal z celebracją
         function resetBallAfterGoal(scorer) {
             resetFormationAfterGoal();
             showGoalCelebration(scorer);
@@ -1655,18 +1633,17 @@
             document.getElementById('playerScore').textContent = gameState.playerScore;
             document.getElementById('botScore').textContent = gameState.botScore;
             
-            // MECZ DO 3 GOLI
-            if (gameState.playerScore >= 3) {
+            if (gameState.playerScore >= 5) {
                 gameState.gameWon = true;
                 showWinMessage('🏆 POLEN EUROPAMEISTER! 🏆');
-            } else if (gameState.botScore >= 3) {
+            } else if (gameState.botScore >= 5) {
                 gameState.gameWon = true;
                 showWinMessage('💀 DEUTSCHLAND GEWINNT 💀');
             }
         }
         
         function showWinMessage(message) {
-            const isPlayerWin = gameState.playerScore >= 3;
+            const isPlayerWin = gameState.playerScore >= 5;
             document.getElementById('winnerMessage').innerHTML = `
                 <div style="font-size: 16px; color: ${isPlayerWin ? '#00ff00' : '#ff0000'};">
                     ${message}
@@ -1706,8 +1683,6 @@
             ctx.fill();
             
             drawStandardFieldLines();
-            
-            // DODANE: Rysuj informacje o formacji
             drawFormationInfo();
         }
         
@@ -1737,7 +1712,7 @@
         }
         
         function drawGoals(scale) {
-            const goalHeight = canvas.height * 0.4 * scale; // MNIEJSZE BRAMKI
+            const goalHeight = canvas.height * 0.4 * scale;
             const goalTop = canvas.height * 0.5 - goalHeight/2;
             const goalBottom = canvas.height * 0.5 + goalHeight/2;
             const goalWidth = 15 * scale;
