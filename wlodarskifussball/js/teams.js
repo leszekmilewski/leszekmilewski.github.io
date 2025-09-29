@@ -139,7 +139,7 @@ const teams = [
     number: 4, 
     playerTeam: "SV BABELSBERG 04",
     opponentTeam: "FC GUTERSLOH",
-    field: "simple",
+    field: "autumn",
     fieldScale: 1.0,
     
     // === PARAMETRY WŁODARSKIEGO ===
@@ -280,7 +280,7 @@ const teams = [
         number: 7,
         playerTeam: "SV BABELSBERG 04",
         opponentTeam: "FORTUNA KOLN",
-        field: "professional", 
+        field: "forest", 
         fieldScale: 0.25,
         
         // === PARAMETRY WŁODARSKIEGO ===
@@ -417,8 +417,8 @@ const teams = [
         number: 9,
         playerTeam: "SV BABELSBERG 04",
         opponentTeam: "VFL BOCHUM",
-        field: "asphalt",
-        fieldScale: 0.6,
+        field: "forest",
+        fieldScale: 0.75,
         hasPlayerGoalkeeper: true,
         
         // === PARAMETRY WŁODARSKIEGO ===
@@ -509,7 +509,7 @@ playerGoalkeeper: {
         number: 10, 
         playerTeam: "SV BABELSBERG 04",
         opponentTeam: "KFC UERDINGEN",
-        field: "simple2",
+        field: "clay",
         fieldScale: 0.25,
         
         // === PARAMETRY WŁODARSKIEGO ===
@@ -543,7 +543,7 @@ playerGoalkeeper: {
         number: 11, 
         playerTeam: "SV BABELSBERG 04",
         opponentTeam: "STUTTGARTER KICKERS",
-        field: "simple2",
+        field: "retro",
         fieldScale: 0.5,
         
         // === PARAMETRY WŁODARSKIEGO ===
@@ -577,7 +577,7 @@ playerGoalkeeper: {
        number: 12, 
         playerTeam: "SV BABELSBERG 04",
         opponentTeam: "FSV ZWICKAU",
-        field: "simple1",
+        field: "night",
         fieldScale: 0.5,
         
         // === PARAMETRY WŁODARSKIEGO ===
@@ -610,7 +610,7 @@ playerGoalkeeper: {
         number: 13,
         playerTeam: "SV BABELSBERG 04", 
         opponentTeam: "HERTHA BERLIN",
-        field: "grass",
+        field: "neon",
         fieldScale: 1.0,
         
         // === PARAMETRY WŁODARSKIEGO ===
@@ -658,8 +658,8 @@ playerGoalkeeper: {
         number: 14,
         playerTeam: "SV BABELSBERG 04",
         opponentTeam: "FC ST. PAULI",
-        field: "professional",
-        fieldScale: 0.6,
+        field: "beach",
+        fieldScale: 0.5,
         hasPlayerGoalkeeper: true,
         
         // === PARAMETRY WŁODARSKIEGO ===
@@ -746,8 +746,8 @@ playerGoalkeeper: {
         number: 15,
         playerTeam: "SV BABELSBERG 04",
         opponentTeam: "1. FC UNION BERLIN",
-        field: "winter",
-        fieldScale: 0.4,
+        field: "desert",
+        fieldScale: 0.5,
         hasPlayerGoalkeeper: true,
         
         // === PARAMETRY WŁODARSKIEGO ===
