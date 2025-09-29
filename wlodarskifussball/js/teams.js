@@ -139,7 +139,7 @@ const teams = [
     number: 4, 
     playerTeam: "SV BABELSBERG 04",
     opponentTeam: "FC GUTERSLOH",
-    field: "concrete",
+    field: "campnou",
     fieldScale: 1.0,
     
     // === PARAMETRY WŁODARSKIEGO ===
