@@ -243,8 +243,7 @@
 
     <script>
         // Globalne zmienne
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
+        let canvas, ctx;
         
         let gameSettings = {
             field: 'simple',
@@ -264,7 +263,7 @@
         // Gracz 1 (WASD) - czerwony
         const player1 = {
             x: 150,
-            y: canvas.height / 2,
+            y: 200,
             radius: 15,
             color: '#ff0000',
             vx: 0,
@@ -275,7 +274,7 @@
         // Gracz 2 (IJKL) - niebieski
         const player2 = {
             x: 650,
-            y: canvas.height / 2,
+            y: 200,
             radius: 15,
             color: '#0066ff',
             vx: 0,
@@ -285,8 +284,8 @@
         
         // Piłka
         const ball = {
-            x: canvas.width / 2,
-            y: canvas.height / 2,
+            x: 400,
+            y: 200,
             radius: 8,
             vx: 0,
             vy: 0,
@@ -318,21 +317,30 @@
         
         // Funkcje menu
         function showGameSetup() {
-            document.getElementById('mainMenu').style.display = 'none';
-            document.getElementById('gameSetup').classList.remove('hidden');
+            const mainMenu = document.getElementById('mainMenu');
+            const gameSetup = document.getElementById('gameSetup');
+            if (mainMenu) mainMenu.style.display = 'none';
+            if (gameSetup) gameSetup.classList.remove('hidden');
         }
         
         function backToMenu() {
-            document.getElementById('gameContainer').style.display = 'none';
-            document.getElementById('gameSetup').classList.add('hidden');
-            document.getElementById('mainMenu').style.display = 'block';
+            const gameContainer = document.getElementById('gameContainer');
+            const gameSetup = document.getElementById('gameSetup');
+            const mainMenu = document.getElementById('mainMenu');
+            if (gameContainer) gameContainer.style.display = 'none';
+            if (gameSetup) gameSetup.classList.add('hidden');
+            if (mainMenu) mainMenu.style.display = 'block';
             resetGame();
         }
         
         function selectField(fieldType) {
             gameSettings.field = fieldType;
-            document.querySelectorAll('.field-btn').forEach(btn => btn.classList.remove('selected'));
-            document.querySelector(`[data-field="${fieldType}"]`).classList.add('selected');
+            const fieldBtns = document.querySelectorAll('.field-btn');
+            if (fieldBtns.length > 0) {
+                fieldBtns.forEach(btn => btn.classList.remove('selected'));
+                const selectedBtn = document.querySelector(`[data-field="${fieldType}"]`);
+                if (selectedBtn) selectedBtn.classList.add('selected');
+            }
             
             // Ustaw parametry piłki i graczy w zależności od typu boiska
             switch(fieldType) {
@@ -346,43 +354,43 @@
                 case 'grass':
                     ball.startSpeed = 5;
                     ball.maxSpeed = 10;
-                    ball.friction = 0.997; // Nieco więcej tarcia na trawie
-                    player1.speed = 4; // Wolniej na trawie
+                    ball.friction = 0.997;
+                    player1.speed = 4;
                     player2.speed = 4;
                     break;
                 case 'muddy':
                     ball.startSpeed = 3;
                     ball.maxSpeed = 8;
-                    ball.friction = 0.992; // Dużo tarcia w błocie
-                    player1.speed = 3.5; // Bardzo wolno w błocie
+                    ball.friction = 0.992;
+                    player1.speed = 3.5;
                     player2.speed = 3.5;
                     break;
                 case 'winter':
                     ball.startSpeed = 7;
                     ball.maxSpeed = 14;
-                    ball.friction = 0.999; // Ślisko - mniej tarcia
-                    player1.speed = 6; // Szybciej ale mniej kontroli
+                    ball.friction = 0.999;
+                    player1.speed = 6;
                     player2.speed = 6;
                     break;
                 case 'sandy':
                     ball.startSpeed = 3.5;
                     ball.maxSpeed = 7;
-                    ball.friction = 0.990; // Piasek bardzo spowalnia
-                    player1.speed = 3; // Bardzo trudno biegać w piasku
+                    ball.friction = 0.990;
+                    player1.speed = 3;
                     player2.speed = 3;
                     break;
                 case 'asphalt':
                     ball.startSpeed = 9;
                     ball.maxSpeed = 18;
-                    ball.friction = 0.999; // Gładki asfalt
-                    player1.speed = 7; // Szybko na asfalcie
+                    ball.friction = 0.999;
+                    player1.speed = 7;
                     player2.speed = 7;
                     break;
                 case 'professional':
                     ball.startSpeed = 8;
                     ball.maxSpeed = 16;
-                    ball.friction = 0.9995; // Najlepsza nawierzchnia
-                    player1.speed = 6; // Najszybciej na profesjonalnym boisku
+                    ball.friction = 0.9995;
+                    player1.speed = 6;
                     player2.speed = 6;
                     break;
                 default:
@@ -396,28 +404,31 @@
         
         function selectScale(scale) {
             gameSettings.scale = scale;
-            document.querySelectorAll('.scale-btn').forEach(btn => btn.classList.remove('selected'));
-            document.querySelector(`[data-scale="${scale}"]`).classList.add('selected');
+            const scaleBtns = document.querySelectorAll('.scale-btn');
+            if (scaleBtns.length > 0) {
+                scaleBtns.forEach(btn => btn.classList.remove('selected'));
+                const selectedBtn = document.querySelector(`[data-scale="${scale}"]`);
+                if (selectedBtn) selectedBtn.classList.add('selected');
+            }
             
-            // Zaktualizuj rozmiary graczy i piłki - większe radiusy na mniejszych boiskach
             let playerRadius, ballRadius;
             
             switch(scale) {
                 case 0.25:
-                    playerRadius = 10; // Największy radius na najmniejszym boisku
+                    playerRadius = 10;
                     ballRadius = 3;
                     break;
                 case 0.5:
-                    playerRadius = 14; // Duży radius na małym boisku
+                    playerRadius = 14;
                     ballRadius = 6;
                     break;
                 case 0.75:
-                    playerRadius = 17; // Średni radius na średnim boisku
+                    playerRadius = 17;
                     ballRadius = 8;
                     break;
                 case 1.0:
                 default:
-                    playerRadius = 30; // Standardowy radius na pełnym boisku
+                    playerRadius = 30;
                     ballRadius = 10;
                     break;
             }
@@ -428,8 +439,10 @@
         }
         
         function startPvPGame() {
-            document.getElementById('gameSetup').classList.add('hidden');
-            document.getElementById('gameContainer').style.display = 'block';
+            const gameSetup = document.getElementById('gameSetup');
+            const gameContainer = document.getElementById('gameContainer');
+            if (gameSetup) gameSetup.classList.add('hidden');
+            if (gameContainer) gameContainer.style.display = 'block';
             resetGame();
         }
         
@@ -442,7 +455,8 @@
             gameState.ballRotation = 0;
             gameState.lastCollisionTime = 0;
             
-            // Reset pozycji
+            if (!canvas) return;
+            
             player1.x = 150;
             player1.y = canvas.height / 2;
             player1.vx = 0;
@@ -459,14 +473,18 @@
             ball.vy = 0;
             
             updateScore();
-            document.getElementById('startMessage').classList.remove('hidden');
-            document.getElementById('winnerMessage').classList.add('hidden');
-            document.getElementById('restartBtn').style.display = 'none';
+            const startMsg = document.getElementById('startMessage');
+            const winnerMsg = document.getElementById('winnerMessage');
+            const restartBtn = document.getElementById('restartBtn');
+            if (startMsg) startMsg.classList.remove('hidden');
+            if (winnerMsg) winnerMsg.classList.add('hidden');
+            if (restartBtn) restartBtn.style.display = 'none';
         }
         
         function startGame() {
             gameState.gameStarted = true;
-            document.getElementById('startMessage').classList.add('hidden');
+            const startMsg = document.getElementById('startMessage');
+            if (startMsg) startMsg.classList.add('hidden');
             launchBall();
         }
         
@@ -511,17 +529,14 @@
             ball.x += ball.vx;
             ball.y += ball.vy;
             
-            // Rotacja piłki
             const speed = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy);
             gameState.ballRotation += speed * 0.05;
             
-            // Odbicia od ścian
             if (ball.y <= ball.radius + 15 || ball.y >= canvas.height - ball.radius - 15) {
                 ball.vy = -ball.vy;
                 ball.y = ball.y <= ball.radius + 15 ? ball.radius + 15 : canvas.height - ball.radius - 15;
             }
             
-            // Gole
             if (ball.x <= 15) {
                 const goalBounds = getGoalBounds();
                 if (ball.y > goalBounds.top && ball.y < goalBounds.bottom) {
@@ -546,7 +561,6 @@
                 }
             }
             
-            // Kolizje z graczami
             const currentTime = Date.now();
             const players = [player1, player2];
             
@@ -563,20 +577,17 @@
                     const nx = dx / distance;
                     const ny = dy / distance;
                     
-                    // Rozdziel obiekty
                     const overlap = ball.radius + player.radius - distance;
                     const separationDistance = overlap + 5;
                     ball.x += nx * separationDistance;
                     ball.y += ny * separationDistance;
                     
-                    // Oblicz prędkość piłki
                     const playerSpeed = Math.sqrt(player.vx * player.vx + player.vy * player.vy);
                     const kickPower = Math.max(4, playerSpeed + 3);
                     
                     ball.vx = nx * kickPower + player.vx * 0.5;
                     ball.vy = ny * kickPower + player.vy * 0.5;
                     
-                    // Ograniczenie prędkości
                     const ballSpeed = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy);
                     if (ballSpeed > ball.maxSpeed) {
                         ball.vx = (ball.vx / ballSpeed) * ball.maxSpeed;
@@ -587,7 +598,6 @@
                 }
             });
             
-            // Tarcie - używa parametr zależny od boiska
             ball.vx *= ball.friction;
             ball.vy *= ball.friction;
             
@@ -633,8 +643,10 @@
         }
         
         function updateScore() {
-            document.getElementById('player1Score').textContent = gameState.player1Score;
-            document.getElementById('player2Score').textContent = gameState.player2Score;
+            const p1Score = document.getElementById('player1Score');
+            const p2Score = document.getElementById('player2Score');
+            if (p1Score) p1Score.textContent = gameState.player1Score;
+            if (p2Score) p2Score.textContent = gameState.player2Score;
             
             if (gameState.player1Score >= 5) {
                 gameState.gameWon = true;
@@ -646,14 +658,18 @@
         }
         
         function showWinMessage(message) {
-            document.getElementById('winnerMessage').innerHTML = `
-                <div style="font-size: 14px;">🎉 ${message} 🎉</div>
-                <div style="font-size: 10px; margin: 10px 0; color: #ffff00;">
-                    ERGEBNIS: ${gameState.player1Score} - ${gameState.player2Score}
-                </div>
-            `;
-            document.getElementById('winnerMessage').classList.remove('hidden');
-            document.getElementById('restartBtn').style.display = 'inline-block';
+            const winnerMsg = document.getElementById('winnerMessage');
+            const restartBtn = document.getElementById('restartBtn');
+            if (winnerMsg) {
+                winnerMsg.innerHTML = `
+                    <div style="font-size: 14px;">🎉 ${message} 🎉</div>
+                    <div style="font-size: 10px; margin: 10px 0; color: #ffff00;">
+                        ERGEBNIS: ${gameState.player1Score} - ${gameState.player2Score}
+                    </div>
+                `;
+                winnerMsg.classList.remove('hidden');
+            }
+            if (restartBtn) restartBtn.style.display = 'inline-block';
         }
         
         // Rysowanie
@@ -696,7 +712,6 @@
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            // Tekstura trawy
             ctx.strokeStyle = 'rgba(50, 205, 50, 0.2)';
             ctx.lineWidth = 1;
             for (let i = 0; i < canvas.width; i += 20) {
@@ -717,7 +732,6 @@
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            // Kałuże
             ctx.fillStyle = 'rgba(0,100,150,0.7)';
             [[200,100,40,20], [600,300,35,25], [400,150,30,15]].forEach(([x,y,w,h]) => {
                 ctx.beginPath();
@@ -736,7 +750,6 @@
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            // Płatki śniegu
             const time = Date.now() * 0.001;
             ctx.fillStyle = 'rgba(200,200,200,0.8)';
             for(let i = 0; i < 20; i++) {
@@ -758,7 +771,6 @@
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            // Wzory piasku
             ctx.strokeStyle = 'rgba(210, 180, 140, 0.3)';
             ctx.lineWidth = 1 * gameSettings.scale;
             for (let i = 0; i < canvas.width; i += 15 * gameSettings.scale) {
@@ -780,7 +792,6 @@
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            // Tekstura asfaltu
             ctx.fillStyle = 'rgba(80, 80, 80, 0.3)';
             for (let i = 0; i < 200; i++) {
                 const x = Math.random() * canvas.width;
@@ -802,7 +813,6 @@
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            // Paski
             ctx.fillStyle = 'rgba(50, 205, 50, 0.5)';
             for (let i = 0; i < canvas.width; i += 80) {
                 ctx.fillRect(i, 0, 40, canvas.height);
@@ -817,21 +827,17 @@
             ctx.strokeStyle = 'white';
             ctx.lineWidth = 4 * scale;
             
-            // Obramowanie
             ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
             
-            // Linia środkowa
             ctx.beginPath();
             ctx.moveTo(canvas.width / 2, 10);
             ctx.lineTo(canvas.width / 2, canvas.height - 10);
             ctx.stroke();
             
-            // Koło środkowe
             ctx.beginPath();
             ctx.arc(canvas.width / 2, canvas.height / 2, 60 * scale, 0, Math.PI * 2);
             ctx.stroke();
             
-            // Punkt środkowy
             ctx.fillStyle = 'white';
             ctx.beginPath();
             ctx.arc(canvas.width / 2, canvas.height / 2, 4 * scale, 0, Math.PI * 2);
@@ -846,7 +852,6 @@
             const goalBottom = canvas.height * 0.5 + goalHeight/2;
             const goalWidth = 15 * scale;
             
-            // Lewa bramka
             ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
             ctx.fillRect(10 - goalWidth, goalTop, goalWidth, goalHeight);
             
@@ -857,7 +862,6 @@
             ctx.lineTo(10, goalBottom);
             ctx.stroke();
             
-            // Prawa bramka
             ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
             ctx.fillRect(canvas.width - 10, goalTop, goalWidth, goalHeight);
             
@@ -866,7 +870,6 @@
             ctx.lineTo(canvas.width - 10, goalBottom);
             ctx.stroke();
             
-            // Pola bramkowe
             ctx.strokeStyle = 'white';
             ctx.lineWidth = 2 * scale;
             
@@ -881,26 +884,22 @@
         function drawPlayer(player, name) {
             const radius = player.radius;
             
-            // Cień
             ctx.fillStyle = 'rgba(0,0,0,0.3)';
             ctx.beginPath();
             ctx.arc(player.x + 2 * gameSettings.scale, player.y + 2 * gameSettings.scale, radius, 0, Math.PI * 2);
             ctx.fill();
             
-            // Główne kółko
             ctx.fillStyle = player.color;
             ctx.beginPath();
             ctx.arc(player.x, player.y, radius, 0, Math.PI * 2);
             ctx.fill();
             
-            // Obramowanie
             ctx.strokeStyle = 'white';
             ctx.lineWidth = 2 * gameSettings.scale;
             ctx.beginPath();
             ctx.arc(player.x, player.y, radius, 0, Math.PI * 2);
             ctx.stroke();
             
-            // Nazwa
             ctx.fillStyle = 'white';
             ctx.font = `bold ${6 * gameSettings.scale}px Arial`;
             ctx.textAlign = 'center';
@@ -914,13 +913,11 @@
         function drawBall() {
             const radius = ball.radius;
             
-            // Cień
             ctx.fillStyle = 'rgba(0,0,0,0.4)';
             ctx.beginPath();
             ctx.arc(ball.x + 2 * gameSettings.scale, ball.y + 2 * gameSettings.scale, radius * 1.1, 0, Math.PI * 2);
             ctx.fill();
             
-            // Piłka
             if (!gameState.ballInPlay && gameState.gameStarted && !gameState.gameWon) {
                 if (Math.floor(Date.now() / 300) % 2) {
                     ctx.fillStyle = 'rgba(255,255,255,0.6)';
@@ -935,23 +932,22 @@
             ctx.arc(ball.x, ball.y, radius, 0, Math.PI * 2);
             ctx.fill();
             
-            // Obramowanie
             ctx.strokeStyle = 'black';
             ctx.lineWidth = 1 * gameSettings.scale;
             ctx.beginPath();
             ctx.arc(ball.x, ball.y, radius, 0, Math.PI * 2);
             ctx.stroke();
             
-            // Połysk
             ctx.fillStyle = 'rgba(255,255,255,0.8)';
             ctx.beginPath();
             ctx.arc(ball.x - radius * 0.3, ball.y - radius * 0.3, radius * 0.25, 0, Math.PI * 2);
             ctx.fill();
         }
 
-
         
         function gameLoop() {
+            if (!ctx) return;
+            
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
             drawField();
@@ -969,12 +965,14 @@
             requestAnimationFrame(gameLoop);
         }
         
-        // Inicjalizacja
-
-selectScale(1.0);
-selectField('simple');
-        
-        gameLoop();
+        // Inicjalizacja po załadowaniu DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            canvas = document.getElementById('gameCanvas');
+            ctx = canvas.getContext('2d');
+            selectScale(1.0);
+            selectField('simple');
+            gameLoop();
+        });
     </script>
 </body>
 </html>
