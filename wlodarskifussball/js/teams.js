@@ -493,7 +493,7 @@ const teams = [
                 team: "player" 
             }
         ],
-        playerGoalkeeper: { 
+playerGoalkeeper: { 
             name: "HANAUER", 
             x: 50, 
             y: 200, 
@@ -504,9 +504,8 @@ const teams = [
             number: 1, 
             role: "goalkeeper" 
         }
-    }
-
-        {
+    },  // <-- TEN PRZECINEK BYŁ POMINIĘTY
+    {
         number: 10, 
         playerTeam: "SV BABELSBERG 04",
         opponentTeam: "KFC UERDINGEN",
