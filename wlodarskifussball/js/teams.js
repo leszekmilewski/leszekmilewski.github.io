@@ -610,7 +610,7 @@ playerGoalkeeper: {
         number: 13,
         playerTeam: "SV BABELSBERG 04", 
         opponentTeam: "HERTHA BERLIN",
-        field: "neon",
+        field: "parquet",
         fieldScale: 1.0,
         
         // === PARAMETRY WŁODARSKIEGO ===
@@ -619,7 +619,7 @@ playerGoalkeeper: {
         playerShootPower: 7,
         
         // === PARAMETRY PIŁKI ===
-        ballSpeed: 4.2,
+        ballSpeed: 5.2,
         ballMaxSpeed: 10.5,
         
         bots: [
@@ -658,7 +658,7 @@ playerGoalkeeper: {
         number: 14,
         playerTeam: "SV BABELSBERG 04",
         opponentTeam: "FC ST. PAULI",
-        field: "grass",
+        field: "rain",
         fieldScale: 0.5,
         hasPlayerGoalkeeper: true,
         
@@ -764,7 +764,7 @@ playerGoalkeeper: {
                 name: "PFANNENSTIEL", 
                 x: 750, 
                 y: 200, 
-                color: "#aa0000", 
+                color: "#aa1000", 
                 maxSpeed: 1.5,
                 shootPower: 0.4,
                 radius: 13,
@@ -778,7 +778,7 @@ playerGoalkeeper: {
                 name: "SEITZ", 
                 x: 680, 
                 y: 180, 
-                color: "#cc0000", 
+                color: "#cc1000", 
                 maxSpeed: 3.8,
                 shootPower: 1.3,
                 radius: 10,
@@ -792,7 +792,7 @@ playerGoalkeeper: {
                 name: "TIFFERT", 
                 x: 640, 
                 y: 220, 
-                color: "#cc0000", 
+                color: "#cc1000", 
                 maxSpeed: 4.0,
                 shootPower: 1.5,
                 radius: 10,
@@ -806,7 +806,7 @@ playerGoalkeeper: {
                 name: "QUIRING", 
                 x: 590, 
                 y: 200, 
-                color: "#cc0000", 
+                color: "#cc1000", 
                 maxSpeed: 4.5,
                 shootPower: 1.8,
                 radius: 11,
