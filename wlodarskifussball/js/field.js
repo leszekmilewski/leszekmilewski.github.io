@@ -66,9 +66,14 @@ function drawField() {
         case 'retro':
             drawRetroField();
             break;
-        case 'neon':
+     case 'neon':
             drawNeonField();
             break;
+        case 'campnou':  // <-- DODAJ TEN CASE
+            drawCampNouField();
+            break;
+    }
+}
     }
 }
 
@@ -821,3 +826,55 @@ function drawNeonField() {
     
     drawStandardFieldLines();
 }
+
+function drawCampNouField() {
+    // Camp Nou - legendarny stadion FC Barcelona
+    const currentTeamData = gameMode === 'tournament' ? teams[gameState.currentRound] : teams[selectedTeam];
+    const scale = currentTeamData.fieldScale || 1.0;
+    
+    // Gradient w kolorach Barcelony (blaugrana)
+    const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, 400);
+    gradient.addColorStop(0, '#1a7a3e');
+    gradient.addColorStop(0.5, '#228B22');
+    gradient.addColorStop(1, '#0d5c29');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Charakterystyczne paski Camp Nou
+    ctx.fillStyle = 'rgba(26, 122, 62, 0.4)';
+    for (let i = 0; i < canvas.width; i += 60) {
+        ctx.fillRect(i, 0, 30, canvas.height);
+    }
+    
+    // Dodatkowy wzór - paski pod kątem (efekt koszenia)
+    ctx.fillStyle = 'rgba(13, 92, 41, 0.2)';
+    for (let i = 0; i < canvas.width; i += 120) {
+        ctx.fillRect(i, 0, 60, canvas.height);
+    }
+    
+    // Akcenty w kolorach Barcelony (blaugrana)
+    const time = Date.now() * 0.001;
+    
+    // Niebieski akcent (lewy narożnik)
+    ctx.fillStyle = `rgba(0, 51, 160, ${0.05 + Math.sin(time) * 0.02})`;
+    ctx.beginPath();
+    ctx.arc(100 * scale, 100 * scale, 80 * scale, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Czerwony akcent (prawy narożnik)
+    ctx.fillStyle = `rgba(164, 0, 0, ${0.05 + Math.sin(time + 1) * 0.02})`;
+    ctx.beginPath();
+    ctx.arc((canvas.width - 100) * scale, (canvas.height - 100) * scale, 80 * scale, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Światła stadionu (4 reflektory w narożnikach)
+    ctx.fillStyle = `rgba(255, 255, 220, ${0.08 + Math.sin(time * 0.5) * 0.03})`;
+    [[100, 50], [canvas.width - 100, 50], [100, canvas.height - 50], [canvas.width - 100, canvas.height - 50]].forEach(([x, y]) => {
+        ctx.beginPath();
+        ctx.arc(x, y, 60 * scale, 0, Math.PI * 2);
+        ctx.fill();
+    });
+    
+   
+    drawStandardFieldLines();
+}  // <-- KONIEC - to jest ostatnia rzecz w pliku field.js
