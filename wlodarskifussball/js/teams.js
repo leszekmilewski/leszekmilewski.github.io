@@ -124,7 +124,7 @@ const teams = [
                 x: 700, 
                 y: 200, 
                 color: "#a33f2e", 
-                maxSpeed: 7.0,
+                maxSpeed: 6.0,
                 shootPower: 1.5,
                 radius: 16,
                 canCrossHalf: false, 
@@ -158,7 +158,7 @@ const teams = [
             y: 200, 
             color: "#3b3635", 
             maxSpeed: 1.8,       // Wolniejszy jak bramkarz
-            shootPower: 0.5,     // Słabszy w strzałach
+            shootPower: 1.5,     // Słabszy w strzałach
             radius: 18,          // Nieco większy
             canCrossHalf: false, 
             number: 1,           // Numer bramkarza
@@ -225,7 +225,7 @@ const teams = [
         hasPlayerGoalkeeper: true,
         
         // === PARAMETRY WŁODARSKIEGO ===
-        playerRadius: 20,
+        playerRadius: 15,
         playerSpeed: 5.2,
         playerShootPower: 8.5,
         
@@ -235,7 +235,7 @@ const teams = [
         
         bots: [
             { 
-                name: "GÜNTER HOFFMAN", 
+                name: "GÜNTER", 
                 x: 600, 
                 y: 120, 
                 color: "#ff6600", 
@@ -248,36 +248,9 @@ const teams = [
                 preferredY: 120, 
                 team: "opponent" 
             },
+
             { 
-                name: "DIETER KLEIN", 
-                x: 650, 
-                y: 200, 
-                color: "#ff6600", 
-                maxSpeed: 3.5,
-                shootPower: 1.2,
-                radius: 11,
-                canCrossHalf: false, 
-                number: 4, 
-                role: "midfielder", 
-                preferredY: 200, 
-                team: "opponent" 
-            },
-            { 
-                name: "STEFAN BRAUN", 
-                x: 600, 
-                y: 280, 
-                color: "#ff6600", 
-                maxSpeed: 2.25,
-                shootPower: 0.8,
-                radius: 12,
-                canCrossHalf: false, 
-                number: 3, 
-                role: "defender", 
-                preferredY: 280, 
-                team: "opponent" 
-            },
-            { 
-                name: "KEEPER BRAUN", 
+                name: "BRAUN", 
                 x: 750, 
                 y: 200, 
                 color: "#cc3300", 
@@ -311,21 +284,21 @@ const teams = [
         fieldScale: 0.25,
         
         // === PARAMETRY WŁODARSKIEGO ===
-        playerRadius: 20,
-        playerSpeed: 4.7,
-        playerShootPower: 7,
+        playerRadius: 10,
+        playerSpeed: 2.7,
+        playerShootPower: 2,
         
         // === PARAMETRY PIŁKI ===
-        ballSpeed: 6.2,
-        ballMaxSpeed: 13.0,
+        ballSpeed: 3.2,
+        ballMaxSpeed: 6.0,
         
         bots: [
             { 
-                name: "WOLFGANG RICHTER", 
+                name: "RICHTER", 
                 x: 600, 
                 y: 100, 
                 color: "#990000", 
-                maxSpeed: 6,
+                maxSpeed: 2,
                 shootPower: 1.8,
                 radius: 6,
                 canCrossHalf: true, 
@@ -335,11 +308,11 @@ const teams = [
                 team: "opponent" 
             },
             { 
-                name: "HERMANN FISCHER", 
+                name: "FISCHER", 
                 x: 650, 
                 y: 200, 
                 color: "#990000", 
-                maxSpeed: 5.25,
+                maxSpeed: 2,
                 shootPower: 1.4,
                 radius: 6,
                 canCrossHalf: false, 
@@ -353,7 +326,7 @@ const teams = [
                 x: 600, 
                 y: 300, 
                 color: "#990000", 
-                maxSpeed: 6,
+                maxSpeed: 2,
                 shootPower: 1.0,
                 radius: 6,
                 canCrossHalf: false, 
@@ -532,4 +505,40 @@ const teams = [
             role: "goalkeeper" 
         }
     }
+
+        {
+        number: 10, 
+        playerTeam: "SV BABELSBERG 04",
+        opponentTeam: "KFC UERDINGEN",
+        field: "simple2",
+        fieldScale: 0.25,
+        
+        // === PARAMETRY WŁODARSKIEGO ===
+        playerRadius: 10,
+        playerSpeed: 6.0,
+        playerShootPower: 11.5,
+        
+        // === PARAMETRY PIŁKI ===
+        ballSpeed: 6.5,
+        ballMaxSpeed: 12.0,
+        
+        bots: [
+            { 
+                name: "THORUP", 
+                x: 700, 
+                y: 200, 
+                color: "#a33f2e", 
+                maxSpeed: 6.0,
+                shootPower: 1.5,
+                radius: 10,
+                canCrossHalf: false, 
+                number: 9, 
+                role: "ball_chaser", 
+                preferredY: 200, 
+                team: "opponent" 
+            }
+        ]
+    },
 ];
+
+
