@@ -111,6 +111,20 @@
         
         .main-content.show {
             display: block;
+            width: 100%;
+            height: auto;
+        }
+        
+        /* Resetuj style dla zawartości gry */
+        .main-content #gameCanvas,
+        .main-content .game-container,
+        .main-content img,
+        .main-content canvas {
+            max-width: none !important;
+            max-height: none !important;
+            width: auto;
+            height: auto;
+            object-fit: none !important;
         }
         
         /* Animacja znikania splash screen */
