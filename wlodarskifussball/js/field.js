@@ -74,8 +74,6 @@ function drawField() {
             break;
     }
 }
-    }
-}
 
 function drawSimpleField() {
     // Proste zielone boisko - jasna zieleń
