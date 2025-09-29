@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-fullscreen">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>WŁODARSKI MOBILE</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background: #000;
+            font-family: Arial, sans-serif;
+            position: fixed;
+            touch-action: none;
+        }
+        
+        #gameArea {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #scoreBar {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            z-index: 10;
+            border-bottom: 2px solid #ffff00;
+        }
+        
+        #canvasContainer {
+            flex: 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1a4d1a;
+        }
+        
+        #gameCanvas {
+            max-width: 100%;
+            max-height: 100%;
+            border: 2px solid #ffff00;
+        }
+        
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            z-index: 100;
+        }
+        
+        .controls.left {
+            left: 20px;
+        }
+        
+        .controls.right {
+            right: 20px;
+        }
+        
+        .dpad {
+            position: relative;
+            width: 150px;
+            height: 150px;
+        }
+        
+        .btn {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.3);
+            border: 3px solid rgba(255, 255, 255, 0.6);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            text-shadow: 2px 2px 4px black;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+        
+        .btn:active,
+        .btn.active {
+            background: rgba(255, 255, 0, 0.7);
+            transform: scale(0.95);
+            border-color: #ffff00;
+        }
+        
+        .btn.up {
+            top: 0;
+            left: 50px;
+        }
+        
+        .btn.down {
+            bottom: 0;
+            left: 50px;
+        }
+        
+        .btn.left {
+            top: 50px;
+            left: 0;
+        }
+        
+        .btn.right {
+            top: 50px;
+            right: 0;
+        }
+        
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .action-btn {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 0, 0, 0.4);
+            border: 4px solid rgba(255, 0, 0, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px black;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+        
+        .action-btn:active {
+            background: rgba(255, 0, 0, 0.8);
+            transform: scale(0.95);
+        }
+        
+        #startMessage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 30px;
+            border: 4px solid #ffff00;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+            z-index: 200;
+            font-size: 18px;
+        }
+        
+        #startMessage.hidden {
+            display: none;
+        }
+        
+        #winnerMessage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.95);
+            padding: 30px;
+            border: 4px solid #00ff00;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+            z-index: 200;
+            font-size: 20px;
+            display: none;
+        }
+        
+        .menu-btn {
+            margin-top: 20px;
+            padding: 15px 30px;
+            background: #ff0000;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .menu-btn:active {
+            background: #cc0000;
+        }
+        
+        @media (orientation: landscape) {
+            #scoreBar {
+                font-size: 14px;
+                padding: 5px;
+            }
+            
+            .controls {
+                bottom: 10px;
+            }
+            
+            .controls.left {
+                left: 10px;
+            }
+            
+            .controls.right {
+                right: 10px;
+            }
+            
+            .dpad {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .btn {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+            
+            .btn.up,
+            .btn.down {
+                left: 40px;
+            }
+            
+            .btn.left,
+            .btn.right {
+                top: 40px;
+            }
+            
+            .action-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="gameArea">
+        <div id="scoreBar">
+            <span id="playerTeam">SV BABELSBERG 04</span>
+            <span style="margin: 0 20px;">
+                <span id="playerScore">0</span> : <span id="botScore">0</span>
+            </span>
+            <span id="botTeam">MSV DUISBURG</span>
+        </div>
+        
+        <div id="canvasContainer">
+            <canvas id="gameCanvas" width="800" height="400"></canvas>
+            
+            <div id="startMessage">
+                <h3>GOTOWY?</h3>
+                <p style="margin-top: 15px;">Dotknij START aby rozpocząć</p>
+            </div>
+            
+            <div id="winnerMessage"></div>
+        </div>
+        
+        <div class="controls left">
+            <div class="dpad">
+                <div class="btn up" data-key="w">▲</div>
+                <div class="btn down" data-key="s">▼</div>
+                <div class="btn left" data-key="a">◄</div>
+                <div class="btn right" data-key="d">►</div>
+            </div>
+        </div>
+        
+        <div class="controls right">
+            <div class="action-buttons">
+                <button class="action-btn" id="kickBtn">START<br>BALL</button>
+                <button class="action-btn" id="resetBtn">RESET</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let gameState = {
+            playerScore: 0,
+            botScore: 0,
+            gameWon: false,
+            gameStarted: false,
+            ballInPlay: false,
+            lastCollisionTime: 0
+        };
+
+        const player = {
+            x: 100,
+            y: canvas.height / 2,
+            radius: 20,
+            color: '#ff0000',
+            vx: 0,
+            vy: 0,
+            number: 10,
+            speed: 5.1,
+            shootPower: 8
+        };
+
+        const bot = {
+            name: "HAJTO",
+            x: 700,
+            y: 200,
+            color: "#0000ff",
+            maxSpeed: 3.75,
+            shootPower: 1.0,
+            radius: 20,
+            vx: 0,
+            vy: 0,
+            number: 2,
+            preferredY: 200
+        };
+
+        const ball = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            radius: 8,
+            vx: 0,
+            vy: 0,
+            color: '#ffffff',
+            maxSpeed: 11.5,
+            startSpeed: 5.7
+        };
+
+        const keys = {};
+
+        // Touch controls
+        function handleTouchStart(e) {
+            e.preventDefault();
+            const key = e.target.dataset.key;
+            if (key) {
+                keys[key] = true;
+                e.target.classList.add('active');
+            }
+        }
+
+        function handleTouchEnd(e) {
+            e.preventDefault();
+            const key = e.target.dataset.key;
+            if (key) {
+                keys[key] = false;
+                e.target.classList.remove('active');
+            }
+        }
+
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('touchstart', handleTouchStart);
+            btn.addEventListener('touchend', handleTouchEnd);
+            btn.addEventListener('touchcancel', handleTouchEnd);
+        });
+
+        document.getElementById('kickBtn').addEventListener('click', function() {
+            if (!gameState.gameStarted) {
+                startGame();
+            } else if (!gameState.ballInPlay && !gameState.gameWon) {
+                launchBall();
+            }
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', resetMatch);
+
+        function startGame() {
+            gameState.gameStarted = true;
+            document.getElementById('startMessage').classList.add('hidden');
+            launchBall();
+        }
+
+        function launchBall() {
+            gameState.ballInPlay = true;
+            const angle = (Math.random() - 0.5) * Math.PI * 0.4;
+            const direction = Math.random() < 0.5 ? 1 : -1;
+            ball.vx = Math.cos(angle) * ball.startSpeed * direction;
+            ball.vy = Math.sin(angle) * ball.startSpeed;
+        }
+
+        function updatePlayer() {
+            player.vx = 0;
+            player.vy = 0;
+            
+            if (keys['w']) player.vy = -player.speed;
+            if (keys['s']) player.vy = player.speed;
+            if (keys['a']) player.vx = -player.speed;
+            if (keys['d']) player.vx = player.speed;
+
+            player.x += player.vx;
+            player.y += player.vy;
+
+            player.x = Math.max(player.radius + 15, Math.min(canvas.width - player.radius - 15, player.x));
+            player.y = Math.max(player.radius + 15, Math.min(canvas.height - player.radius - 15, player.y));
+
+            checkPlayerBallCollision();
+        }
+
+        function checkPlayerBallCollision() {
+            const dx = ball.x - player.x;
+            const dy = ball.y - player.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < ball.radius + player.radius && distance > 0) {
+                const nx = dx / distance;
+                const ny = dy / distance;
+                
+                ball.x = player.x + nx * (ball.radius + player.radius);
+                ball.y = player.y + ny * (ball.radius + player.radius);
+                
+                const kickPower = Math.max(7, Math.sqrt(player.vx * player.vx + player.vy * player.vy) + 4);
+                ball.vx = nx * kickPower;
+                ball.vy = ny * kickPower;
+            }
+        }
+
+        function updateBot() {
+            if (!gameState.ballInPlay) {
+                bot.vx = (700 - bot.x) * 0.1;
+                bot.vy = (200 - bot.y) * 0.1;
+            } else {
+                const dx = ball.x - bot.x;
+                const dy = ball.y - bot.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance > 3) {
+                    bot.vx = (dx / distance) * bot.maxSpeed;
+                    bot.vy = (dy / distance) * bot.maxSpeed;
+                }
+            }
+
+            bot.x += bot.vx;
+            bot.y += bot.vy;
+
+            bot.x = Math.max(bot.radius + 15, Math.min(canvas.width - bot.radius - 15, bot.x));
+            bot.y = Math.max(bot.radius + 15, Math.min(canvas.height - bot.radius - 15, bot.y));
+
+            const dx = ball.x - bot.x;
+            const dy = ball.y - bot.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < ball.radius + bot.radius) {
+                const nx = dx / distance;
+                const ny = dy / distance;
+
+                ball.x += nx * 8;
+                ball.y += ny * 8;
+
+                const goalX = 15;
+                const goalY = canvas.height / 2;
+                const shootAngle = Math.atan2(goalY - ball.y, goalX - ball.x);
+                
+                ball.vx = Math.cos(shootAngle) * bot.shootPower * 6;
+                ball.vy = Math.sin(shootAngle) * bot.shootPower * 6;
+            }
+        }
+
+        function updateBall() {
+            if (!gameState.ballInPlay || gameState.gameWon) return;
+
+            ball.x += ball.vx;
+            ball.y += ball.vy;
+
+            if (ball.y <= ball.radius + 15 || ball.y >= canvas.height - ball.radius - 15) {
+                ball.vy = -ball.vy;
+                ball.y = ball.y <= ball.radius + 15 ? ball.radius + 15 : canvas.height - ball.radius - 15;
+            }
+
+            const goalTop = canvas.height * 0.35;
+            const goalBottom = canvas.height * 0.65;
+
+            if (ball.x <= 15) {
+                if (ball.y > goalTop && ball.y < goalBottom) {
+                    gameState.botScore++;
+                    updateScore();
+                    resetBallAfterGoal();
+                } else {
+                    ball.vx = -ball.vx;
+                    ball.x = ball.radius + 15;
+                }
+            }
+
+            if (ball.x >= canvas.width - 15) {
+                if (ball.y > goalTop && ball.y < goalBottom) {
+                    gameState.playerScore++;
+                    updateScore();
+                    resetBallAfterGoal();
+                } else {
+                    ball.vx = -ball.vx;
+                    ball.x = canvas.width - ball.radius - 15;
+                }
+            }
+
+            ball.vx *= 0.998;
+            ball.vy *= 0.998;
+
+            if (Math.abs(ball.vx) < 0.05 && Math.abs(ball.vy) < 0.05) {
+                ball.vx = 0;
+                ball.vy = 0;
+                gameState.ballInPlay = false;
+            }
+        }
+
+        function resetBallAfterGoal() {
+            ball.x = canvas.width / 2;
+            ball.y = canvas.height / 2;
+            ball.vx = 0;
+            ball.vy = 0;
+            gameState.ballInPlay = false;
+        }
+
+        function updateScore() {
+            document.getElementById('playerScore').textContent = gameState.playerScore;
+            document.getElementById('botScore').textContent = gameState.botScore;
+
+            if (gameState.playerScore >= 5) {
+                gameState.gameWon = true;
+                showWinMessage(true);
+            } else if (gameState.botScore >= 5) {
+                gameState.gameWon = true;
+                showWinMessage(false);
+            }
+        }
+
+        function showWinMessage(won) {
+            const msg = document.getElementById('winnerMessage');
+            msg.innerHTML = won ? 
+                '<h2 style="color: #00ff00;">WYGRANA!</h2><p style="margin-top: 15px;">SV BABELSBERG 04 zwycięża!</p>' :
+                '<h2 style="color: #ff0000;">PRZEGRANA!</h2><p style="margin-top: 15px;">MSV DUISBURG wygrywa!</p>';
+            msg.innerHTML += '<button class="menu-btn" onclick="resetMatch()">ZAGRAJ PONOWNIE</button>';
+            msg.style.display = 'block';
+        }
+
+        function resetMatch() {
+            gameState.playerScore = 0;
+            gameState.botScore = 0;
+            gameState.gameWon = false;
+            gameState.gameStarted = false;
+            gameState.ballInPlay = false;
+
+            player.x = 100;
+            player.y = canvas.height / 2;
+            
+            bot.x = 700;
+            bot.y = 200;
+            
+            ball.x = canvas.width / 2;
+            ball.y = canvas.height / 2;
+            ball.vx = 0;
+            ball.vy = 0;
+            
+            updateScore();
+            document.getElementById('winnerMessage').style.display = 'none';
+            document.getElementById('startMessage').classList.remove('hidden');
+        }
+
+        function drawField() {
+            const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, 400);
+            gradient.addColorStop(0, '#228B22');
+            gradient.addColorStop(0.7, '#006400');
+            gradient.addColorStop(1, '#004d00');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+            
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2, 10);
+            ctx.lineTo(canvas.width / 2, canvas.height - 10);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.arc(canvas.width / 2, canvas.height / 2, 60, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(canvas.width / 2, canvas.height / 2, 4, 0, Math.PI * 2);
+            ctx.fill();
+            
+            const goalHeight = canvas.height * 0.3;
+            const goalTop = canvas.height * 0.35;
+            
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+            ctx.fillRect(0, goalTop, 10, goalHeight);
+            ctx.fillRect(canvas.width - 10, goalTop, 10, goalHeight);
+        }
+
+        function drawPlayer(p, name) {
+            ctx.fillStyle = 'rgba(0,0,0,0.3)';
+            ctx.beginPath();
+            ctx.arc(p.x + 2, p.y + 2, p.radius, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 12px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(p.number.toString(), p.x, p.y);
+        }
+
+        function drawBall() {
+            ctx.fillStyle = 'rgba(0,0,0,0.4)';
+            ctx.beginPath();
+            ctx.arc(ball.x + 2, ball.y + 2, ball.radius * 1.1, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = ball.color;
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            drawField();
+            
+            if (gameState.gameStarted) {
+                updatePlayer();
+                updateBot();
+                updateBall();
+            }
+            
+            drawPlayer(player, 'WŁODARSKI');
+            drawPlayer(bot, 'HAJTO');
+            drawBall();
+            
+            requestAnimationFrame(gameLoop);
+        }
+
+        gameLoop();
+    </script>
+</body>
+</html>
