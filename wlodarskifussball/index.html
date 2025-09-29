@@ -111,20 +111,22 @@
         
         .main-content.show {
             display: block;
-            width: 100%;
-            height: auto;
         }
         
-        /* Resetuj style dla zawartości gry */
+        /* POPRAWKA: Resetuj style dla zawartości gry */
         .main-content #gameCanvas,
         .main-content .game-container,
-        .main-content img,
         .main-content canvas {
             max-width: none !important;
             max-height: none !important;
-            width: auto;
-            height: auto;
-            object-fit: none !important;
+            width: 800px !important;
+            height: 400px !important;
+            object-fit: initial !important;
+        }
+        
+        .main-content img {
+            max-width: 100%;
+            object-fit: initial;
         }
         
         /* Animacja znikania splash screen */
@@ -153,7 +155,6 @@
     <!-- DŹWIĘK POWITALNY -->
     <audio id="welcomeSound" preload="auto" loop>
         <source src="wilkommen.mp3" type="audio/mpeg">
-        <!-- ZMIEŃ NA NAZWĘ SWOJEGO PLIKU AUDIO -->
     </audio>
     
     <!-- GŁÓWNA ZAWARTOŚĆ (UKRYTA NA POCZĄTKU) -->
