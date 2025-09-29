@@ -72,6 +72,9 @@ function drawField() {
         case 'campnou':  // <-- DODAJ TEN CASE
             drawCampNouField();
             break;
+             case 'storm':
+            drawStormField();
+            break;
     }
 }
 
@@ -876,3 +879,67 @@ function drawCampNouField() {
    
     drawStandardFieldLines();
 }  // <-- KONIEC - to jest ostatnia rzecz w pliku field.js
+function drawStormField() {
+    // Burzowe boisko
+    const currentTeamData = gameMode === 'tournament' ? teams[gameState.currentRound] : teams[selectedTeam];
+    const scale = currentTeamData.fieldScale || 1.0;
+    
+    // Ciemne, burzowe niebo
+    const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, 400);
+    gradient.addColorStop(0, '#2a3a2a');
+    gradient.addColorStop(0.5, '#1a2a1a');
+    gradient.addColorStop(1, '#0a1a0a');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    const time = Date.now() * 0.001;
+    
+    // Błyskawice (losowe)
+    if (Math.random() < 0.02) {
+        ctx.strokeStyle = `rgba(255, 255, 255, ${0.7 + Math.random() * 0.3})`;
+        ctx.lineWidth = 3;
+        const startX = Math.random() * canvas.width;
+        ctx.beginPath();
+        ctx.moveTo(startX, 0);
+        ctx.lineTo(startX + (Math.random() - 0.5) * 100, canvas.height / 3);
+        ctx.lineTo(startX + (Math.random() - 0.5) * 100, canvas.height / 2);
+        ctx.lineTo(startX + (Math.random() - 0.5) * 100, canvas.height);
+        ctx.stroke();
+    }
+    
+    // Deszcz (gęsty)
+    ctx.strokeStyle = 'rgba(180, 200, 220, 0.4)';
+    ctx.lineWidth = 1;
+    for(let i = 0; i < 50; i++) {
+        const x = (i * 16 + time * 100) % canvas.width;
+        const y = (i * 8 + time * 150) % canvas.height;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x - 5, y + 15 * scale);
+        ctx.stroke();
+    }
+    
+    // Kałuże i błoto
+    ctx.fillStyle = 'rgba(60, 80, 100, 0.5)';
+    [[150,120,50,30], [400,180,60,35], [600,280,55,32], [250,320,45,28], [500,100,40,25]].forEach(([x,y,w,h]) => {
+        ctx.beginPath();
+        ctx.ellipse(x, y, w * scale, h * scale, 0, 0, Math.PI * 2);
+        ctx.fill();
+    });
+    
+    // Ciemne chmury (efekt)
+    ctx.fillStyle = `rgba(40, 50, 60, ${0.3 + Math.sin(time * 0.5) * 0.1})`;
+    [[200, 80, 120], [500, 60, 140], [650, 100, 110]].forEach(([x, y, r]) => {
+        ctx.beginPath();
+        ctx.arc(x, y, r * scale, 0, Math.PI * 2);
+        ctx.fill();
+    });
+    
+    // Błysk światła (okresowy)
+    if (Math.sin(time * 2) > 0.95) {
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    
+    drawStandardFieldLines();
+}
