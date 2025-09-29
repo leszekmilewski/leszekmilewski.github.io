@@ -139,7 +139,7 @@ const teams = [
     number: 4, 
     playerTeam: "SV BABELSBERG 04",
     opponentTeam: "FC GUTERSLOH",
-    field: "autumn",
+    field: "concrete",
     fieldScale: 1.0,
     
     // === PARAMETRY WŁODARSKIEGO ===
@@ -157,7 +157,7 @@ const teams = [
             x: 750,              // Bliżej bramki
             y: 200, 
             color: "#3b3635", 
-            maxSpeed: 1.8,       // Wolniejszy jak bramkarz
+            maxSpeed: 1.5,       // Wolniejszy jak bramkarz
             shootPower: 1.5,     // Słabszy w strzałach
             radius: 18,          // Nieco większy
             canCrossHalf: false, 
