@@ -31,6 +31,9 @@ function backToMenu() {
     // Pokaż menu główne
     document.getElementById('mainMenu').style.display = 'block';
     
+    // Odtwórz muzykę menu
+    AudioSystem.play('menu');
+    
     // Reset stanu gry
     resetGameState();
 }
@@ -39,6 +42,9 @@ function showGame() {
     // Ukryj menu
     document.getElementById('mainMenu').style.display = 'none';
     document.getElementById('teamSelection').style.display = 'none';
+    
+    // Zatrzymaj muzykę menu
+    AudioSystem.stop('menu');
     
     // Pokaż grę
     document.getElementById('gameContainer').style.display = 'block';
