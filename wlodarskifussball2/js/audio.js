@@ -15,7 +15,7 @@ const AudioSystem = {
                 type: 'music'
             },
             menu: {
-                audio: new Audio('menu.mp3'),
+                audio: new Audio('menu2.mp3'),
                 loop: true,
                 volume: 0.6,
                 type: 'music'
