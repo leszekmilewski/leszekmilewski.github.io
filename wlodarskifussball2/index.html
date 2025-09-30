@@ -173,11 +173,7 @@
         <h1>⚽🚬 MARIAN WŁODARSKI GESUNDHEIT FUSSBALL 2 🚬⚽</h1>
         <div class="subtitle">*** ⚫🔴🟠 ZWEITE BUNDESLIGA EDITION 1996/97 ⚫🔴🟠 ***</div>
         
-        <!-- GŁÓWNE MENU -->
-        <div id="mainMenu" class="main-menu">
-            <h2 style="color: #ffff00; margin-bottom: 20px;">♞ HAUPTMENÜ ♞</h2>
-
-<!-- GŁÓWNE MENU -->
+  <!-- GŁÓWNE MENU -->
         <div id="mainMenu" class="main-menu">
             <h2 style="color: #ffff00; margin-bottom: 20px;">♞ HAUPTMENÜ ♞</h2>
             
@@ -185,9 +181,7 @@
             <button id="menuMuteButton" class="menu-mute-btn" onclick="toggleMenuMute()">
                 🔊 SOUND
             </button>
-            
-            <button class="menu-btn wide-btn" onclick="startTournament()">🌍 2. BUNDESLIGA!</button>
-            
+                        
             <button class="menu-btn wide-btn" onclick="startTournament()">🌍 2. BUNDESLIGA!</button>
             <button class="menu-btn wide-btn" onclick="showTeamSelection()">🥂 FREUNDSCHAFTSSPIEL!</button>
             <button class="menu-btn wide-btn" onclick="goToDuel()">⚔️ 1 VS 1 DUEL!</button>
@@ -334,9 +328,42 @@
             window.location.href = "https://leszekmilewski.pl/wlodarskifussball/coop/index.html";
         }
         
-        function goToNationalGame() {
+        
+function goToNationalGame() {
             window.location.href = "https://leszekmilewski.pl/wlodarskifussball/mannschaft/index.html";
         }
+        
+        // Przełączanie wyciszenia w menu
+        function toggleMenuMute() {
+            const menuMuteButton = document.getElementById('menuMuteButton');
+            const isMuted = AudioSystem.toggleMute();
+            
+            if (isMuted) {
+                menuMuteButton.textContent = '🔇 MUTED';
+                menuMuteButton.classList.add('muted');
+            } else {
+                menuMuteButton.textContent = '🔊 SOUND';
+                menuMuteButton.classList.remove('muted');
+                
+                // Odtwórz muzykę menu jeśli jesteśmy w menu
+                if (document.getElementById('mainMenu').style.display !== 'none') {
+                    AudioSystem.play('menu');
+                }
+            }
+            
+            // Synchronizuj stan przycisku na splash screen
+            const splashMuteButton = document.getElementById('muteButton');
+            if (splashMuteButton) {
+                if (isMuted) {
+                    splashMuteButton.textContent = '🔇 MUTED';
+                    splashMuteButton.classList.add('muted');
+                } else {
+                    splashMuteButton.textContent = '🔊 SOUND';
+                    splashMuteButton.classList.remove('muted');
+                }
+            }
+        }
     </script>
+            
 </body>
 </html>
