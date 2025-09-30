@@ -65,9 +65,10 @@ function updateBall() {
 
     if (ball.x <= 15) {
         const goalBounds = getGoalBounds();
-        if (ball.y > goalBounds.top && ball.y < goalBounds.bottom) {
+   if (ball.y > goalBounds.top && ball.y < goalBounds.bottom) {
             // Jeśli dotarło tutaj, to gol (bramkarz nie złapał wcześniej)
             gameState.botScore++;
+            AudioSystem.play('goalConceded');
             updateScore();
             resetBallAfterGoal();
         } else {
@@ -78,8 +79,9 @@ function updateBall() {
 
     if (ball.x >= canvas.width - 15) {
         const goalBounds = getGoalBounds();
-        if (ball.y > goalBounds.top && ball.y < goalBounds.bottom) {
+ if (ball.y > goalBounds.top && ball.y < goalBounds.bottom) {
             gameState.playerScore++;
+            AudioSystem.play('goalScored');
             updateScore();
             resetBallAfterGoal();
         } else {
