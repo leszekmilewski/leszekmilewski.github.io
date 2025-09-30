@@ -12,13 +12,13 @@ const AudioSystem = {
             welcome: {
                 audio: new Audio('wilkommen.mp3'), // Dźwięk powitalny (splash screen)
                 loop: true,
-                volume: 0.6,
+                volume: 0.8,
                 type: 'music'
             },
             menu: {
                 audio: new Audio('menu.mp3'), // Muzyka w menu
                 loop: true,
-                volume: 0.4,
+                volume: 0.6,
                 type: 'music'
             },
             goalScored: {
