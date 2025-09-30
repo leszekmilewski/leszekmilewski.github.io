@@ -252,49 +252,51 @@
     
  <!-- OBSŁUGA EKRANU STARTOWEGO Z DŹWIĘKIEM -->
     <script>
+
         let splashScreenActive = true;
+
+// Odtwórz dźwięk powitalny automatycznie po załadowaniu
+window.addEventListener('load', function() {
+    // Małe opóźnienie, żeby AudioSystem był zainicjalizowany
+    setTimeout(() => {
+        if (!AudioSystem.isMuted) {
+            AudioSystem.play('welcome');
+        }
+    }, 100);
+});
         
-        // Obsługa klawiatury dla ekranu startowego
-        document.addEventListener('keydown', function(event) {
-            if (splashScreenActive && event.code === 'Space') {
-                event.preventDefault();
-                
-                // Odtwórz dźwięk powitalny jeśli nie jest wyciszony
-                if (!AudioSystem.isMuted) {
-                    AudioSystem.play('welcome');
-                }
-                
-                hideSplashScreen();
-            }
-        });
+       // Obsługa klawiatury dla ekranu startowego
+document.addEventListener('keydown', function(event) {
+    if (splashScreenActive && event.code === 'Space') {
+        event.preventDefault();
+        hideSplashScreen();
+    }
+});
         
         // Ukryj splash screen i pokaż główne menu
-        function hideSplashScreen() {
-            const splashScreen = document.getElementById('splashScreen');
-            const mainContent = document.getElementById('mainContent');
-            
-            splashScreen.classList.add('fade-out');
-            
-            setTimeout(() => {
-                splashScreen.style.display = 'none';
-                mainContent.classList.add('show');
-                splashScreenActive = false;
-                
-                // Zatrzymaj dźwięk powitalny i uruchom muzykę menu
-                AudioSystem.stop('welcome');
-                AudioSystem.play('menu');
-            }, 800);
-        }
+function hideSplashScreen() {
+    const splashScreen = document.getElementById('splashScreen');
+    const mainContent = document.getElementById('mainContent');
+    
+    splashScreen.classList.add('fade-out');
+    
+    setTimeout(() => {
+        splashScreen.style.display = 'none';
+        mainContent.classList.add('show');
+        splashScreenActive = false;
         
-        // Opcjonalnie: ukryj splash screen po kliknięciu
-        document.getElementById('splashScreen').addEventListener('click', function() {
-            if (splashScreenActive) {
-                if (!AudioSystem.isMuted) {
-                    AudioSystem.play('welcome');
-                }
-                hideSplashScreen();
-            }
-        });
+        // Zatrzymaj dźwięk powitalny i uruchom muzykę menu
+        AudioSystem.stop('welcome');
+        AudioSystem.play('menu');
+    }, 800);
+}
+        
+// Opcjonalnie: ukryj splash screen po kliknięciu
+document.getElementById('splashScreen').addEventListener('click', function() {
+    if (splashScreenActive) {
+        hideSplashScreen();
+    }
+});
         
         // Przełączanie wyciszenia
         function toggleMute() {
