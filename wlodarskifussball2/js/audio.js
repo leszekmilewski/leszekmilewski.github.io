@@ -1,5 +1,4 @@
 // audio.js - System zarządzania dźwiękiem
-
 const AudioSystem = {
     sounds: {},
     isMuted: false,
@@ -10,25 +9,31 @@ const AudioSystem = {
         // Definicje dźwięków - WPISZ ŚCIEŻKI DO SWOICH PLIKÓW MP3
         this.sounds = {
             welcome: {
-                audio: new Audio('wilkommen.mp3'), // Dźwięk powitalny (splash screen)
+                audio: new Audio('wilkommen.mp3'),
                 loop: true,
                 volume: 0.8,
                 type: 'music'
             },
             menu: {
-                audio: new Audio('menu.mp3'), // Muzyka w menu
+                audio: new Audio('menu.mp3'),
                 loop: true,
                 volume: 0.6,
                 type: 'music'
             },
             goalScored: {
-                audio: new Audio('wunderbar.mp3'), // Dźwięk strzelenia gola
+                audio: new Audio('wunderbar.mp3'),
+                loop: false,
+                volume: 0.8,
+                type: 'sfx'
+            },
+            goalScored2: {
+                audio: new Audio('weltklasse.mp3'),
                 loop: false,
                 volume: 0.8,
                 type: 'sfx'
             },
             goalConceded: {
-                audio: new Audio('schade.mp3'), // Dźwięk stracenia gola
+                audio: new Audio('schade.mp3'),
                 loop: false,
                 volume: 0.8,
                 type: 'sfx'
@@ -88,6 +93,11 @@ const AudioSystem = {
         }
         
         return this.isMuted;
+    },
+    
+    playRandom(soundNames) {
+        const randomSound = soundNames[Math.floor(Math.random() * soundNames.length)];
+        this.play(randomSound);
     }
 };
 
