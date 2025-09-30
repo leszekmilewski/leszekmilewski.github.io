@@ -37,6 +37,7 @@ h1 {
 }
 
 .main-menu {
+    position: relative;
     background: linear-gradient(45deg, #000033, #000066);
     border: 3px solid #ffff00;
     padding: 30px;
@@ -213,4 +214,29 @@ h1 {
 
 .hidden {
     display: none !important;
+}
+
+.menu-mute-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #ffff00;
+    color: #ffff00;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.menu-mute-btn:hover {
+    background: rgba(255, 255, 0, 0.2);
+    transform: scale(1.05);
+}
+
+.menu-mute-btn.muted {
+    color: #ff6666;
+    border-color: #ff6666;
 }
