@@ -167,11 +167,7 @@
         </div>
     </div>
     
-    <!-- DŹWIĘK POWITALNY -->
-    <audio id="welcomeSound" preload="auto" loop>
-        <source src="wilkommen.mp3" type="audio/mpeg">
-    </audio>
-    
+   
     <!-- GŁÓWNA ZAWARTOŚĆ (UKRYTA NA POCZĄTKU) -->
     <div id="mainContent" class="main-content">
         <h1>⚽🚬 MARIAN WŁODARSKI GESUNDHEIT FUSSBALL 2 🚬⚽</h1>
@@ -180,6 +176,18 @@
         <!-- GŁÓWNE MENU -->
         <div id="mainMenu" class="main-menu">
             <h2 style="color: #ffff00; margin-bottom: 20px;">♞ HAUPTMENÜ ♞</h2>
+
+<!-- GŁÓWNE MENU -->
+        <div id="mainMenu" class="main-menu">
+            <h2 style="color: #ffff00; margin-bottom: 20px;">♞ HAUPTMENÜ ♞</h2>
+            
+            <!-- PRZYCISK WYCISZENIA W MENU -->
+            <button id="menuMuteButton" class="menu-mute-btn" onclick="toggleMenuMute()">
+                🔊 SOUND
+            </button>
+            
+            <button class="menu-btn wide-btn" onclick="startTournament()">🌍 2. BUNDESLIGA!</button>
+            
             <button class="menu-btn wide-btn" onclick="startTournament()">🌍 2. BUNDESLIGA!</button>
             <button class="menu-btn wide-btn" onclick="showTeamSelection()">🥂 FREUNDSCHAFTSSPIEL!</button>
             <button class="menu-btn wide-btn" onclick="goToDuel()">⚔️ 1 VS 1 DUEL!</button>
@@ -248,62 +256,18 @@
     <script src="js/audio.js"></script>
     <script src="js/game.js"></script>
     
-    <!-- OBSŁUGA EKRANU STARTOWEGO Z DŹWIĘKIEM -->
+ <!-- OBSŁUGA EKRANU STARTOWEGO Z DŹWIĘKIEM -->
     <script>
         let splashScreenActive = true;
-        let isMuted = false;
-        let welcomeSound;
-        
-        // Inicjalizacja po załadowaniu strony
-        document.addEventListener('DOMContentLoaded', function() {
-            welcomeSound = document.getElementById('welcomeSound');
-            
-            // Próba odtworzenia dźwięku (może być zablokowana przez autoplay policy)
-            tryPlayWelcomeSound();
-        });
-        
-        // Próba odtworzenia dźwięku powitalnego
-        function tryPlayWelcomeSound() {
-            if (welcomeSound && !isMuted) {
-                welcomeSound.volume = 0.6; // 60% głośności
-                
-                const playPromise = welcomeSound.play();
-                
-                if (playPromise !== undefined) {
-                    playPromise.then(() => {
-                        console.log('Dźwięk powitalny odtworzony');
-                    }).catch(error => {
-                        console.log('Autoplay zablokowany, dźwięk zostanie odtworzony po interakcji użytkownika');
-                    });
-                }
-            }
-        }
-        
-        // Przełączanie wyciszenia
-        function toggleMute() {
-            const muteButton = document.getElementById('muteButton');
-            
-            isMuted = !isMuted;
-            
-            if (isMuted) {
-                if (welcomeSound) welcomeSound.pause();
-                muteButton.textContent = '🔇 MUTED';
-                muteButton.classList.add('muted');
-            } else {
-                if (welcomeSound) welcomeSound.play();
-                muteButton.textContent = '🔊 SOUND';
-                muteButton.classList.remove('muted');
-            }
-        }
         
         // Obsługa klawiatury dla ekranu startowego
         document.addEventListener('keydown', function(event) {
             if (splashScreenActive && event.code === 'Space') {
                 event.preventDefault();
                 
-                // Jeśli dźwięk nie został jeszcze odtworzony, spróbuj teraz
-                if (!isMuted && welcomeSound && welcomeSound.paused) {
-                    tryPlayWelcomeSound();
+                // Odtwórz dźwięk powitalny jeśli nie jest wyciszony
+                if (!AudioSystem.isMuted) {
+                    AudioSystem.play('welcome');
                 }
                 
                 hideSplashScreen();
@@ -317,25 +281,47 @@
             
             splashScreen.classList.add('fade-out');
             
-            // Zatrzymaj dźwięk powitalny
-            if (welcomeSound) {
-                welcomeSound.pause();
-                welcomeSound.currentTime = 0;
-            }
-            
             setTimeout(() => {
                 splashScreen.style.display = 'none';
                 mainContent.classList.add('show');
                 splashScreenActive = false;
-            }, 800); // Czas animacji fade-out
+                
+                // Zatrzymaj dźwięk powitalny i uruchom muzykę menu
+                AudioSystem.stop('welcome');
+                AudioSystem.play('menu');
+            }, 800);
         }
         
         // Opcjonalnie: ukryj splash screen po kliknięciu
         document.getElementById('splashScreen').addEventListener('click', function() {
             if (splashScreenActive) {
+                if (!AudioSystem.isMuted) {
+                    AudioSystem.play('welcome');
+                }
                 hideSplashScreen();
             }
         });
+        
+        // Przełączanie wyciszenia
+        function toggleMute() {
+            const muteButton = document.getElementById('muteButton');
+            const isMuted = AudioSystem.toggleMute();
+            
+            if (isMuted) {
+                muteButton.textContent = '🔇 MUTED';
+                muteButton.classList.add('muted');
+            } else {
+                muteButton.textContent = '🔊 SOUND';
+                muteButton.classList.remove('muted');
+                
+                // Odtwórz odpowiednią muzykę w zależności od ekranu
+                if (splashScreenActive) {
+                    AudioSystem.play('welcome');
+                } else if (document.getElementById('mainMenu').style.display !== 'none') {
+                    AudioSystem.play('menu');
+                }
+            }
+        }
     </script>
     
     <!-- FUNKCJE DO PRZEKIEROWANIA NA INNE GRY -->
