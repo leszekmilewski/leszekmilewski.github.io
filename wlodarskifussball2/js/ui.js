@@ -43,8 +43,7 @@ function showGame() {
     document.getElementById('mainMenu').style.display = 'none';
     document.getElementById('teamSelection').style.display = 'none';
     
-    // Zatrzymaj muzykę menu
-    AudioSystem.stop('menu');
+    // Muzyka menu gra dalej podczas meczu
     
     // Pokaż grę
     document.getElementById('gameContainer').style.display = 'block';
