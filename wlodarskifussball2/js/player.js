@@ -550,16 +550,9 @@ function applyFieldBoundaries(entity) {
     const scale = getCurrentScale();
     const border = 15 * scale;
     
-    // Specjalne ograniczenie dla pierwszej rundy turnieju (Włodarski nie może przekraczać połowy)
-    if (entity === player && gameMode === 'tournament' && gameState.currentRound === 0) {
-        entity.x = Math.max(entity.radius + border, Math.min(canvas.width / 2 - 10, entity.x));
-    } else {
-        entity.x = Math.max(entity.radius + border, Math.min(canvas.width - entity.radius - border, entity.x));
-    }
-    
+    entity.x = Math.max(entity.radius + border, Math.min(canvas.width - entity.radius - border, entity.x));
     entity.y = Math.max(entity.radius + border, Math.min(canvas.height - entity.radius - border, entity.y));
 }
-
 /**
  * Aktualizuje bramkarza przeciwnika lub gracza
  */
