@@ -10,25 +10,25 @@ const AudioSystem = {
         // Definicje dźwięków - WPISZ ŚCIEŻKI DO SWOICH PLIKÓW MP3
         this.sounds = {
             welcome: {
-                audio: new Audio('wilkommen.mp3'), // Dźwięk powitalny (splash screen)
+                audio: new Audio('../wilkommen.mp3'), // Dźwięk powitalny (splash screen)
                 loop: true,
                 volume: 0.8,
                 type: 'music'
             },
             menu: {
-                audio: new Audio('menu.mp3'), // Muzyka w menu
+                audio: new Audio('../menu.mp3'), // Muzyka w menu
                 loop: true,
                 volume: 0.6,
                 type: 'music'
             },
             goalScored: {
-                audio: new Audio('weltklasse.mp3'), // Dźwięk strzelenia gola
+                audio: new Audio('../wunderbar.mp3'), // Dźwięk strzelenia gola
                 loop: false,
                 volume: 0.8,
                 type: 'sfx'
             },
             goalConceded: {
-                audio: new Audio('schade.mp3'), // Dźwięk stracenia gola
+                audio: new Audio('../schade.mp3'), // Dźwięk stracenia gola
                 loop: false,
                 volume: 0.8,
                 type: 'sfx'
