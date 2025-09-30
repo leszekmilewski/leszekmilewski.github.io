@@ -80,8 +80,8 @@ function updateBall() {
     if (ball.x >= canvas.width - 15) {
         const goalBounds = getGoalBounds();
  if (ball.y > goalBounds.top && ball.y < goalBounds.bottom) {
-            gameState.playerScore++;
-            AudioSystem.play('goalScored');
+          gameState.playerScore++;
+AudioSystem.playRandom(['goalScored', 'goalScored2']);
             updateScore();
             resetBallAfterGoal();
         } else {
