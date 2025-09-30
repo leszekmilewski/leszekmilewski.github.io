@@ -250,75 +250,101 @@
     <script src="js/audio.js"></script>
     <script src="js/game.js"></script>
     
- <!-- OBSŁUGA EKRANU STARTOWEGO Z DŹWIĘKIEM -->
-    <script>
+<!-- OBSŁUGA EKRANU STARTOWEGO Z DŹWIĘKIEM -->
+<script>
+    let splashScreenActive = true;
+    let welcomeSoundPlayed = false;
 
-        let splashScreenActive = true;
-
-// Odtwórz dźwięk powitalny automatycznie po załadowaniu
-window.addEventListener('load', function() {
-    // Małe opóźnienie, żeby AudioSystem był zainicjalizowany
-    setTimeout(() => {
-        if (!AudioSystem.isMuted) {
-            AudioSystem.play('welcome');
-        }
-    }, 100);
-});
-        
-       // Obsługa klawiatury dla ekranu startowego
-document.addEventListener('keydown', function(event) {
-    if (splashScreenActive && event.code === 'Space') {
-        event.preventDefault();
-        hideSplashScreen();
-    }
-});
-        
-        // Ukryj splash screen i pokaż główne menu
-function hideSplashScreen() {
-    const splashScreen = document.getElementById('splashScreen');
-    const mainContent = document.getElementById('mainContent');
-    
-    splashScreen.classList.add('fade-out');
-    
-    setTimeout(() => {
-        splashScreen.style.display = 'none';
-        mainContent.classList.add('show');
-        splashScreenActive = false;
-        
-        // Zatrzymaj dźwięk powitalny i uruchom muzykę menu
-        AudioSystem.stop('welcome');
-        AudioSystem.play('menu');
-    }, 800);
-}
-        
-// Opcjonalnie: ukryj splash screen po kliknięciu
-document.getElementById('splashScreen').addEventListener('click', function() {
-    if (splashScreenActive) {
-        hideSplashScreen();
-    }
-});
-        
-        // Przełączanie wyciszenia
-        function toggleMute() {
-            const muteButton = document.getElementById('muteButton');
-            const isMuted = AudioSystem.toggleMute();
+    // Obsługa klawiatury dla ekranu startowego
+    document.addEventListener('keydown', function(event) {
+        if (splashScreenActive && event.code === 'Space') {
+            event.preventDefault();
             
-            if (isMuted) {
-                muteButton.textContent = '🔇 MUTED';
-                muteButton.classList.add('muted');
-            } else {
-                muteButton.textContent = '🔊 SOUND';
-                muteButton.classList.remove('muted');
-                
-                // Odtwórz odpowiednią muzykę w zależności od ekranu
-                if (splashScreenActive) {
+            if (!welcomeSoundPlayed) {
+                // PIERWSZA SPACJA - odtwórz wilkommen
+                if (!AudioSystem.isMuted) {
                     AudioSystem.play('welcome');
-                } else if (document.getElementById('mainMenu').style.display !== 'none') {
-                    AudioSystem.play('menu');
                 }
+                welcomeSoundPlayed = true;
+                
+                // Zmień tekst instrukcji
+                const instruction = document.querySelector('.splash-instruction');
+                if (instruction) {
+                    instruction.textContent = 'DRÜCKEN SIE ERNEUT LEERTASTE FÜR HAUPTMENÜ';
+                }
+            } else {
+                // DRUGA SPACJA - ukryj splash screen
+                hideSplashScreen();
             }
         }
-    </script>
+    });
+    
+    // Ukryj splash screen i pokaż główne menu
+    function hideSplashScreen() {
+        const splashScreen = document.getElementById('splashScreen');
+        const mainContent = document.getElementById('mainContent');
+        
+        splashScreen.classList.add('fade-out');
+        
+        setTimeout(() => {
+            splashScreen.style.display = 'none';
+            mainContent.classList.add('show');
+            splashScreenActive = false;
+            
+            // Zatrzymaj dźwięk powitalny i uruchom muzykę menu
+            AudioSystem.stop('welcome');
+            
+            if (!AudioSystem.isMuted) {
+                AudioSystem.play('menu');
+            }
+        }, 800);
+    }
+    
+    // Opcjonalnie: ukryj splash screen po kliknięciu (drugie kliknięcie)
+    let clickCount = 0;
+    document.getElementById('splashScreen').addEventListener('click', function() {
+        if (splashScreenActive) {
+            clickCount++;
+            
+            if (clickCount === 1 && !welcomeSoundPlayed) {
+                // Pierwsze kliknięcie - odtwórz wilkommen
+                if (!AudioSystem.isMuted) {
+                    AudioSystem.play('welcome');
+                }
+                welcomeSoundPlayed = true;
+                
+                const instruction = document.querySelector('.splash-instruction');
+                if (instruction) {
+                    instruction.textContent = 'KLICKEN SIE ERNEUT FÜR HAUPTMENÜ';
+                }
+            } else if (clickCount >= 2 || welcomeSoundPlayed) {
+                // Drugie kliknięcie - ukryj splash screen
+                hideSplashScreen();
+            }
+        }
+    });
+    
+    // Przełączanie wyciszenia
+    function toggleMute() {
+        const muteButton = document.getElementById('muteButton');
+        const isMuted = AudioSystem.toggleMute();
+        
+        if (isMuted) {
+            muteButton.textContent = '🔇 MUTED';
+            muteButton.classList.add('muted');
+        } else {
+            muteButton.textContent = '🔊 SOUND';
+            muteButton.classList.remove('muted');
+            
+            // Odtwórz odpowiednią muzykę w zależności od ekranu
+            if (splashScreenActive && welcomeSoundPlayed) {
+                AudioSystem.play('welcome');
+            } else if (document.getElementById('mainMenu').style.display !== 'none') {
+                AudioSystem.play('menu');
+            }
+        }
+    }
+</script>
     
     <!-- FUNKCJE DO PRZEKIEROWANIA NA INNE GRY -->
     <script>
